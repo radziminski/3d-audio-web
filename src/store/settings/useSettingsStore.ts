@@ -26,8 +26,8 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   sourcePosition: { x: 0, y: 0, z: 1 },
   setAzimuth: (newAzimuth) => {
     const { elevation } = get();
-    const sourcePosition = getUniSphereCoordinates(newAzimuth, elevation);
-    set({ azimuth: newAzimuth, sourcePosition });
+    const sourcePosition = getUniSphereCoordinates(360 - newAzimuth, elevation);
+    set({ azimuth: 360 - newAzimuth, sourcePosition });
   },
   setElevation: (newElevation) => {
     const { azimuth } = get();

@@ -10,7 +10,7 @@ export const Scene = () => {
     sourcePosition: { x, y, z },
   } = useSettingsStore();
 
-  const sourcePosition = [x * 1.1, y * 1.1, z * 1.1] as const;
+  const sourcePosition = [x * -1.1, y * 1.1, z * 1.1] as const;
 
   return (
     <Canvas>
