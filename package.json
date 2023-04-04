@@ -9,14 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@fseehawer/react-circular-slider": "^2.5.16",
+    "@mantine/core": "^6.0.2",
+    "@mantine/form": "^6.0.2",
+    "@mantine/hooks": "^6.0.2",
+    "@react-three/drei": "^9.62.2",
+    "@react-three/fiber": "^8.12.0",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@types/three": "^0.150.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.2"
+    "three": "^0.151.3",
+    "typescript": "5.0.2",
+    "zustand": "^4.3.6"
   }
 }
