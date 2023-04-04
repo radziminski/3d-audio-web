@@ -39,7 +39,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleStart = () => {
-    window.as = AudioService.getInstance(true);
+    (window as any).as = AudioService.getInstance(true);
     router.push('./spatialize');
   };
 
