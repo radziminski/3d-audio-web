@@ -12,10 +12,12 @@ interface SettingsState {
   gain: number;
   panning: number;
   sourcePosition: SpatialPoint;
+  audioSource: string;
   setAzimuth: (newAzimuth: number) => void;
   setElevation: (newElevation: number) => void;
   setGain: (newGain: number) => void;
   setPanning: (newPanning: number) => void;
+  setAudioSource: (newSource: string) => void;
 }
 
 export const useSettingsStore = create<SettingsState>()((set, get) => ({
@@ -24,6 +26,7 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   gain: 100,
   panning: 0,
   sourcePosition: { x: 0, y: 0, z: 1 },
+  audioSource: '/test.mp3',
   setAzimuth: (newAzimuth) => {
     const { elevation } = get();
     const sourcePosition = getUniSphereCoordinates(360 - newAzimuth, elevation);
@@ -39,5 +42,8 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   },
   setPanning: (newPanning) => {
     set({ panning: newPanning });
+  },
+  setAudioSource: (newSource) => {
+    set({ audioSource: newSource });
   },
 }));

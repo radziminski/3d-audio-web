@@ -1,21 +1,13 @@
-import { Poppins } from 'next/font/google';
 import { Button, createStyles } from '@mantine/core';
 import { Slider } from '~/components/slider/Slider';
 import { CircularSlider } from '~/components/circular-slider/CircularSlider';
-import { useLayoutEffect, useRef, useState } from 'react';
-import { AudioService } from '~/services/audio';
-import { useAudioService } from '~/hooks/use-audio-service/useAudioService';
+import { PropsWithChildren } from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import {
   DEFAULT_ELEVATION,
   MAX_ELEVATION,
   MIN_ELEVATION,
 } from '~/services/audio/constants';
-
-const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '800'],
-  subsets: ['latin'],
-});
 
 const useStyles = createStyles((theme) => ({
   dialog: {
@@ -66,38 +58,14 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const audio =
-  'https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/330/guide-you-home-1676595644-ChvWHWcgo4.mp3';
-
-export const Settings = () => {
-  useAudioService();
-
-  const audioRef = useRef<HTMLAudioElement>(null);
+export const Settings = ({ children }: PropsWithChildren) => {
   const { classes } = useStyles();
-  const [audioSrc, setAudioSrc] = useState('/test.mp3');
+  const setAudioSrc = useSettingsStore(({ setAudioSource }) => setAudioSource);
   const onAzimuthChange = useSettingsStore(({ setAzimuth }) => setAzimuth);
   const onElevationChange = useSettingsStore(
     ({ setElevation }) => setElevation
   );
   const onGainChange = useSettingsStore(({ setGain }) => setGain);
-
-  const isAudioServiceInitialized = AudioService.checkIsInitialized();
-
-  useLayoutEffect(() => {
-    if (audioRef.current && AudioService.checkIsInitialized()) {
-      const audioService = AudioService.getInstance();
-
-      if (audioService?.isAudioElementLinked()) {
-        return;
-      }
-
-      audioService?.linkAudioElement(audioRef.current);
-    }
-  }, []);
-
-  if (!isAudioServiceInitialized) {
-    return null;
-  }
 
   return (
     <div className={classes.dialog}>
@@ -113,7 +81,7 @@ export const Settings = () => {
             <Button onClick={() => setAudioSrc('/guitar.mp3')}>Guitar</Button>
             <Button onClick={() => setAudioSrc('/test.mp3')}>Song</Button>
           </div>
-          <audio controls src={audioSrc} ref={audioRef} />
+          {children}
           <Slider
             min={MIN_ELEVATION}
             max={MAX_ELEVATION}

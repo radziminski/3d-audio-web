@@ -1,11 +1,11 @@
-import { SpatialDirection } from './types';
-import { DEFAULT_ELEVATION, DEFAULT_AZIMUTH } from './constants';
-import { round } from './helpers';
+import { SpatialDirection } from '../types';
+import { DEFAULT_ELEVATION, DEFAULT_AZIMUTH } from '../constants';
 import { SpatialPoint } from '~/helpers/3D/types';
-import { getUniSphereCoordinates } from '../../helpers/3D/getUnitSphereCoordinates';
+import { getUniSphereCoordinates } from '../../../helpers/3D/getUnitSphereCoordinates';
+import { getRandomAzimuthElevation } from '~/helpers/3D/getRadomAzimuthElevation';
 
-export class AudioService {
-  private static instance: AudioService;
+export class WebAudioApiService {
+  private static instance: WebAudioApiService;
   private static isInitialized = false;
   private audioContext: AudioContext;
   private pannerNode: PannerNode;
@@ -35,20 +35,20 @@ export class AudioService {
     this.pannerNode.connect(this.gainNode);
     this.gainNode.connect(this.audioContext.destination);
 
-    AudioService.isInitialized = true;
+    WebAudioApiService.isInitialized = true;
   }
 
   public static getInstance(
     shouldInitialize = false
-  ): AudioService | undefined {
-    if (!AudioService.instance) {
+  ): WebAudioApiService | undefined {
+    if (!WebAudioApiService.instance) {
       if (!shouldInitialize) {
         return undefined;
       }
 
-      AudioService.instance = new AudioService();
+      WebAudioApiService.instance = new WebAudioApiService();
     }
-    return AudioService.instance;
+    return WebAudioApiService.instance;
   }
 
   public init(): void {
@@ -93,12 +93,10 @@ export class AudioService {
   }
 
   public randomizeSourcePosition() {
-    const azimuth = Math.random() * 360;
-    const elevation = Math.random() * 180 - 90;
-    this.setDirection({ azimuth, elevation });
+    this.setDirection(getRandomAzimuthElevation());
   }
 
   public static checkIsInitialized() {
-    return AudioService.isInitialized;
+    return WebAudioApiService.isInitialized;
   }
 }
