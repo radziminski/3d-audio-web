@@ -10,33 +10,49 @@ export const useResonanceAudioService = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (!ResonanceAudioService.checkIsInitialized()) {
-      router.push('/');
-    }
+    import('~/services/audio/resonance-audio').then(
+      ({ ResonanceAudioService }) => {
+        if (!ResonanceAudioService.checkIsInitialized()) {
+          router.push('/');
+        }
+      }
+    );
   }, [router]);
 
   useLayoutEffect(() => {
-    if (audioRef.current && ResonanceAudioService.checkIsInitialized()) {
-      const audioService = ResonanceAudioService.getInstance();
+    import('~/services/audio/resonance-audio').then(
+      ({ ResonanceAudioService }) => {
+        if (audioRef.current && ResonanceAudioService.checkIsInitialized()) {
+          const audioService = ResonanceAudioService.getInstance();
 
-      if (audioService?.isAudioElementLinked()) {
-        return;
+          if (audioService?.isAudioElementLinked()) {
+            return;
+          }
+
+          audioService?.linkAudioElement(audioRef.current);
+        }
       }
-
-      audioService?.linkAudioElement(audioRef.current);
-    }
+    );
   }, []);
 
   useEffect(() => {
-    const audioService = ResonanceAudioService.getInstance();
+    import('~/services/audio/resonance-audio').then(
+      ({ ResonanceAudioService }) => {
+        const audioService = ResonanceAudioService.getInstance();
 
-    audioService?.setSourcePosition(sourcePosition);
+        audioService?.setSourcePosition(sourcePosition);
+      }
+    );
   }, [sourcePosition]);
 
   useEffect(() => {
-    const audioService = ResonanceAudioService.getInstance();
+    import('~/services/audio/resonance-audio').then(
+      ({ ResonanceAudioService }) => {
+        const audioService = ResonanceAudioService.getInstance();
 
-    audioService?.setOutputGain(gain / 100);
+        audioService?.setOutputGain(gain / 100);
+      }
+    );
   }, [gain]);
 
   return { audioRef };

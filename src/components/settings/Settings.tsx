@@ -130,6 +130,12 @@ export const Settings = ({ children, isInsideView = false }: SettingsProps) => {
 
   const [opened, { open, close }] = useDisclosure(false);
 
+  const windowAzimuth =
+    typeof window !== 'undefined' ? (window as any)?.azimuth ?? 0 : 0;
+
+  const windowElevation =
+    typeof window !== 'undefined' ? (window as any)?.elevation ?? 0 : 0;
+
   return (
     <>
       <div className={isInsideView ? classes.dialogNarrow : classes.dialog}>
@@ -189,14 +195,11 @@ export const Settings = ({ children, isInsideView = false }: SettingsProps) => {
         True elevation: {roundToDecimal(elevation)}
         <br />
         <br />
-        Your azimuth guess: {roundToDecimal((window as any).azimuth)} (you were
-        off by {roundToDecimal(Math.abs(azimuth - (window as any).azimuth))}{' '}
-        degrees)
+        Your azimuth guess: {roundToDecimal(windowAzimuth)} (you were off by{' '}
+        {roundToDecimal(Math.abs(azimuth - windowAzimuth))} degrees)
         <br />
-        Your elevation guess: {roundToDecimal((window as any).elevation)} (you
-        were off by{' '}
-        {roundToDecimal(Math.abs(elevation - (window as any).elevation))}{' '}
-        degrees)
+        Your elevation guess: {roundToDecimal(windowElevation)} (you were off by{' '}
+        {roundToDecimal(Math.abs(elevation - windowElevation))} degrees)
         <br />
       </Modal>
     </>
