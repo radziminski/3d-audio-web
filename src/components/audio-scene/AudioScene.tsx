@@ -5,6 +5,7 @@ import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { Providers } from '../providers/Providers';
 import { Scene } from '../three/scene/Scene';
 import { Settings } from '../settings/Settings';
+import { SceneInside } from '../three/scene-inside/SceneInside';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '800'],
@@ -37,6 +38,7 @@ type Props = {
 
 export const AudioScene = ({ audioRef, title }: Props) => {
   const audioSource = useSettingsStore((state) => state.audioSource);
+  const sceneType = useSettingsStore((state) => state.sceneType);
   const { classes } = useStyles();
 
   return (
@@ -44,9 +46,10 @@ export const AudioScene = ({ audioRef, title }: Props) => {
       <main className={poppins.className}>
         <div className={classes.title}>{title}</div>
         <Center className={classes.wrapper}>
-          <Scene />
+          {sceneType === 'outside' && <Scene />}
+          {sceneType === 'inside' && <SceneInside />}
         </Center>
-        <Settings>
+        <Settings isInsideView={sceneType === 'inside'}>
           <audio controls src={audioSource} ref={audioRef} />
         </Settings>
       </main>

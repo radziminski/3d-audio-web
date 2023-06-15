@@ -42,6 +42,7 @@ export default function Home() {
   const router = useRouter();
   const [isResonance, setIsResonance] = useState(false);
   const [isWebAudio, setIsWebAudio] = useState(false);
+  const [isOmnitone, setIsOmnitone] = useState(false);
 
   useEffect(() => {
     if (!isResonance) {
@@ -65,12 +66,28 @@ export default function Home() {
     });
   }, [isWebAudio, router]);
 
+  useEffect(() => {
+    if (!isOmnitone) {
+      return;
+    }
+    import('~/services/audio/resonance-audio').then(
+      ({ ResonanceAudioService }) => {
+        (window as any).as = ResonanceAudioService.getInstance(true);
+        router.push('./omnitone-audio');
+      }
+    );
+  }, [isOmnitone, router]);
+
   const handleStartWebAudio = useCallback(() => {
     setIsWebAudio(true);
   }, []);
 
   const handleStartResonance = useCallback(() => {
     setIsResonance(true);
+  }, []);
+
+  const handleStartOmnitone = useCallback(() => {
+    setIsOmnitone(true);
   }, []);
 
   return (
@@ -86,6 +103,7 @@ export default function Home() {
           <Center className={classes.wrapper}>
             <Button onClick={handleStartWebAudio}>Web Audio Api</Button>
             <Button onClick={handleStartResonance}>Resonance audio</Button>
+            <Button onClick={handleStartOmnitone}>Omnitone</Button>
           </Center>
         </main>
       </Providers>
