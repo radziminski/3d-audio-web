@@ -83,7 +83,6 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     gap: '16px',
     marginBottom: '16px',
-    justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
   sceneType: {
@@ -154,13 +153,22 @@ export const Settings = ({ children, isInsideView = false }: SettingsProps) => {
             }
           >
             <div className={classes.buttons}>
-              <Button onClick={() => setAudioSrc('/sine.ogg')}>Sine</Button>
-              <Button onClick={() => setAudioSrc('/guitar.mp3')}>Guitar</Button>
-              <Button onClick={() => setAudioSrc('/test.mp3')}>Song</Button>
-              <Button onClick={() => setAudioSrc('/female-voice.mp3')}>
+              <Button onClick={() => setAudioSrc('/sine.ogg')} size='xs'>
+                Sine
+              </Button>
+              <Button onClick={() => setAudioSrc('/guitar.mp3')} size='xs'>
+                Guitar
+              </Button>
+              <Button
+                onClick={() => setAudioSrc('/female-voice.mp3')}
+                size='xs'
+              >
                 Female speech
               </Button>
-              <Button onClick={() => setAudioSrc('/male-voice.mp3')}>
+              <Button onClick={() => setAudioSrc('/test.mp3')} size='xs'>
+                Song
+              </Button>
+              <Button onClick={() => setAudioSrc('/male-voice.mp3')} size='xs'>
                 Male speech
               </Button>
             </div>
