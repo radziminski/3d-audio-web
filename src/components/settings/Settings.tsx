@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
       'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
     borderRadius: '12px',
     maxWidth: 650,
-    maxHeight: 310,
+    maxHeight: 340,
     width: '100%',
     height: '100%',
     padding: '64px 48px',
@@ -61,7 +61,7 @@ const useStyles = createStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     position: 'relative',
-    gap: '16px',
+    gap: '8px',
   },
   settingsColumnFull: {
     width: '100%',
@@ -84,6 +84,7 @@ const useStyles = createStyles((theme) => ({
     gap: '16px',
     marginBottom: '16px',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   sceneType: {
     background:
@@ -156,6 +157,12 @@ export const Settings = ({ children, isInsideView = false }: SettingsProps) => {
               <Button onClick={() => setAudioSrc('/sine.ogg')}>Sine</Button>
               <Button onClick={() => setAudioSrc('/guitar.mp3')}>Guitar</Button>
               <Button onClick={() => setAudioSrc('/test.mp3')}>Song</Button>
+              <Button onClick={() => setAudioSrc('/female-voice.mp3')}>
+                Female speech
+              </Button>
+              <Button onClick={() => setAudioSrc('/male-voice.mp3')}>
+                Male speech
+              </Button>
             </div>
             {children}
             {!isInsideView && (
