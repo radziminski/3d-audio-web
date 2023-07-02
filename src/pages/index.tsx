@@ -43,6 +43,7 @@ export default function Home() {
   const [isResonance, setIsResonance] = useState(false);
   const [isWebAudio, setIsWebAudio] = useState(false);
   const [isOmnitone, setIsOmnitone] = useState(false);
+  const [isJsAmbisonics, setIsJsAmbisonics] = useState(false);
 
   useEffect(() => {
     if (!isResonance) {
@@ -78,6 +79,18 @@ export default function Home() {
     );
   }, [isOmnitone, router]);
 
+  useEffect(() => {
+    if (!isJsAmbisonics) {
+      return;
+    }
+    import('~/services/audio/js-ambisonics').then(
+      ({ JsAmbisonicsAudioService }) => {
+        (window as any).as = JsAmbisonicsAudioService.getInstance(true);
+        router.push('./js-ambisonics-audio');
+      }
+    );
+  }, [isJsAmbisonics, router]);
+
   const handleStartWebAudio = useCallback(() => {
     setIsWebAudio(true);
   }, []);
@@ -88,6 +101,10 @@ export default function Home() {
 
   const handleStartOmnitone = useCallback(() => {
     setIsOmnitone(true);
+  }, []);
+
+  const handleStartJsAmbisonics = useCallback(() => {
+    setIsJsAmbisonics(true);
   }, []);
 
   return (
@@ -104,6 +121,7 @@ export default function Home() {
             <Button onClick={handleStartWebAudio}>Web Audio Api</Button>
             <Button onClick={handleStartResonance}>Resonance audio</Button>
             <Button onClick={handleStartOmnitone}>Omnitone</Button>
+            <Button onClick={handleStartJsAmbisonics}>Js Ambisonics</Button>
           </Center>
         </main>
       </Providers>

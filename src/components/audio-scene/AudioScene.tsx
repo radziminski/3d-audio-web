@@ -50,7 +50,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
           {sceneType === 'inside' && <SceneInside />}
         </Center>
         <Settings isInsideView={sceneType === 'inside'}>
-          <audio controls src={audioSource} ref={audioRef} />
+          <audio controls src={audioSource} ref={audioRef} loop />
         </Settings>
       </main>
     </Providers>

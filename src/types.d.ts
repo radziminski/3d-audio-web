@@ -274,3 +274,13 @@ declare module 'resonance-audio' {
     }
   }
 }
+
+declare module 'ambisonics' {
+  export class monoEncoder {
+    constructor(context: AudioContext, order: number);
+  }
+
+  export class binDecoder {
+    constructor(context: AudioContext, order: number);
+  }
+}
