@@ -5,5 +5,5 @@ import { useJsAmbisonicsAudioService } from '~/services/audio/hooks/use-js-ambis
 export const JsAmbisonicsAudioScene = () => {
   const { audioRef } = useJsAmbisonicsAudioService();
 
-  return <AudioScene audioRef={audioRef} />;
+  return <AudioScene audioRef={audioRef} title='JS ambisonics' />;
 };

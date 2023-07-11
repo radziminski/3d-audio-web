@@ -1,19 +1,11 @@
-import { SpatialDirection } from '../types';
-import { DEFAULT_ELEVATION, DEFAULT_AZIMUTH } from '../constants';
 import { SpatialPoint } from '~/helpers/3D/types';
-import { getUniSphereCoordinates } from '../../../helpers/3D/getUnitSphereCoordinates';
-import { getRandomAzimuthElevation } from '~/helpers/3D/getRadomAzimuthElevation';
+import { CommonAudioService } from '../common-audio-service';
 
-export class WebAudioApiService {
+export class WebAudioApiService extends CommonAudioService {
   private static instance: WebAudioApiService;
   private static isInitialized = false;
-  private audioContext: AudioContext;
-  private pannerNode: PannerNode;
-  private gainNode: GainNode;
-  private audioSource: MediaElementAudioSourceNode | null = null;
 
-  private elevation = DEFAULT_ELEVATION; // -90 - 90
-  private azimuth = DEFAULT_AZIMUTH; // 0 - 360
+  private pannerNode: PannerNode;
 
   private setPannerNodeDefaults() {
     this.pannerNode.panningModel = 'HRTF';
@@ -27,7 +19,8 @@ export class WebAudioApiService {
   }
 
   private constructor() {
-    this.audioContext = new AudioContext();
+    super();
+
     this.pannerNode = this.audioContext.createPanner();
     this.setPannerNodeDefaults();
     this.gainNode = this.audioContext.createGain();
@@ -48,55 +41,21 @@ export class WebAudioApiService {
 
       WebAudioApiService.instance = new WebAudioApiService();
     }
+
     return WebAudioApiService.instance;
   }
 
-  public init(): void {
-    // init logic
+  public static checkIsInitialized() {
+    return WebAudioApiService.isInitialized;
   }
 
-  public linkAudioElement(audioElement: HTMLAudioElement): void {
-    if (this.isAudioElementLinked()) {
-      throw new Error('Audio element already linked in AudioService');
-    }
-
-    this.audioSource = this.audioContext.createMediaElementSource(audioElement);
-    this.audioSource.connect(this.pannerNode);
-  }
-
-  public isAudioElementLinked() {
-    return Boolean(this.audioSource);
-  }
-
-  public setOutputGain(gain: number): void {
-    this.gainNode.gain.value = gain;
+  public connectAudioSource() {
+    this.audioSource?.connect(this.pannerNode);
   }
 
   public setSourcePosition({ x, y, z }: SpatialPoint) {
     this.pannerNode.positionX.value = x;
     this.pannerNode.positionY.value = y;
     this.pannerNode.positionZ.value = z;
-  }
-
-  public setDirection({ azimuth, elevation }: SpatialDirection): void {
-    if (azimuth) {
-      this.azimuth = azimuth;
-    }
-
-    if (elevation) {
-      this.elevation = elevation;
-    }
-
-    this.setSourcePosition(
-      getUniSphereCoordinates(this.azimuth, this.elevation)
-    );
-  }
-
-  public randomizeSourcePosition() {
-    this.setDirection(getRandomAzimuthElevation());
-  }
-
-  public static checkIsInitialized() {
-    return WebAudioApiService.isInitialized;
   }
 }

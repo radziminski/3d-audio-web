@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { ResonanceAudioScene } from '~/components/resonance-audio-scene/ResonanceAudioScene';
+import { OmnitoneAudioScene } from '~/components/omnitone-audio-scene/OmnitoneAudioScene';
 
 export default function OmnitoneAudioPage() {
   const [showAudioScene, setShowAudioScene] = useState(false);
@@ -16,7 +16,7 @@ export default function OmnitoneAudioPage() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      {showAudioScene && <ResonanceAudioScene title='Omnitone audio' />}
+      {showAudioScene && <OmnitoneAudioScene />}
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
-import { ResonanceAudioService } from '../../resonance-audio';
 
 export const useResonanceAudioService = () => {
   const { gain, sourcePosition } = useSettingsStore();

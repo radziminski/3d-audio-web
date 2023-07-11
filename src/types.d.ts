@@ -284,3 +284,5 @@ declare module 'ambisonics' {
     constructor(context: AudioContext, order: number);
   }
 }
+
+declare module 'omnitone/build/omnitone.min.esm' {}

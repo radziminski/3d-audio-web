@@ -71,12 +71,10 @@ export default function Home() {
     if (!isOmnitone) {
       return;
     }
-    import('~/services/audio/resonance-audio').then(
-      ({ ResonanceAudioService }) => {
-        (window as any).as = ResonanceAudioService.getInstance(true);
-        router.push('./omnitone-audio');
-      }
-    );
+    import('~/services/audio/omnitone').then(({ OmnitoneService }) => {
+      (window as any).as = OmnitoneService.getInstance(true);
+      router.push('./omnitone-audio');
+    });
   }, [isOmnitone, router]);
 
   useEffect(() => {

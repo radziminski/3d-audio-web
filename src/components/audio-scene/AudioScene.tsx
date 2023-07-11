@@ -26,8 +26,22 @@ const useStyles = createStyles((theme) => ({
     fontFamily: 'var(--font-poppins)',
     color: 'white',
     fontWeight: 600,
-    fontSize: 24,
+    fontSize: 28,
     letterSpacing: '-0.4px',
+    zIndex: 999,
+  },
+  link: {
+    fontFamily: 'var(--font-poppins)',
+    color: 'white',
+    fontWeight: 500,
+    fontSize: 16,
+    display: 'block',
+    textUnderlineOffset: '3px',
+    transition: 'opacity 150ms ease-in-out',
+    opacity: 0.7,
+    '&:hover': {
+      opacity: 1,
+    },
   },
 }));
 
@@ -44,7 +58,13 @@ export const AudioScene = ({ audioRef, title }: Props) => {
   return (
     <Providers>
       <main className={poppins.className}>
-        <div className={classes.title}>{title}</div>
+        <div className={classes.title}>
+          {title}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href='/' className={classes.link}>
+            &larr; Go back to libraries list
+          </a>
+        </div>
         <Center className={classes.wrapper}>
           {sceneType === 'outside' && <Scene />}
           {sceneType === 'inside' && <SceneInside />}
