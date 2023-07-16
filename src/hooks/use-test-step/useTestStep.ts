@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { setWindowDirections } from '~/store/audio/setWindowDirections';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
 export const useTestStep = () => {
@@ -13,7 +12,7 @@ export const useTestStep = () => {
   }, [setRandomAngles]);
 
   const handleFinishStep = useCallback(() => {
-    const {} = setWindowDirections;
+    const {} = {};
   }, []);
 
   return { handleStartStep, handleFinishStep };

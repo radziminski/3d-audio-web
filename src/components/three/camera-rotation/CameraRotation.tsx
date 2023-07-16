@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
 import { radToDeg } from 'three/src/math/MathUtils';
 import { roundToDecimal } from '~/helpers/3D/getUnitSphereCoordinates';
-import { setWindowDirections } from '~/store/audio/setWindowDirections';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
 

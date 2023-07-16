@@ -9,7 +9,6 @@ import {
   MIN_ELEVATION,
 } from '~/services/audio/constants';
 import { AudioSourceSelect } from '../audio-source-select/AudioSourceSelect';
-import { setWindowDirections } from '~/store/audio/setWindowDirections';
 import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles((theme) => ({
