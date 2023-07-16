@@ -1,7 +1,6 @@
 import { SpatialPoint } from '~/helpers/3D/types';
 import { CommonAudioService } from '../common-audio-service';
 import Omnitone from 'omnitone/build/omnitone.min.esm';
-import { SpatialDirection } from '../types';
 
 const OmnitoneLib = Omnitone as any;
 

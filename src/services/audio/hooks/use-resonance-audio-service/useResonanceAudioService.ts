@@ -12,7 +12,7 @@ export const useResonanceAudioService = () => {
     import('~/services/audio/resonance-audio').then(
       ({ ResonanceAudioService }) => {
         if (!ResonanceAudioService.checkIsInitialized()) {
-          router.push('/');
+          router.push('/library');
         }
       }
     );

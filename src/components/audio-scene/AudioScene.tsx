@@ -51,7 +51,6 @@ type Props = {
 };
 
 export const AudioScene = ({ audioRef, title }: Props) => {
-  const audioSource = useSettingsStore((state) => state.audioSource);
   const sceneType = useSettingsStore((state) => state.sceneType);
   const { classes } = useStyles();
 
@@ -61,7 +60,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
         <div className={classes.title}>
           {title}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href='/' className={classes.link}>
+          <a href='/library' className={classes.link}>
             &larr; Go back to libraries list
           </a>
         </div>
@@ -69,9 +68,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
           {sceneType === 'outside' && <Scene />}
           {sceneType === 'inside' && <SceneInside />}
         </Center>
-        <Settings isInsideView={sceneType === 'inside'}>
-          <audio controls src={audioSource} ref={audioRef} loop />
-        </Settings>
+        <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
       </main>
     </Providers>
   );

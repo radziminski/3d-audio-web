@@ -12,7 +12,7 @@ export const useJsAmbisonicsAudioService = () => {
     import('~/services/audio/js-ambisonics').then(
       ({ JsAmbisonicsAudioService }) => {
         if (!JsAmbisonicsAudioService.checkIsInitialized()) {
-          router.push('/');
+          router.push('/library');
         }
       }
     );

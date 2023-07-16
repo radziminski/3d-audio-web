@@ -11,7 +11,7 @@ export const useOmnitoneService = () => {
   useEffect(() => {
     import('~/services/audio/omnitone').then(({ OmnitoneService }) => {
       if (!OmnitoneService.checkIsInitialized()) {
-        router.push('/');
+        router.push('/library');
       }
     });
   }, [router]);
