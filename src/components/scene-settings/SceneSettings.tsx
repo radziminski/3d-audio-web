@@ -51,7 +51,7 @@ export const SceneSettings = ({ isInsideView = false }: SceneSettingsProps) => {
         {mode === 'guess' && (
           <div className={classes.sceneTypeButtons}>
             <Button onClick={() => setRandomAngles()}>Randomize</Button>
-            {<Button onClick={() => open()}>Make a guess</Button>}
+            <Button onClick={() => open()}>Make a guess</Button>
           </div>
         )}
       </div>

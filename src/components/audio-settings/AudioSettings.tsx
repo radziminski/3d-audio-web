@@ -10,6 +10,7 @@ import {
 } from '~/services/audio/constants';
 import { AudioSourceSelect } from '../audio-source-select/AudioSourceSelect';
 import { setWindowDirections } from '~/store/audio/setWindowDirections';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles((theme) => ({
   dialog: {
@@ -110,13 +111,10 @@ export const AudioSettings = ({
   );
   const onGainChange = useSettingsStore(({ setGain }) => setGain);
 
-  const onAzimuthGuessChange = useCallback((azimuth: number) => {
-    setWindowDirections({ azimuth });
-  }, []);
-
-  const onElevationGuessChange = useCallback((elevation: number) => {
-    setWindowDirections({ elevation });
-  }, []);
+  const setGuessedAzimuth = useTestStore((state) => state.setGuessedAzimuth);
+  const setGuessedElevation = useTestStore(
+    (state) => state.setGuessedElevation
+  );
 
   return (
     <div className={isInsideView ? classes.dialogNarrow : classes.dialog}>
@@ -127,7 +125,7 @@ export const AudioSettings = ({
               <CircularSlider
                 onChange={(value) =>
                   isGuessingMode
-                    ? onAzimuthGuessChange(value)
+                    ? setGuessedAzimuth(value)
                     : onAzimuthChange(value)
                 }
               />
@@ -149,7 +147,7 @@ export const AudioSettings = ({
               max={MAX_ELEVATION}
               defaultValue={DEFAULT_ELEVATION}
               onChange={
-                isGuessingMode ? onElevationGuessChange : onElevationChange
+                isGuessingMode ? setGuessedElevation : onElevationChange
               }
               label='Elevation'
             />

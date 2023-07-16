@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 export type SupportedLibrary =
   | 'resonance'
-  | 'web-audio'
+  | 'web-api'
   | 'omnitone'
   | 'js-ambisonics';
 
@@ -11,7 +11,7 @@ export const useRedirectToLibrary = () => {
   const router = useRouter();
   const [library, setLibrary] = useState<SupportedLibrary>();
 
-  const isWebAudio = library === 'web-audio';
+  const isWebAudio = library === 'web-api';
   const isResonance = library === 'resonance';
   const isOmnitone = library === 'omnitone';
   const isJsAmbisonics = library === 'js-ambisonics';
@@ -34,7 +34,7 @@ export const useRedirectToLibrary = () => {
     }
     import('~/services/audio/web-audio-api').then(({ WebAudioApiService }) => {
       (window as any).as = WebAudioApiService.getInstance(true);
-      router.push('./web-audio-api');
+      router.push('./web-api-audio');
     });
   }, [isWebAudio, router]);
 

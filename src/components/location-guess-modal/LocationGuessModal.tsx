@@ -1,6 +1,7 @@
 import { Modal } from '@mantine/core';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { roundToDecimal } from '~/helpers/3D/getUnitSphereCoordinates';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 type LocationGuessModalProps = {
   isOpened?: boolean;
@@ -16,11 +17,8 @@ export const LocationGuessModal = ({
     elevation,
   }));
 
-  const windowAzimuth =
-    typeof window !== 'undefined' ? (window as any)?.azimuth ?? 0 : 0;
-
-  const windowElevation =
-    typeof window !== 'undefined' ? (window as any)?.elevation ?? 0 : 0;
+  const azimuthGuess = useTestStore((state) => state.azimuthGuess);
+  const elevationGuess = useTestStore((state) => state.elevationGuess);
 
   return (
     <Modal opened={isOpened} onClose={onClose} title='Your Guess'>
@@ -29,11 +27,11 @@ export const LocationGuessModal = ({
       True elevation: {roundToDecimal(elevation)}
       <br />
       <br />
-      Your azimuth guess: {roundToDecimal(windowAzimuth)} (you were off by{' '}
-      {roundToDecimal(Math.abs(azimuth - windowAzimuth))} degrees)
+      Your azimuth guess: {roundToDecimal(azimuthGuess)} (you were off by{' '}
+      {roundToDecimal(Math.abs(azimuth - azimuthGuess))} degrees)
       <br />
-      Your elevation guess: {roundToDecimal(windowElevation)} (you were off by{' '}
-      {roundToDecimal(Math.abs(elevation - windowElevation))} degrees)
+      Your elevation guess: {roundToDecimal(elevationGuess)} (you were off by{' '}
+      {roundToDecimal(Math.abs(elevation - elevationGuess))} degrees)
       <br />
     </Modal>
   );

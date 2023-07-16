@@ -4,13 +4,31 @@ import { Box } from '../box/Box';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { Sphere } from '../sphere/Sphere';
 import { Plane } from '../plane/Plane';
+import { useTestStore } from '~/store/settings/useTestStore';
+import { getUniSphereCoordinates } from '~/helpers/3D/getUnitSphereCoordinates';
 
 export const Scene = () => {
+  const mode = useSettingsStore((state) => state.appMode);
+  const isPlaygroundMode = mode === 'playground';
+
   const {
     sourcePosition: { x, y, z },
   } = useSettingsStore();
 
-  const sourcePosition = [x * -1.1, y * 1.1, z * 1.1] as const;
+  const azimuthGuess = useTestStore((state) => state.azimuthGuess);
+  const elevationGuess = useTestStore((state) => state.elevationGuess);
+  const guessSourcePosition = getUniSphereCoordinates(
+    azimuthGuess,
+    elevationGuess
+  );
+
+  const sourcePosition = isPlaygroundMode
+    ? ([x * -1.1, y * 1.1, z * 1.1] as const)
+    : ([
+        guessSourcePosition.x,
+        guessSourcePosition.y,
+        guessSourcePosition.z,
+      ] as const);
 
   return (
     <Canvas>

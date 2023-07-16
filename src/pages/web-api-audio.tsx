@@ -3,7 +3,7 @@ import { useWebAudioApiService } from '~/services/audio/hooks/use-web-audio-api-
 import { AudioScene } from '~/components/audio-scene/AudioScene';
 import { Providers } from '~/components/providers/Providers';
 
-export default function WebAudioApiPage() {
+export default function WebApiAudio() {
   const { audioRef } = useWebAudioApiService();
 
   return (

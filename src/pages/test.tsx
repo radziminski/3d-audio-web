@@ -5,6 +5,7 @@ import { Providers } from '~/components/providers/Providers';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useRedirectToLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -52,38 +53,28 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const SUPPORTED_LIBRARIES = [
-  {
-    label: 'Web Audio Api',
-    library: 'web-api',
-  },
-  {
-    label: 'Resonance Audio',
-    library: 'resonance',
-  },
-  {
-    label: 'Omnitone',
-    library: 'omnitone',
-  },
-  {
-    label: 'JS Ambisonics',
-    library: 'js-ambisonics',
-  },
-] as const;
-
 export default function LibraryPage() {
   const { classes } = useStyles();
 
   const { redirectToLibrary } = useRedirectToLibrary();
 
+  const reset = useTestStore((state) => state.reset);
+  const libraryOrder = useTestStore((state) => state.libraryOrder);
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
   return (
     <Providers>
       <Center className={classes.wrapper}>
-        {SUPPORTED_LIBRARIES.map(({ label, library }) => (
-          <Button key={library} onClick={() => redirectToLibrary(library)}>
-            {label}
-          </Button>
-        ))}
+        <Button
+          onClick={() => {
+            redirectToLibrary(libraryOrder[0]);
+          }}
+        >
+          Start test!
+        </Button>
       </Center>
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a className={classes.back} href='/'>

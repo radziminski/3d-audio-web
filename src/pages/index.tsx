@@ -61,8 +61,8 @@ export default function Home() {
 
   const onGoToTest = useCallback(() => {
     setMode('test');
-    onGoToLibraryChoice();
-  }, [setMode, onGoToLibraryChoice]);
+    router.push('/test');
+  }, [setMode, router]);
 
   return (
     <Providers>
