@@ -58,23 +58,9 @@ const useStyles = createStyles((theme) => ({
 export default function LibraryPage() {
   const { classes } = useStyles();
 
-  const { handleStartTest } = useTestMode();
-
-  const reset = useTestStore((state) => state.reset);
-
-  useEffect(() => {
-    reset();
-  }, [reset]);
-
   return (
     <Providers>
-      <Center className={classes.wrapper}>
-        <Button onClick={handleStartTest}>Start test!</Button>
-      </Center>
-      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-      <a className={classes.back} href='/'>
-        &larr; Go back to mode choice
-      </a>
+      <Center className={classes.wrapper}>TEST RESULT</Center>
     </Providers>
   );
 }

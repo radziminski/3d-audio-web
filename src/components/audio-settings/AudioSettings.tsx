@@ -99,11 +99,13 @@ export const AudioSettings = ({
   audioRef,
 }: AudioSettingsProps) => {
   const mode = useSettingsStore((state) => state.appMode);
-  const isGuessingMode = mode === 'guess';
+  const isGuessingMode = mode === 'guess' || mode === 'test';
 
   const { classes } = useStyles();
   const onAzimuthChange = useSettingsStore(({ setAzimuth }) => setAzimuth);
   const audioSource = useSettingsStore((state) => state.audioSource);
+  const elevation = useSettingsStore((state) => state.elevation);
+  const azimuth = useSettingsStore((state) => state.azimuth);
 
   const onElevationChange = useSettingsStore(
     ({ setElevation }) => setElevation
@@ -115,6 +117,9 @@ export const AudioSettings = ({
     (state) => state.setGuessedElevation
   );
 
+  const guessedAzimuth = useTestStore((state) => state.azimuthGuess);
+  const guessedElevation = useTestStore((state) => state.elevationGuess);
+
   return (
     <div className={isInsideView ? classes.dialogNarrow : classes.dialog}>
       <div className={classes.settings}>
@@ -122,11 +127,17 @@ export const AudioSettings = ({
           <div className={classes.settingsColumn}>
             <div>
               <CircularSlider
-                onChange={(value) =>
-                  isGuessingMode
-                    ? setGuessedAzimuth(value)
-                    : onAzimuthChange(value)
-                }
+                onChange={(value) => {
+                  const prevValue = isGuessingMode ? guessedAzimuth : azimuth;
+                  const newValue = value === 1 ? prevValue : value;
+
+                  if (isGuessingMode) {
+                    setGuessedAzimuth(newValue);
+                    return;
+                  }
+
+                  onAzimuthChange(newValue);
+                }}
               />
             </div>
           </div>
@@ -149,6 +160,7 @@ export const AudioSettings = ({
                 isGuessingMode ? setGuessedElevation : onElevationChange
               }
               label='Elevation'
+              value={isGuessingMode ? guessedElevation : elevation}
             />
           )}
           <Slider

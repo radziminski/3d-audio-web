@@ -11,7 +11,7 @@ export const useWebAudioApiService = () => {
 
   useEffect(() => {
     if (!WebAudioApiService.checkIsInitialized()) {
-      router.push('/library');
+      router.push('/library-redirect?library=web-api');
     }
   }, [router]);
 

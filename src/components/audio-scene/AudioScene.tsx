@@ -6,6 +6,7 @@ import { Providers } from '../providers/Providers';
 import { Scene } from '../three/scene/Scene';
 import { Settings } from '../settings/Settings';
 import { SceneInside } from '../three/scene-inside/SceneInside';
+import { TestModeInfo } from '../test-mode-info/TestModeInfo';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '800'],
@@ -54,21 +55,33 @@ export const AudioScene = ({ audioRef, title }: Props) => {
   const sceneType = useSettingsStore((state) => state.sceneType);
   const { classes } = useStyles();
 
+  const appMode = useSettingsStore((state) => state.appMode);
+
   return (
     <Providers>
       <main className={poppins.className}>
         <div className={classes.title}>
-          {title}
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href='/library' className={classes.link}>
-            &larr; Go back to libraries list
-          </a>
+          {appMode !== 'test' ? (
+            <>
+              {title}
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href='/library' className={classes.link}>
+                &larr; Go back to libraries list
+              </a>
+            </>
+          ) : (
+            // eslint-disable-next-line @next/next/no-html-link-for-pages
+            <a href='/' className={classes.link}>
+              &larr; Go back to mode list
+            </a>
+          )}
         </div>
         <Center className={classes.wrapper}>
           {sceneType === 'outside' && <Scene />}
           {sceneType === 'inside' && <SceneInside />}
         </Center>
         <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
+        {appMode === 'test' && <TestModeInfo />}
       </main>
     </Providers>
   );

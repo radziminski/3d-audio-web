@@ -2,10 +2,31 @@ import { useDebouncedState } from '@mantine/hooks';
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
-import { radToDeg } from 'three/src/math/MathUtils';
+import { degToRad, radToDeg } from 'three/src/math/MathUtils';
 import { roundToDecimal } from '~/helpers/3D/getUnitSphereCoordinates';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
+
+const setCameraAngle = ({
+  azimuth,
+  elevation,
+  camera,
+}: {
+  azimuth: number;
+  elevation: number;
+  camera: any;
+}) => {
+  const azimuthRad = degToRad(360 - azimuth);
+  const elevationRad = degToRad(elevation);
+
+  const x = Math.sin(elevationRad) * Math.sin(azimuthRad);
+  const y = Math.cos(elevationRad);
+  const z = Math.sin(elevationRad) * Math.cos(azimuthRad);
+
+  const target = new Vector3(x, y, z);
+  console.log(target);
+  camera.lookAt(target);
+};
 
 export const CameraRotation = () => {
   const isSettingRef = useRef(false);
@@ -24,6 +45,10 @@ export const CameraRotation = () => {
     200
   );
 
+  const azimuthGuess = useTestStore((state) => state.azimuthGuess);
+  const elevationGuess = useTestStore((state) => state.elevationGuess);
+  const isRotatedRef = useRef(false);
+
   useEffect(() => {
     isSettingRef.current = false;
 
@@ -37,6 +62,14 @@ export const CameraRotation = () => {
   }, [mode, setAzimuth, setElevation, setGuessedDirections, value]);
 
   useFrame(({ camera }) => {
+    if (!isRotatedRef.current) {
+      isRotatedRef.current = true;
+      setCameraAngle({
+        azimuth: azimuthGuess,
+        elevation: elevationGuess,
+        camera,
+      });
+    }
     const vector = new Vector3();
 
     const { x, y, z } = camera.getWorldDirection(vector);
