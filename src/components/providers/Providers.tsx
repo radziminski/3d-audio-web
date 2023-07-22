@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
 
@@ -14,6 +15,7 @@ type ProvidersProps = {
 export const Providers = ({ children }: ProvidersProps) => {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
+      <Notifications position='top-right' />
       <main className={poppins.className}>{children}</main>
     </MantineProvider>
   );

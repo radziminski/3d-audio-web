@@ -1,4 +1,6 @@
 import { Button, createStyles } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useCallback } from 'react';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
 import { useTestStore } from '~/store/settings/useTestStore';
 
@@ -68,6 +70,15 @@ export const TestModeInfo = () => {
 
   const { handleFinishStep } = useTestMode();
 
+  const onMakeGuess = useCallback(() => {
+    handleFinishStep();
+    notifications.show({
+      title: 'Guess saved!',
+      message: 'Sound direction was changed. ',
+      autoClose: 2000,
+    });
+  }, [handleFinishStep]);
+
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
   const elevationGuess = useTestStore((state) => state.elevationGuess);
   const stepsPerLibrary = useTestStore((state) => state.stepsPerLibrary);
@@ -121,7 +132,7 @@ export const TestModeInfo = () => {
         </div>
       </div>
       <div className={classes.button}>
-        <Button onClick={handleFinishStep} size='lg'>
+        <Button onClick={onMakeGuess} size='lg'>
           Make a guess!
         </Button>
       </div>
