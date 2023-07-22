@@ -34,21 +34,29 @@ export const useTestMode = () => {
   const setLibraryOrder = useTestStore((state) => state.setLibraryOrder);
   const clearGuesses = useTestStore((state) => state.clearGuesses);
   const clearCurrentGuess = useTestStore((state) => state.clearCurrentGuess);
+  const setTestStart = useTestStore((state) => state.setTestStart);
+  const setTestEnd = useTestStore((state) => state.setTestEnd);
+  const setGuessStart = useTestStore((state) => state.setCurrentGuessStart);
+  const currentGuessStart = useTestStore((state) => state.currentGuessStart);
   const currentLibrary = useTestStore((state) => state.currentLibrary);
   const currentStep = useTestStore((state) => state.currentStep);
   const stepsPerLibrary = useTestStore((state) => state.stepsPerLibrary);
   const libraryOrder = useTestStore((state) => state.libraryOrder);
+  const experimentLibraries = useTestStore(
+    (state) => state.experimentLibraries
+  );
 
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
   const handleStartTest = useCallback(() => {
     setIsTestFinished(false);
     setCurrentStep(0);
-    const randomLibraryOrder = shuffleArray(SUPPORTED_LIBRARIES);
+    const randomLibraryOrder = shuffleArray([...experimentLibraries]);
     setLibraryOrder(randomLibraryOrder);
     clearGuesses();
     setRandomAngles();
     clearCurrentGuess();
+    setTestStart(Date.now());
 
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
@@ -56,23 +64,29 @@ export const useTestMode = () => {
   }, [
     clearCurrentGuess,
     clearGuesses,
+    experimentLibraries,
     router,
     setCurrentLibrary,
     setCurrentStep,
     setIsTestFinished,
     setLibraryOrder,
     setRandomAngles,
+    setTestStart,
   ]);
 
   const handleFinishTest = useCallback(() => {
     setIsTestFinished(true);
+    setTestEnd(Date.now());
+
     router.push('/test-result');
-  }, [router, setIsTestFinished]);
+  }, [router, setIsTestFinished, setTestEnd]);
 
   const handleFinishStep = useCallback(() => {
-    if (currentStep >= libraryOrder.length * stepsPerLibrary - 1) {
+    if (currentStep >= libraryOrder.length * stepsPerLibrary) {
       return;
     }
+
+    const now = Date.now();
 
     addGuess({
       trueAzimuth,
@@ -80,7 +94,11 @@ export const useTestMode = () => {
       guessedAzimuth,
       guessedElevation,
       library: currentLibrary,
+      guessStart: currentGuessStart,
+      guessEnd: now,
     });
+
+    setGuessStart(now);
 
     incrementStep();
     setRandomAngles();
@@ -102,6 +120,7 @@ export const useTestMode = () => {
   }, [
     addGuess,
     clearCurrentGuess,
+    currentGuessStart,
     currentLibrary,
     currentLibraryIndex,
     currentStep,
@@ -112,6 +131,7 @@ export const useTestMode = () => {
     libraryOrder,
     router,
     setCurrentLibrary,
+    setGuessStart,
     setRandomAngles,
     stepsPerLibrary,
     trueAzimuth,

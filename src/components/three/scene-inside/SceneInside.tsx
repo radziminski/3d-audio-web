@@ -1,9 +1,7 @@
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Text } from '@react-three/drei';
-import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { Wall } from '../wall/Wall';
 import { Arrow } from '../arrow/Arrow';
-import { Euler } from 'three';
 import { CameraRotation } from '../camera-rotation/CameraRotation';
 
 export const SceneInside = () => {

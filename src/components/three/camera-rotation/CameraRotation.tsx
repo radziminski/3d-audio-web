@@ -1,5 +1,5 @@
 import { useDebouncedState } from '@mantine/hooks';
-import { useFrame } from '@react-three/fiber';
+import { Camera, useFrame } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
 import { degToRad, radToDeg } from 'three/src/math/MathUtils';
@@ -14,7 +14,7 @@ const setCameraAngle = ({
 }: {
   azimuth: number;
   elevation: number;
-  camera: any;
+  camera: Camera;
 }) => {
   const azimuthRad = degToRad(360 - azimuth);
   const elevationRad = degToRad(elevation);
@@ -23,8 +23,10 @@ const setCameraAngle = ({
   const y = Math.cos(elevationRad);
   const z = Math.sin(elevationRad) * Math.cos(azimuthRad);
 
-  const target = new Vector3(x, y, z);
-  console.log(target);
+  // const target = new Vector3(x, y, z);
+  const target = new Vector3(-1, 1, 0);
+
+  console.log('rotate');
   camera.lookAt(target);
 };
 
@@ -63,12 +65,9 @@ export const CameraRotation = () => {
 
   useFrame(({ camera }) => {
     if (!isRotatedRef.current) {
+      camera.setRotationFromAxisAngle(new Vector3(0, 1, 0), 0.5);
+      camera.updateProjectionMatrix();
       isRotatedRef.current = true;
-      setCameraAngle({
-        azimuth: azimuthGuess,
-        elevation: elevationGuess,
-        camera,
-      });
     }
     const vector = new Vector3();
 

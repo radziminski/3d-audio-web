@@ -2,28 +2,38 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 
-type Guess = {
+export type Guess = {
   trueAzimuth: number;
   trueElevation: number;
   guessedAzimuth: number;
   guessedElevation: number;
   library: SupportedLibrary;
+  guessStart: number;
+  guessEnd: number;
 };
 
 interface TestStore {
-  guesses: Guess[];
+  guesses: readonly Guess[];
   stepsPerLibrary: number;
+  experimentLibraries: readonly SupportedLibrary[];
   libraryOrder: readonly SupportedLibrary[];
   azimuthGuess: number;
   elevationGuess: number;
   currentStep: number;
   currentLibrary: SupportedLibrary;
   isTestFinished: boolean;
+  testStart: number;
+  testEnd: number;
+  currentGuessStart: number;
   reset: () => void;
+  setTestStart: (number: number) => void;
+  setTestEnd: (number: number) => void;
+  setCurrentGuessStart: (number: number) => void;
   addGuess: (guess: Guess) => void;
   clearGuesses: () => void;
   setStepsPerLibrary: (steps: number) => void;
   setLibraryOrder: (order: readonly SupportedLibrary[]) => void;
+  setExperimentLibraries: (libraries: readonly SupportedLibrary[]) => void;
   setGuessedDirections: (azimuth: number, elevation: number) => void;
   setGuessedAzimuth: (azimuth: number) => void;
   setGuessedElevation: (elevation: number) => void;
@@ -37,12 +47,21 @@ interface TestStore {
 export const INITIAL_STORE = {
   guesses: [],
   stepsPerLibrary: 10,
+  experimentLibraries: [
+    'web-api',
+    'resonance',
+    'omnitone',
+    'js-ambisonics',
+  ] as const,
   libraryOrder: ['web-api', 'resonance', 'omnitone', 'js-ambisonics'] as const,
   azimuthGuess: 0,
   elevationGuess: 0,
   currentStep: 0,
   currentLibrary: 'web-api' as const,
   isTestFinished: false,
+  testStart: 0,
+  testEnd: 0,
+  currentGuessStart: 0,
 };
 
 export const useTestStore = create<TestStore>()(
@@ -55,11 +74,25 @@ export const useTestStore = create<TestStore>()(
       addGuess: (guess) => {
         set({ guesses: [...get().guesses, guess] });
       },
+      setTestStart: (testStart) => {
+        set({ testStart });
+      },
+      setTestEnd: (testEnd) => {
+        set({ testEnd });
+      },
+      setCurrentGuessStart: (currentGuessStart) => {
+        set({ currentGuessStart });
+      },
       clearGuesses: () => {
         set({ guesses: [] });
       },
-      setLibraryOrder: (steps) => {
-        set({ libraryOrder: steps });
+      setLibraryOrder: (order) => {
+        set({ libraryOrder: order });
+      },
+      setExperimentLibraries: (libraries) => {
+        if (libraries.length !== 0) {
+          set({ experimentLibraries: libraries });
+        }
       },
       setStepsPerLibrary: (stepsCount) => {
         set({ stepsPerLibrary: stepsCount });
