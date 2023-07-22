@@ -57,6 +57,7 @@ export const useTestMode = () => {
     setRandomAngles();
     clearCurrentGuess();
     setTestStart(Date.now());
+    setGuessStart(Date.now());
 
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
@@ -68,6 +69,7 @@ export const useTestMode = () => {
     router,
     setCurrentLibrary,
     setCurrentStep,
+    setGuessStart,
     setIsTestFinished,
     setLibraryOrder,
     setRandomAngles,

@@ -29,6 +29,7 @@ const useStyles = createStyles((theme) => ({
     maxWidth: 400,
     width: '100%',
     gap: '16px',
+    padding: '64px 32px',
   },
   input: {
     width: '100%',

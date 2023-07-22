@@ -29,6 +29,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
+    padding: '64px 32px',
   },
   content: {
     display: 'flex',
@@ -135,7 +136,7 @@ export default function TestResultPage() {
                     <div className={classes.cell}>{library ?? 'Total'}</div>
                     <div className={classes.cell}>{averageAzimuthError}</div>
                     <div className={classes.cell}>{averageElevationError}</div>
-                    <div className={classes.cell}>{averageStepTime}</div>
+                    <div className={classes.cell}>{averageStepTime} s</div>
                   </div>
                 );
               })}

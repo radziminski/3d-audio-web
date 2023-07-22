@@ -1,10 +1,14 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Text } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import { Wall } from '../wall/Wall';
 import { Arrow } from '../arrow/Arrow';
 import { CameraRotation } from '../camera-rotation/CameraRotation';
+import { useRef } from 'react';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export const SceneInside = () => {
+  const orbitControlsRef = useRef<typeof OrbitControls>(null);
+
   return (
     <Canvas>
       <ambientLight intensity={0.5} />
@@ -77,14 +81,15 @@ export const SceneInside = () => {
         Floor
       </Text>
 
-      <OrbitControls
+      {/* <OrbitControls
+        ref={orbitControlsRef}
         enableZoom={false}
         enablePan={false}
         enableRotate={true}
         position={[0, 0, 0]}
         minDistance={0.5}
         maxDistance={0.5}
-      />
+      /> */}
       <Arrow />
       <CameraRotation />
     </Canvas>

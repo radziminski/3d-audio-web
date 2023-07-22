@@ -6,6 +6,7 @@ import { degToRad, radToDeg } from 'three/src/math/MathUtils';
 import { roundToDecimal } from '~/helpers/3D/getUnitSphereCoordinates';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
+import { useCameraControl } from './use-camera-control';
 
 const setCameraAngle = ({
   azimuth,
@@ -23,17 +24,22 @@ const setCameraAngle = ({
   const y = Math.cos(elevationRad);
   const z = Math.sin(elevationRad) * Math.cos(azimuthRad);
 
-  // const target = new Vector3(x, y, z);
-  const target = new Vector3(-1, 1, 0);
+  const target = new Vector3(x, y, z);
+  // const target = new Vector3(-1, 1, 0);
 
   console.log('rotate');
   camera.lookAt(target);
 };
 
 export const CameraRotation = () => {
+  const { orbitControlsRef } = useCameraControl();
+
   const isSettingRef = useRef(false);
 
   const mode = useSettingsStore((state) => state.appMode);
+
+  const trueAzimuth = useSettingsStore((state) => state.azimuth);
+  const trueElevation = useSettingsStore((state) => state.elevation);
 
   const setAzimuth = useSettingsStore((state) => state.setAzimuth);
   const setElevation = useSettingsStore((state) => state.setElevation);
@@ -52,6 +58,12 @@ export const CameraRotation = () => {
   const isRotatedRef = useRef(false);
 
   useEffect(() => {
+    if (mode !== 'playground') {
+      orbitControlsRef.current?.reset();
+    }
+  }, [trueAzimuth, trueElevation, mode, orbitControlsRef]);
+
+  useEffect(() => {
     isSettingRef.current = false;
 
     if (mode === 'playground') {
@@ -64,11 +76,18 @@ export const CameraRotation = () => {
   }, [mode, setAzimuth, setElevation, setGuessedDirections, value]);
 
   useFrame(({ camera }) => {
-    if (!isRotatedRef.current) {
-      camera.setRotationFromAxisAngle(new Vector3(0, 1, 0), 0.5);
-      camera.updateProjectionMatrix();
-      isRotatedRef.current = true;
-    }
+    // if (!isRotatedRef.current && camera) {
+    //   setTimeout(() => {
+    //     setCameraAngle({
+    //       azimuth: azimuthGuess,
+    //       elevation: elevationGuess,
+    //       camera,
+    //     });
+    //   }, 100);
+
+    //   isRotatedRef.current = true;
+    // }
+
     const vector = new Vector3();
 
     const { x, y, z } = camera.getWorldDirection(vector);
