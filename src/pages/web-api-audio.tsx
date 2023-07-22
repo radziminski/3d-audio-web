@@ -5,9 +5,8 @@ import { Providers } from '~/components/providers/Providers';
 import { useEffect, useState } from 'react';
 
 export default function WebApiAudio() {
-  const { audioRef } = useWebAudioApiService();
-
   const [showAudioScene, setShowAudioScene] = useState(false);
+  const { audioRef } = useWebAudioApiService(showAudioScene);
 
   useEffect(() => {
     setShowAudioScene(true);

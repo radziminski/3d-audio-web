@@ -27,7 +27,6 @@ const setCameraAngle = ({
   const target = new Vector3(x, y, z);
   // const target = new Vector3(-1, 1, 0);
 
-  console.log('rotate');
   camera.lookAt(target);
 };
 

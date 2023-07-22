@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import { WebAudioApiService } from '~/services/audio/web-audio-api';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
-export const useWebAudioApiService = () => {
+export const useWebAudioApiService = (enable?: boolean) => {
   const { gain, sourcePosition } = useSettingsStore();
   const router = useRouter();
 
@@ -16,7 +16,7 @@ export const useWebAudioApiService = () => {
   }, [router]);
 
   useLayoutEffect(() => {
-    if (audioRef.current && WebAudioApiService.checkIsInitialized()) {
+    if (enable && audioRef.current && WebAudioApiService.checkIsInitialized()) {
       const audioService = WebAudioApiService.getInstance();
 
       if (audioService?.isAudioElementLinked()) {
@@ -25,7 +25,7 @@ export const useWebAudioApiService = () => {
 
       audioService?.linkAudioElement(audioRef.current);
     }
-  }, []);
+  }, [enable]);
 
   useEffect(() => {
     const audioService = WebAudioApiService.getInstance();

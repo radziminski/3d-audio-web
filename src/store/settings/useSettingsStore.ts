@@ -67,7 +67,25 @@ export const useSettingsStore = create<SettingsState>()(
         set({ elevation: newElevation, sourcePosition });
       },
       setRandomAngles: () => {
-        const { azimuth, elevation } = getRandomAzimuthElevation();
+        let azimuth = 0;
+        let elevation = 0;
+
+        for (let i = 0; i < 1000; i++) {
+          const { azimuth: randomAzimuth, elevation: randomElevation } =
+            getRandomAzimuthElevation();
+
+          const diff = Math.abs(randomAzimuth - get().azimuth);
+
+          if (Math.min(diff, 360 - diff) <= 45) {
+            continue;
+          }
+
+          azimuth = randomAzimuth;
+          elevation = randomElevation;
+
+          break;
+        }
+
         const sourcePosition = getUniSphereCoordinates(azimuth, elevation);
 
         set({ azimuth, elevation, sourcePosition });
