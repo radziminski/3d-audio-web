@@ -18,7 +18,7 @@ export const Scene = () => {
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
   const elevationGuess = useTestStore((state) => state.elevationGuess);
   const guessSourcePosition = getUniSphereCoordinates(
-    azimuthGuess,
+    360 - azimuthGuess,
     elevationGuess
   );
 

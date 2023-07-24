@@ -21,7 +21,7 @@ export const CircularSlider = ({ onChange }: Props) => {
         dataIndex={1}
         min={0}
         max={360}
-        direction={-1}
+        direction={1}
         knobPosition='top'
         valueFontSize='4rem'
         trackColor='#eeeeee'

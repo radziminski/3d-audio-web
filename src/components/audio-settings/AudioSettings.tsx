@@ -136,7 +136,7 @@ export const AudioSettings = ({
                     return;
                   }
 
-                  onAzimuthChange(newValue);
+                  onAzimuthChange(360 - newValue);
                 }}
               />
             </div>

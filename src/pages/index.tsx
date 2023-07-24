@@ -42,7 +42,7 @@ export default function Home() {
   const resetStore = useSettingsStore((state) => state.reset);
 
   useEffect(() => {
-    resetStore;
+    resetStore();
   }, [resetStore]);
 
   const onGoToLibraryChoice = useCallback(() => {
