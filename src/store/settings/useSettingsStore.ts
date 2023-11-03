@@ -26,6 +26,7 @@ interface SettingsState {
   setAzimuth: (newAzimuth: number) => void;
   setElevation: (newElevation: number) => void;
   setRandomAngles: () => void;
+  setAngles: (azimuth: number, elevation: number) => void;
   setGain: (newGain: number) => void;
   setPanning: (newPanning: number) => void;
   setAudioSource: (newSource: string) => void;
@@ -86,6 +87,11 @@ export const useSettingsStore = create<SettingsState>()(
           break;
         }
 
+        const sourcePosition = getUniSphereCoordinates(azimuth, elevation);
+
+        set({ azimuth, elevation, sourcePosition });
+      },
+      setAngles: (azimuth: number, elevation: number) => {
         const sourcePosition = getUniSphereCoordinates(azimuth, elevation);
 
         set({ azimuth, elevation, sourcePosition });

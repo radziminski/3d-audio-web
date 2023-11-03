@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
+import { TEST_ANGLES } from '~/hooks/use-test-mode/constants';
+import { shuffleArray } from '~/hooks/use-test-mode/useTestMode';
 
 export type Guess = {
   trueAzimuth: number;
@@ -11,6 +13,8 @@ export type Guess = {
   guessStart: number;
   guessEnd: number;
 };
+
+type Angles = { azimuth: number; elevation: number };
 
 interface TestStore {
   guesses: readonly Guess[];
@@ -26,6 +30,7 @@ interface TestStore {
   testEnd: number;
   currentGuessStart: number;
   testId: string | undefined;
+  testAngles: Angles[];
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -44,10 +49,11 @@ interface TestStore {
   setIsTestFinished: (isTestFinished: boolean) => void;
   clearCurrentGuess: () => void;
   setTestId: (testId: string) => void;
+  resetTestAngles: () => Angles[];
 }
 
 export const INITIAL_STORE = {
-  guesses: [],
+  guesses: [] as readonly Guess[],
   stepsPerLibrary: 10,
   experimentLibraries: [
     'web-api',
@@ -65,6 +71,7 @@ export const INITIAL_STORE = {
   testEnd: 0,
   currentGuessStart: 0,
   testId: undefined,
+  testAngles: TEST_ANGLES as Angles[],
 };
 
 export const useTestStore = create<TestStore>()(
@@ -126,6 +133,44 @@ export const useTestStore = create<TestStore>()(
       },
       setTestId: (testId) => {
         set({ testId });
+      },
+      resetTestAngles: () => {
+        const { stepsPerLibrary } = get();
+
+        const angles: Angles[] = [];
+
+        const firstSet = shuffleArray(TEST_ANGLES);
+        const secondSet = shuffleArray(TEST_ANGLES);
+        const thirdSet = shuffleArray(TEST_ANGLES);
+        const fourthSet = shuffleArray(TEST_ANGLES);
+
+        for (let i = 0; i < stepsPerLibrary; i++) {
+          if (firstSet.length > 0) {
+            angles.push(firstSet.pop()!);
+
+            continue;
+          }
+
+          if (secondSet.length > 0) {
+            angles.push(secondSet.pop()!);
+
+            continue;
+          }
+
+          if (thirdSet.length > 0) {
+            angles.push(thirdSet.pop()!);
+
+            continue;
+          }
+
+          if (fourthSet.length > 0) {
+            angles.push(fourthSet.pop()!);
+          }
+        }
+
+        set({ testAngles: angles });
+
+        return angles;
       },
     }),
     {

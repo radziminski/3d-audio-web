@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
-import { useSettingsStore } from '~/store/settings/useSettingsStore';
-import { useTestStore } from '~/store/settings/useTestStore';
-import { SupportedLibrary } from '../use-redirect-to-library/useRedirectToLibrary';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
+import { useSettingsStore } from '~/store/settings/useSettingsStore'; // Assuming this is the correct import path
+import { useTestStore } from '~/store/settings/useTestStore';
 
-export const SUPPORTED_LIBRARIES: SupportedLibrary[] = [
+export const SUPPORTED_LIBRARIES = [
   'web-api',
   'js-ambisonics',
   'resonance',
   'omnitone',
 ];
 
-const shuffleArray = <T>(arr: T[]) =>
+export const shuffleArray = <T>(arr: T[]) =>
   arr
     .map((value) => [Math.random(), value] as const)
     .sort(([a], [b]) => a - b)
@@ -21,70 +20,80 @@ const shuffleArray = <T>(arr: T[]) =>
 export const useTestMode = () => {
   const router = useRouter();
 
-  const setRandomAngles = useSettingsStore((state) => state.setRandomAngles);
-  const trueAzimuth = useSettingsStore((state) => state.azimuth);
-  const trueElevation = useSettingsStore((state) => state.elevation);
-  const guessedAzimuth = useTestStore((state) => state.azimuthGuess);
-  const guessedElevation = useTestStore((state) => state.elevationGuess);
+  // Settings Store
+  const {
+    setRandomAngles,
+    setAngles,
+    azimuth: trueAzimuth,
+    elevation: trueElevation,
+  } = useSettingsStore();
 
-  const addGuess = useTestStore((state) => state.addGuess);
-  const incrementStep = useTestStore((state) => state.incrementCurrentStep);
-  const setCurrentLibrary = useTestStore((state) => state.setCurrentLibrary);
-  const setIsTestFinished = useTestStore((state) => state.setIsTestFinished);
-  const setCurrentStep = useTestStore((state) => state.setCurrentStep);
-  const setLibraryOrder = useTestStore((state) => state.setLibraryOrder);
-  const clearGuesses = useTestStore((state) => state.clearGuesses);
-  const clearCurrentGuess = useTestStore((state) => state.clearCurrentGuess);
-  const setTestStart = useTestStore((state) => state.setTestStart);
-  const setTestEnd = useTestStore((state) => state.setTestEnd);
-  const setGuessStart = useTestStore((state) => state.setCurrentGuessStart);
-  const currentGuessStart = useTestStore((state) => state.currentGuessStart);
-  const currentLibrary = useTestStore((state) => state.currentLibrary);
-  const currentStep = useTestStore((state) => state.currentStep);
-  const stepsPerLibrary = useTestStore((state) => state.stepsPerLibrary);
-  const libraryOrder = useTestStore((state) => state.libraryOrder);
-  const experimentLibraries = useTestStore(
-    (state) => state.experimentLibraries
-  );
-  const setTestId = useTestStore((state) => state.setTestId);
+  // Test Store
+  const {
+    azimuthGuess: guessedAzimuth,
+    elevationGuess: guessedElevation,
+    addGuess,
+    incrementCurrentStep: incrementStep,
+    setCurrentLibrary,
+    setIsTestFinished,
+    setCurrentStep,
+    setLibraryOrder,
+    clearGuesses,
+    clearCurrentGuess,
+    setTestStart,
+    setTestEnd,
+    currentGuessStart,
+    currentLibrary,
+    currentStep,
+    stepsPerLibrary,
+    libraryOrder,
+    experimentLibraries,
+    setTestId,
+    setCurrentGuessStart: setGuessStart,
+    testAngles,
+    resetTestAngles,
+  } = useTestStore();
 
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
   const handleStartTest = useCallback(() => {
     setIsTestFinished(false);
     setCurrentStep(0);
+
     const randomLibraryOrder = shuffleArray([...experimentLibraries]);
     setLibraryOrder(randomLibraryOrder);
+
     clearGuesses();
-    setRandomAngles();
     clearCurrentGuess();
     setTestStart(Date.now());
     setGuessStart(Date.now());
-
     setTestId(nanoid());
+
+    const testa = resetTestAngles();
+    setAngles(testa[0].azimuth, testa[0].elevation);
 
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
     router.push(`/library-redirect?library=${newLibrary}`);
   }, [
-    clearCurrentGuess,
-    clearGuesses,
-    experimentLibraries,
-    router,
-    setCurrentLibrary,
-    setCurrentStep,
-    setGuessStart,
     setIsTestFinished,
+    setCurrentStep,
+    experimentLibraries,
     setLibraryOrder,
-    setRandomAngles,
+    clearGuesses,
+    clearCurrentGuess,
     setTestStart,
+    setGuessStart,
     setTestId,
+    resetTestAngles,
+    setAngles,
+    setCurrentLibrary,
+    router,
   ]);
 
   const handleFinishTest = useCallback(() => {
     setIsTestFinished(true);
     setTestEnd(Date.now());
-
     router.push('/test-result');
   }, [router, setIsTestFinished, setTestEnd]);
 
@@ -108,7 +117,20 @@ export const useTestMode = () => {
     setGuessStart(now);
 
     incrementStep();
-    setRandomAngles();
+
+    // setRandomAngles();
+
+    let currentStepInLib = currentStep + 1;
+    while (currentStepInLib > stepsPerLibrary) {
+      currentStepInLib -= stepsPerLibrary;
+    }
+
+    const angles = testAngles[currentStepInLib];
+
+    if (angles) {
+      setAngles(angles.azimuth, angles.elevation);
+    }
+
     clearCurrentGuess();
 
     const currentStepInLibrary =
@@ -119,6 +141,10 @@ export const useTestMode = () => {
         handleFinishTest();
         return;
       }
+
+      const [newAngles] = resetTestAngles();
+
+      setAngles(newAngles.azimuth, newAngles.elevation);
 
       const newLibrary = libraryOrder[currentLibraryIndex + 1];
       setCurrentLibrary(newLibrary);
@@ -136,11 +162,13 @@ export const useTestMode = () => {
     handleFinishTest,
     incrementStep,
     libraryOrder,
+    resetTestAngles,
     router,
+    setAngles,
     setCurrentLibrary,
     setGuessStart,
-    setRandomAngles,
     stepsPerLibrary,
+    testAngles,
     trueAzimuth,
     trueElevation,
   ]);
