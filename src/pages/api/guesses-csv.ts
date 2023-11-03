@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Guess } from '../../../db/schema';
 import { retrieveGuesses } from './guesses';
 import fs from 'fs';
 import { createObjectCsvWriter } from 'csv-writer';
@@ -16,7 +15,7 @@ const submitGuessesHandler = async (
 
   const guesses = await retrieveGuesses(req);
 
-  const path = 'data.csv';
+  const path = '/tmp/data.csv';
 
   const csvWriter = createObjectCsvWriter({
     path: 'data.csv',
