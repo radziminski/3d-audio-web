@@ -1,8 +1,8 @@
 import { createStyles } from '@mantine/core';
 import { Slider } from '~/components/slider/Slider';
 import { CircularSlider } from '~/components/circular-slider/CircularSlider';
-import { RefObject, useCallback } from 'react';
-import { AppMode, useSettingsStore } from '~/store/settings/useSettingsStore';
+import { RefObject } from 'react';
+import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import {
   DEFAULT_ELEVATION,
   MAX_ELEVATION,

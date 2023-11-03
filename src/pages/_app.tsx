@@ -1,7 +1,10 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useUserId } from '~/hooks/use-user-id/useUserId';
 
 export default function App({ Component, pageProps }: AppProps) {
+  useUserId();
+
   return (
     <>
       <Head>

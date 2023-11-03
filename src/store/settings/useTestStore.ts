@@ -25,6 +25,7 @@ interface TestStore {
   testStart: number;
   testEnd: number;
   currentGuessStart: number;
+  testId: string | undefined;
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -42,6 +43,7 @@ interface TestStore {
   setCurrentLibrary: (library: SupportedLibrary) => void;
   setIsTestFinished: (isTestFinished: boolean) => void;
   clearCurrentGuess: () => void;
+  setTestId: (testId: string) => void;
 }
 
 export const INITIAL_STORE = {
@@ -62,6 +64,7 @@ export const INITIAL_STORE = {
   testStart: 0,
   testEnd: 0,
   currentGuessStart: 0,
+  testId: undefined,
 };
 
 export const useTestStore = create<TestStore>()(
@@ -120,6 +123,9 @@ export const useTestStore = create<TestStore>()(
       },
       clearCurrentGuess: () => {
         set({ azimuthGuess: 0, elevationGuess: 0 });
+      },
+      setTestId: (testId) => {
+        set({ testId });
       },
     }),
     {

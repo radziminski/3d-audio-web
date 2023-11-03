@@ -1,10 +1,11 @@
 import { Canvas } from '@react-three/fiber';
-import { Text } from '@react-three/drei';
+import { Box, Sphere, Text } from '@react-three/drei';
 import { Wall } from '../wall/Wall';
 import { Arrow } from '../arrow/Arrow';
 import { CameraRotation } from '../camera-rotation/CameraRotation';
 import { useRef } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { DoubleSide } from 'three';
 
 export const SceneInside = () => {
   const orbitControlsRef = useRef<typeof OrbitControls>(null);
@@ -60,7 +61,7 @@ export const SceneInside = () => {
       </Text>
 
       {/* Ceiling */}
-      <Wall position={[0, 5, 0]} scale={[10, 0.2, 10]} color='#999' />
+      {/* <Wall position={[0, 5, 0]} scale={[10, 0.2, 10]} color='#999' /> */}
       <Text
         position={[0, 4.8, 0]}
         color='blue'
@@ -80,6 +81,15 @@ export const SceneInside = () => {
       >
         Floor
       </Text>
+
+      <Box material-color='hotpink' />
+      <Sphere args={[5, 64, 64]}>
+        <meshStandardMaterial color='#777' side={DoubleSide} transparent />
+      </Sphere>
+
+      <Sphere args={[5, 64, 64]}>
+        <meshStandardMaterial color='red' wireframe />
+      </Sphere>
 
       {/* <OrbitControls
         ref={orbitControlsRef}

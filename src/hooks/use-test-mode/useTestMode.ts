@@ -3,6 +3,7 @@ import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
 import { SupportedLibrary } from '../use-redirect-to-library/useRedirectToLibrary';
 import { useRouter } from 'next/router';
+import { nanoid } from 'nanoid';
 
 export const SUPPORTED_LIBRARIES: SupportedLibrary[] = [
   'web-api',
@@ -45,6 +46,7 @@ export const useTestMode = () => {
   const experimentLibraries = useTestStore(
     (state) => state.experimentLibraries
   );
+  const setTestId = useTestStore((state) => state.setTestId);
 
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
@@ -58,6 +60,8 @@ export const useTestMode = () => {
     clearCurrentGuess();
     setTestStart(Date.now());
     setGuessStart(Date.now());
+
+    setTestId(nanoid());
 
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
@@ -74,6 +78,7 @@ export const useTestMode = () => {
     setLibraryOrder,
     setRandomAngles,
     setTestStart,
+    setTestId,
   ]);
 
   const handleFinishTest = useCallback(() => {

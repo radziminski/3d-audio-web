@@ -1,13 +1,17 @@
 import { Button, Center, createStyles } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Providers } from '~/components/providers/Providers';
-import { useTestStore } from '~/store/settings/useTestStore';
+import { Guess, useTestStore } from '~/store/settings/useTestStore';
 import { roundToDecimal } from '../helpers/math/roundToDecimal';
 import { getAzimuthError } from '~/helpers/evalutation/getAzimuthError';
 import { getElevationError } from '~/helpers/evalutation/getElevationError';
 import { useRouter } from 'next/router';
 import { getTimeDifference } from '~/helpers/evalutation/getTimeDifference';
 import { getTestAverages } from '~/helpers/evalutation/getTestAverages';
+import { useUserId } from '~/hooks/use-user-id/useUserId';
+import { NewGuess } from '../../db/schema';
+import { VERSION_SHA } from '~/constants';
+import { useOs } from '@mantine/hooks';
 
 const cell = {
   padding: '8px',
@@ -92,9 +96,53 @@ const FULL_RESULTS_COLUMN_LABELS = [
   'Step time',
 ];
 
+async function submitGuesses(
+  guesses: readonly Guess[],
+  userId: string,
+  testId: string,
+  os: string
+): Promise<void> {
+  const apiUrl = '/api/submit-guesses';
+
+  try {
+    const guessesDto: NewGuess[] = guesses.map(
+      ({ guessStart, guessEnd, ...guess }) => ({
+        ...guess,
+        trueAzimuth: Math.round(guess.trueAzimuth),
+        trueElevation: Math.round(guess.trueElevation),
+        guessedAzimuth: Math.round(guess.guessedAzimuth),
+        guessedElevation: Math.round(guess.guessedElevation),
+        userId,
+        testId,
+        versionSha: VERSION_SHA ?? 'unknown',
+        os,
+      })
+    );
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(guessesDto),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    console.log('Guesses submitted successfully!');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 export default function TestResultPage() {
+  const areGuessesSubmitted = useRef(false);
   const router = useRouter();
   const [render, setRender] = useState(false);
+
+  const os = useOs();
 
   useEffect(() => {
     setRender(true);
@@ -106,6 +154,16 @@ export default function TestResultPage() {
   const experimentLibraries = useTestStore(
     (state) => state.experimentLibraries
   );
+
+  const userId = useUserId();
+  const testId = useTestStore((state) => state.testId);
+
+  useEffect(() => {
+    if (userId && testId && !areGuessesSubmitted.current) {
+      submitGuesses(guesses, userId, testId, os);
+      areGuessesSubmitted.current = true;
+    }
+  }, [guesses, os, testId, userId]);
 
   return (
     <Providers>
