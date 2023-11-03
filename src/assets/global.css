@@ -1,0 +1,12 @@
+input[type='range'][orient='vertical'] {
+  appearance: slider-vertical;
+  -webkit-appearance: slider-vertical;
+  width: 8px;
+  height: 175px;
+  padding: 0 5px;
+}
+
+input[type='range'][orient='vertical']::-webkit-slider-thumb {
+  width: 18px;
+  height: 175px;
+}

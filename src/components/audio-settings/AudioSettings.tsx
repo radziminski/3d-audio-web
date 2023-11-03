@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
       'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
     borderRadius: '12px',
     maxWidth: 650,
-    maxHeight: 300,
+    maxHeight: 280,
     width: '100%',
     height: '100%',
     padding: '64px 48px',
@@ -53,15 +53,17 @@ const useStyles = createStyles((theme) => ({
   settings: {
     display: 'flex',
     width: '100%',
-    gap: '42px',
+    gap: '80px',
   },
   settingsColumn: {
-    width: '50%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     position: 'relative',
     gap: '8px',
+    ':last-child': {
+      paddingBottom: '32px',
+    },
   },
   settingsColumnFull: {
     width: '100%',
@@ -151,7 +153,7 @@ export const AudioSettings = ({
             <AudioSourceSelect />
           </div>
           <audio controls src={audioSource} ref={audioRef} loop />
-          {!isInsideView && (
+          {/* {!isInsideView && (
             <Slider
               min={MIN_ELEVATION}
               max={MAX_ELEVATION}
@@ -162,7 +164,7 @@ export const AudioSettings = ({
               label='Elevation'
               value={isGuessingMode ? guessedElevation : elevation}
             />
-          )}
+          )} */}
           <Slider
             onChange={onGainChange}
             label='Gain'
@@ -170,6 +172,46 @@ export const AudioSettings = ({
             max={100}
             defaultValue={100}
           />
+          {!isInsideView && (
+            <div
+              style={{
+                position: 'absolute',
+                left: '-50px',
+                top: '0px',
+              }}
+            >
+              <input
+                {...{ type: 'range', orient: 'vertical' }}
+                min={MIN_ELEVATION}
+                max={MAX_ELEVATION}
+                defaultValue={DEFAULT_ELEVATION}
+                onChange={(e) => {
+                  const fn = isGuessingMode
+                    ? setGuessedElevation
+                    : onElevationChange;
+
+                  fn(Number(e.target.value));
+                }}
+                value={isGuessingMode ? guessedElevation : elevation}
+                style={{
+                  height: '210px',
+                  cursor: 'pointer',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '-50px',
+                  bottom: '-30px',
+                  color: 'white',
+                  fontWeight: 600,
+                  width: '140px',
+                }}
+              >
+                Elevation: {isGuessingMode ? guessedElevation : elevation}&deg;
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
