@@ -5,16 +5,7 @@ import { and, eq } from 'drizzle-orm';
 
 type ResponseDto = Guess[];
 
-const submitGuessesHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseDto>
-) => {
-  if (req.method !== 'GET') {
-    res.status(405).json([]);
-
-    return;
-  }
-
+export const retrieveGuesses = async (req: NextApiRequest) => {
   const testId = req.query.testId as string;
   const userId = req.query.userId as string;
   const library = req.query.library as string;
@@ -36,6 +27,21 @@ const submitGuessesHandler = async (
   const guesses = await db.query.guessesTable.findMany({
     where: and(...conditions),
   });
+
+  return guesses;
+};
+
+const submitGuessesHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseDto>
+) => {
+  if (req.method !== 'GET') {
+    res.status(405).json([]);
+
+    return;
+  }
+
+  const guesses = await retrieveGuesses(req);
 
   res.status(200).json(guesses);
 };
