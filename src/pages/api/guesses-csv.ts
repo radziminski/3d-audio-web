@@ -18,7 +18,7 @@ const submitGuessesHandler = async (
   const path = '/tmp/data.csv';
 
   const csvWriter = createObjectCsvWriter({
-    path: 'data.csv',
+    path,
     header: [
       { id: 'id', title: 'id' },
       { id: 'userId', title: 'UserID' },
