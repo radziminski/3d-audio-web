@@ -6,8 +6,8 @@ import { Sphere } from '../sphere/Sphere';
 import { Plane } from '../plane/Plane';
 import { useTestStore } from '~/store/settings/useTestStore';
 import { getUniSphereCoordinates } from '~/helpers/3D/getUnitSphereCoordinates';
-import { Group, Vector3 } from 'three';
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Group, Mesh, Vector3 } from 'three';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 export const Scene = () => {
   const arrowRef = useRef<Group>(null);
@@ -15,6 +15,14 @@ export const Scene = () => {
 
   const { scene: arrow } = useGLTF('/arrow.glb');
   const { scene: man } = useGLTF('/man.glb');
+
+  useEffect(() => {
+    arrow.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.material.color.set('#e600ff');
+      }
+    });
+  }, [arrow]);
 
   const mode = useSettingsStore((state) => state.appMode);
   const isPlaygroundMode = mode === 'playground';

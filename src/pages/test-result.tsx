@@ -12,6 +12,7 @@ import { useUserId } from '~/hooks/use-user-id/useUserId';
 import { NewGuess } from '../../db/schema';
 import { VERSION_SHA } from '~/constants';
 import { useOs } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 
 const cell = {
   padding: '8px',
@@ -160,7 +161,19 @@ export default function TestResultPage() {
 
   useEffect(() => {
     if (userId && testId && !areGuessesSubmitted.current) {
-      submitGuesses(guesses, userId, testId, os);
+      notifications.show({
+        title: '🚨 Submitting test results... ',
+        message: 'Please do not leave the site before results are submitted',
+        autoClose: 3000,
+      });
+
+      submitGuesses(guesses, userId, testId, os).then(() => {
+        notifications.show({
+          title: 'Test submitted successfully 🎉',
+          message: 'You can now safely leave the site',
+          autoClose: 10000,
+        });
+      });
       areGuessesSubmitted.current = true;
     }
   }, [guesses, os, testId, userId]);
@@ -239,7 +252,9 @@ export default function TestResultPage() {
               ))}
             </div>
 
-            <Button onClick={() => router.push('/test')}>Start new test</Button>
+            <Button onClick={() => window.location.assign('/test')}>
+              Start new test
+            </Button>
           </div>
         </Center>
       )}
