@@ -1,12 +1,27 @@
 import { Center, createStyles } from '@mantine/core';
 import { Poppins } from 'next/font/google';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { Providers } from '../providers/Providers';
-import { Scene } from '../three/scene/Scene';
 import { Settings } from '../settings/Settings';
-import { SceneInside } from '../three/scene-inside/SceneInside';
 import { TestModeInfo } from '../test-mode-info/TestModeInfo';
+import dynamic from 'next/dynamic';
+
+const SceneInside = dynamic(
+  () =>
+    import('../three/scene-inside/SceneInside').then(
+      (module) => module.SceneInside
+    ),
+  {
+    ssr: false,
+  }
+);
+const Scene = dynamic(
+  () => import('../three/scene/Scene').then((module) => module.Scene),
+  {
+    ssr: false,
+  }
+);
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '800'],
@@ -76,10 +91,12 @@ export const AudioScene = ({ audioRef, title }: Props) => {
             </a>
           )}
         </div>
-        <Center className={classes.wrapper}>
-          {sceneType === 'outside' && <Scene />}
-          {sceneType === 'inside' && <SceneInside />}
-        </Center>
+        <Suspense fallback={<h2>Loading...</h2>}>
+          <Center className={classes.wrapper}>
+            {sceneType === 'outside' && <Scene />}
+            {sceneType === 'inside' && <SceneInside />}
+          </Center>
+        </Suspense>
         <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
         {appMode === 'test' && <TestModeInfo />}
       </main>
