@@ -32,7 +32,7 @@ export const Arrow: React.FC = () => {
     // />
     <mesh ref={boxRef}>
       <sphereGeometry args={[0.2, 16, 16]} />
-      <meshStandardMaterial color={'red'} />
+      <meshStandardMaterial color={'blue'} />
     </mesh>
   );
 };
