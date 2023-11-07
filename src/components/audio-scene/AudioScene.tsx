@@ -91,12 +91,12 @@ export const AudioScene = ({ audioRef, title }: Props) => {
             </a>
           )}
         </div>
-        <Suspense fallback={<h2>Loading...</h2>}>
-          <Center className={classes.wrapper}>
+        <Center className={classes.wrapper}>
+          <Suspense fallback={<h5>Loading...</h5>}>
             {sceneType === 'outside' && <Scene />}
             {sceneType === 'inside' && <SceneInside />}
-          </Center>
-        </Suspense>
+          </Suspense>
+        </Center>
         <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
         {appMode === 'test' && <TestModeInfo />}
       </main>
