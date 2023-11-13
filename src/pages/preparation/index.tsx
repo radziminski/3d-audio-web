@@ -1,10 +1,15 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 
-export const getStaticProps: GetStaticProps = async () =>
-  Promise.resolve({
-    redirect: { destination: '/preparation/stereo-check', permanent: false },
+export const getServerSideProps: GetServerSideProps = () => {
+  return Promise.resolve({
+    redirect: {
+      destination: '/preparation/stereo-check',
+      permanent: false,
+    },
+    props: {},
   });
+};
 
 export default function Preparation() {
-  return <>redirecting</>;
+  return <div>redirecting</div>;
 }
