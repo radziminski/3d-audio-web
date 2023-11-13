@@ -1,4 +1,5 @@
 import { Button, createStyles } from '@mantine/core';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Layout } from '~/components/layout/Layout';
 import { Providers } from '~/components/providers/Providers';
@@ -46,6 +47,8 @@ export default function StereoCheckPage() {
   const [isStarted, setIsStarted] = useState(false);
   const { classes } = useStyles();
 
+  const router = useRouter();
+
   if (isError) {
     return (
       <Providers>
@@ -85,7 +88,7 @@ export default function StereoCheckPage() {
             <div />
             <Button
               onClick={() => {
-                // todo
+                router.push('/test');
               }}
               size='lg'
             >
