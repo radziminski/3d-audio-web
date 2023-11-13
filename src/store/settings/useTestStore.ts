@@ -31,6 +31,7 @@ interface TestStore {
   currentGuessStart: number;
   testId: string | undefined;
   testAngles: Angles[];
+  isStereoCorrect: boolean;
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -49,6 +50,7 @@ interface TestStore {
   setIsTestFinished: (isTestFinished: boolean) => void;
   clearCurrentGuess: () => void;
   setTestId: (testId: string) => void;
+  setIsStereoCorrect: () => void;
   resetTestAngles: () => Angles[];
 }
 
@@ -72,6 +74,7 @@ export const INITIAL_STORE = {
   currentGuessStart: 0,
   testId: undefined,
   testAngles: TEST_ANGLES as Angles[],
+  isStereoCorrect: false,
 };
 
 export const useTestStore = create<TestStore>()(
@@ -134,6 +137,9 @@ export const useTestStore = create<TestStore>()(
       setTestId: (testId) => {
         set({ testId });
       },
+      setIsStereoCorrect: () => {
+        set({ isStereoCorrect: true });
+      },
       resetTestAngles: () => {
         const { stepsPerLibrary } = get();
 
@@ -167,7 +173,6 @@ export const useTestStore = create<TestStore>()(
             angles.push(fourthSet.pop()!);
           }
         }
-
         set({ testAngles: angles });
 
         return angles;

@@ -3,16 +3,14 @@ import { useWebAudioApiService } from '~/services/audio/hooks/use-web-audio-api-
 import { AudioScene } from '~/components/audio-scene/AudioScene';
 import { Providers } from '~/components/providers/Providers';
 import { useEffect, useState } from 'react';
+import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 
 export default function WebApiAudio() {
-  const [showAudioScene, setShowAudioScene] = useState(false);
-  const { audioRef } = useWebAudioApiService(showAudioScene);
+  const isClientRender = useClientRender();
 
-  useEffect(() => {
-    setShowAudioScene(true);
-  }, [setShowAudioScene]);
+  const { audioRef } = useWebAudioApiService(isClientRender);
 
-  if (!showAudioScene) return null;
+  if (!isClientRender) return null;
 
   return (
     <Providers>

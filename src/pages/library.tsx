@@ -1,21 +1,9 @@
-import Head from 'next/head';
-import { Poppins } from 'next/font/google';
-import { Button, Center, createStyles } from '@mantine/core';
+import { Button, createStyles } from '@mantine/core';
 import { Providers } from '~/components/providers/Providers';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
 import { useRedirectToLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
+import { Layout } from '~/components/layout/Layout';
 
 const useStyles = createStyles((theme) => ({
-  wrapper: {
-    background: 'linear-gradient(to bottom right, #49BCF6 , #49DEB2)',
-    width: '100%',
-    height: '100vh',
-    fontFamily: 'var(--font-poppins)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-  },
   dialog: {
     background:
       'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
@@ -78,13 +66,13 @@ export default function LibraryPage() {
 
   return (
     <Providers>
-      <Center className={classes.wrapper}>
+      <Layout>
         {SUPPORTED_LIBRARIES.map(({ label, library }) => (
           <Button key={library} onClick={() => redirectToLibrary(library)}>
             {label}
           </Button>
         ))}
-      </Center>
+      </Layout>
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a className={classes.back} href='/'>
         &larr; Go back to mode choice

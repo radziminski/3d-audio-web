@@ -6,6 +6,7 @@ import { Providers } from '../providers/Providers';
 import { Settings } from '../settings/Settings';
 import { TestModeInfo } from '../test-mode-info/TestModeInfo';
 import dynamic from 'next/dynamic';
+import { Layout } from '../layout/Layout';
 
 const SceneInside = dynamic(
   () =>
@@ -29,12 +30,6 @@ const poppins = Poppins({
 });
 
 const useStyles = createStyles((theme) => ({
-  wrapper: {
-    background: 'linear-gradient(to bottom right, #49BCF6 , #49DEB2)',
-    width: '100%',
-    height: '100vh',
-    fontFamily: 'var(--font-poppins)',
-  },
   title: {
     position: 'fixed',
     top: '24px',
@@ -91,12 +86,12 @@ export const AudioScene = ({ audioRef, title }: Props) => {
             </a>
           )}
         </div>
-        <Center className={classes.wrapper}>
+        <Layout>
           <Suspense fallback={<h5>Loading...</h5>}>
             {sceneType === 'outside' && <Scene />}
             {sceneType === 'inside' && <SceneInside />}
           </Suspense>
-        </Center>
+        </Layout>
         <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
         {appMode === 'test' && <TestModeInfo />}
       </main>

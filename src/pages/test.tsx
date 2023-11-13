@@ -1,26 +1,12 @@
-import {
-  Button,
-  Center,
-  MultiSelect,
-  NumberInput,
-  createStyles,
-} from '@mantine/core';
+import { Button, MultiSelect, NumberInput, createStyles } from '@mantine/core';
 import { Providers } from '~/components/providers/Providers';
 import { useEffect } from 'react';
 import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useTestStore } from '~/store/settings/useTestStore';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
+import { Layout } from '~/components/layout/Layout';
 
 const useStyles = createStyles((theme) => ({
-  wrapper: {
-    background: 'linear-gradient(to bottom right, #49BCF6 , #49DEB2)',
-    width: '100%',
-    height: '100vh',
-    fontFamily: 'var(--font-poppins)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-  },
   content: {
     display: 'flex',
     flexDirection: 'column',
@@ -95,7 +81,7 @@ export default function TestPage() {
 
   return (
     <Providers>
-      <Center className={classes.wrapper}>
+      <Layout>
         <div className={classes.content}>
           <h2 className={classes.title}>Test setup</h2>
           <NumberInput
@@ -123,7 +109,7 @@ export default function TestPage() {
           />
           <Button onClick={handleStartTest}>Start test!</Button>
         </div>
-      </Center>
+      </Layout>
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a className={classes.back} href='/'>
         &larr; Go back to mode choice

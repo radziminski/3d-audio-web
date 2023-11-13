@@ -2,13 +2,10 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Providers } from '~/components/providers/Providers';
 import { ResonanceAudioScene } from '~/components/resonance-audio-scene/ResonanceAudioScene';
+import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 
 export default function ResonanceAudioPage() {
-  const [showAudioScene, setShowAudioScene] = useState(false);
+  const isClientRender = useClientRender();
 
-  useEffect(() => {
-    setShowAudioScene(true);
-  }, [setShowAudioScene]);
-
-  return <Providers>{showAudioScene && <ResonanceAudioScene />}</Providers>;
+  return <Providers>{isClientRender && <ResonanceAudioScene />}</Providers>;
 }

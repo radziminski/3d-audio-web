@@ -13,6 +13,8 @@ import { NewGuess } from '../../db/schema';
 import { VERSION_SHA } from '~/constants';
 import { useOs } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { useClientRender } from '~/hooks/use-client-render/useClientRender';
+import { Layout } from '~/components/layout/Layout';
 
 const cell = {
   padding: '8px',
@@ -26,16 +28,6 @@ const cell = {
 };
 
 const useStyles = createStyles((theme) => ({
-  wrapper: {
-    background: 'linear-gradient(to bottom right, #49BCF6 , #49DEB2)',
-    width: '100%',
-    minHeight: '100vh',
-    fontFamily: 'var(--font-poppins)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-    padding: '64px 32px',
-  },
   content: {
     display: 'flex',
     flexDirection: 'column',
@@ -141,13 +133,9 @@ async function submitGuesses(
 export default function TestResultPage() {
   const areGuessesSubmitted = useRef(false);
   const router = useRouter();
-  const [render, setRender] = useState(false);
+  const isClientRender = useClientRender();
 
   const os = useOs();
-
-  useEffect(() => {
-    setRender(true);
-  }, []);
 
   const { classes } = useStyles();
 
@@ -180,8 +168,8 @@ export default function TestResultPage() {
 
   return (
     <Providers>
-      {render && (
-        <Center className={classes.wrapper}>
+      {isClientRender && (
+        <Layout>
           <div className={classes.content}>
             <h2>Test Result</h2>
             <div className={classes.libraryResultGrid}>
@@ -256,7 +244,7 @@ export default function TestResultPage() {
               Start new test
             </Button>
           </div>
-        </Center>
+        </Layout>
       )}
     </Providers>
   );
