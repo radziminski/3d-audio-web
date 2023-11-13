@@ -82,7 +82,6 @@ export const SceneInside = () => {
         Floor
       </Text>
 
-      <Box material-color='hotpink' />
       <Sphere args={[5, 64, 64]}>
         <meshStandardMaterial color='#777' side={DoubleSide} transparent />
       </Sphere>

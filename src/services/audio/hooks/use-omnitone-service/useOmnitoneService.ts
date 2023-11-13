@@ -2,15 +2,26 @@ import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
-export const useOmnitoneService = () => {
+type UseOmnitoneServiceOptions = {
+  ref?: React.RefObject<HTMLAudioElement>;
+  blockRedirects?: boolean;
+  gainOverride?: number;
+};
+
+export const useOmnitoneService = ({
+  ref,
+  blockRedirects,
+  gainOverride,
+}: UseOmnitoneServiceOptions = {}) => {
   const { gain, sourcePosition } = useSettingsStore();
   const router = useRouter();
 
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRefNew = useRef<HTMLAudioElement>(null);
+  const audioRef = ref ?? audioRefNew;
 
   useEffect(() => {
     import('~/services/audio/omnitone').then(({ OmnitoneService }) => {
-      if (!OmnitoneService.checkIsInitialized()) {
+      if (!OmnitoneService.checkIsInitialized() && !blockRedirects) {
         router.push('/library-redirect?library=omnitone');
       }
     });
@@ -42,9 +53,9 @@ export const useOmnitoneService = () => {
     import('~/services/audio/omnitone').then(({ OmnitoneService }) => {
       const audioService = OmnitoneService.getInstance();
 
-      audioService?.setOutputGain(gain / 100);
+      audioService?.setOutputGain((gainOverride ?? gain) / 100);
     });
-  }, [gain]);
+  }, [gain, gainOverride]);
 
   return { audioRef };
 };

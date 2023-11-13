@@ -70,6 +70,9 @@ export default function Home() {
         <Button onClick={onGoToPlayground}>Playground</Button>
         <Button onClick={onGoToGuessing}>Guessing</Button>
         <Button onClick={onGoToTest}>Test</Button>
+        <Button onClick={() => router.push('/library-quality')}>
+          Library quality
+        </Button>
       </Center>
     </Providers>
   );

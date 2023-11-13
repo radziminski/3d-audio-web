@@ -1,9 +1,12 @@
 import { useDebouncedState } from '@mantine/hooks';
 import { Camera, useFrame } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import { Vector3 } from 'three';
+import { Euler, Vector3 } from 'three';
 import { degToRad, radToDeg } from 'three/src/math/MathUtils';
-import { roundToDecimal } from '~/helpers/3D/getUnitSphereCoordinates';
+import {
+  getUniSphereCoordinates,
+  roundToDecimal,
+} from '~/helpers/3D/getUnitSphereCoordinates';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
 import { useCameraControl } from './use-camera-control';
@@ -32,6 +35,7 @@ const setCameraAngle = ({
 
 export const CameraRotation = () => {
   const { orbitControlsRef } = useCameraControl();
+  const cameraPositioned = useRef(false);
 
   const isSettingRef = useRef(false);
 
@@ -74,6 +78,38 @@ export const CameraRotation = () => {
     setGuessedDirections(value.azimuth, value.elevation);
   }, [mode, setAzimuth, setElevation, setGuessedDirections, value]);
 
+  useEffect(() => {
+    // @todo: make this work
+    // const guessSourcePosition = getUniSphereCoordinates(
+    //   180 - azimuthGuess,
+    //   elevationGuess
+    // );
+    // const timeout = setTimeout(() => {
+    //   console.log(azimuthGuess, elevationGuess, guessSourcePosition);
+    //   if (orbitControlsRef.current) {
+    //     // orbitControlsRef.current.target.setFromEuler(new Euler(0.5, 0.5, 0));
+    //     // // orbitControlsRef.current.target.angleTo(
+    //     // //   guessSourcePosition.x,
+    //     // //   guessSourcePosition.y,
+    //     // //   guessSourcePosition.z
+    //     // // );
+    //     orbitControlsRef.current.target0.set(
+    //       guessSourcePosition.x,
+    //       guessSourcePosition.y,
+    //       guessSourcePosition.z
+    //     );
+    //     orbitControlsRef.current.object.lookAt(
+    //       guessSourcePosition.x,
+    //       guessSourcePosition.y,
+    //       guessSourcePosition.z
+    //     );
+    //     cameraPositioned.current = true;
+    //   }
+    // }, 50);
+    // return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orbitControlsRef]);
+
   useFrame(({ camera }) => {
     // if (!isRotatedRef.current && camera) {
     //   setTimeout(() => {
@@ -97,7 +133,8 @@ export const CameraRotation = () => {
 
     if (
       (azimuth !== value.azimuth || elevation !== value.elevation) &&
-      !isSettingRef.current
+      !isSettingRef.current &&
+      cameraPositioned.current
     ) {
       isSettingRef.current = true;
       setValue({ azimuth, elevation });
