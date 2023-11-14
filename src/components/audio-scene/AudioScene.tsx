@@ -86,7 +86,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
             </a>
           )}
         </div>
-        <Layout>
+        <Layout noPadding>
           <Suspense fallback={<h5>Loading...</h5>}>
             {sceneType === 'outside' && <Scene />}
             {sceneType === 'inside' && <SceneInside />}

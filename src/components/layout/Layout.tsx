@@ -10,12 +10,24 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
+  },
+  withPadding: {
     padding: '64px 32px',
   },
 }));
 
-export const Layout = ({ children }: PropsWithChildren) => {
+type LayoutProps = {
+  noPadding?: boolean;
+} & PropsWithChildren;
+
+export const Layout = ({ children, noPadding }: LayoutProps) => {
   const { classes } = useStyles();
 
-  return <Center className={classes.wrapper}>{children}</Center>;
+  return (
+    <Center
+      className={`${classes.wrapper} ${noPadding ? '' : classes.withPadding}`}
+    >
+      {children}
+    </Center>
+  );
 };
