@@ -4,7 +4,7 @@ import { Providers } from '~/components/providers/Providers';
 export default function JsAmbisonicsAudioPage() {
   return (
     <Providers>
-      <JsAmbisonicsAudioScene />;
+      <JsAmbisonicsAudioScene />
     </Providers>
   );
 }

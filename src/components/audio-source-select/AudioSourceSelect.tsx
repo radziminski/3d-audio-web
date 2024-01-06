@@ -7,7 +7,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const AudioSourceSelect = () => {
+type AudioSourceSelectProps = {
+  onChange?: (value: string) => void;
+};
+
+export const AudioSourceSelect = ({ onChange }: AudioSourceSelectProps) => {
   const { classes } = useStyles();
 
   const setAudioSrc = useSettingsStore(({ setAudioSource }) => setAudioSource);
@@ -17,7 +21,10 @@ export const AudioSourceSelect = () => {
     <Select
       label='Pick audio source'
       placeholder='Choose audio sample'
-      onChange={setAudioSrc}
+      onChange={(value) => {
+        setAudioSrc(value ?? '');
+        onChange?.(value ?? '');
+      }}
       value={audioSource}
       classNames={{
         label: classes.label,

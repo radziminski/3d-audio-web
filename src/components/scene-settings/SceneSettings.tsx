@@ -5,17 +5,14 @@ import { LocationGuessModal } from '../location-guess-modal/LocationGuessModal';
 
 const useStyles = createStyles((theme) => ({
   sceneType: {
-    background:
-      'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
     borderRadius: '12px',
     padding: '24px',
-    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.04)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     position: 'fixed',
     left: '48px',
-    bottom: '48px',
+    bottom: '20px',
     backdropFilter: 'blur(30px)',
     gap: '16px',
   },
@@ -37,6 +34,7 @@ export const SceneSettings = ({ isInsideView = false }: SceneSettingsProps) => {
   const setRandomAngles = useSettingsStore(
     ({ setRandomAngles }) => setRandomAngles
   );
+  const sceneType = useSettingsStore(({ sceneType }) => sceneType);
   const setSceneType = useSettingsStore(({ setSceneType }) => setSceneType);
 
   const [isOpened, { open, close }] = useDisclosure(false);
@@ -45,8 +43,14 @@ export const SceneSettings = ({ isInsideView = false }: SceneSettingsProps) => {
     <>
       <div className={classes.sceneType}>
         <div className={classes.sceneTypeButtons}>
-          <Button onClick={() => setSceneType('outside')}>Outside view</Button>
-          <Button onClick={() => setSceneType('inside')}>Inside view</Button>
+          <Button
+            size='lg'
+            onClick={() =>
+              setSceneType(sceneType === 'outside' ? 'inside' : 'outside')
+            }
+          >
+            Change view
+          </Button>
         </div>
         {mode === 'guess' && (
           <div className={classes.sceneTypeButtons}>

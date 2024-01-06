@@ -1,7 +1,7 @@
 import { createStyles } from '@mantine/core';
 import { Slider } from '~/components/slider/Slider';
 import { CircularSlider } from '~/components/circular-slider/CircularSlider';
-import { RefObject } from 'react';
+import { RefObject, useLayoutEffect, useState } from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import {
   DEFAULT_ELEVATION,
@@ -89,6 +89,15 @@ const useStyles = createStyles((theme) => ({
     marginBottom: '16px',
     flexWrap: 'wrap',
   },
+  slider: {
+    width: 200,
+    div: {
+      opacity: '1 !important',
+      div: {
+        opacity: '1 !important',
+      },
+    },
+  },
 }));
 
 type AudioSettingsProps = {
@@ -121,26 +130,46 @@ export const AudioSettings = ({
 
   const guessedAzimuth = useTestStore((state) => state.azimuthGuess);
   const guessedElevation = useTestStore((state) => state.elevationGuess);
+  const isGuessMade = useTestStore((state) => state.isGuessMade);
+
+  useLayoutEffect(() => {
+    const listener = (event: KeyboardEvent) => {
+      if (event.code === 'Space') {
+        if (audioRef?.current?.paused) {
+          audioRef?.current?.play();
+          return;
+        }
+
+        audioRef?.current?.pause();
+      }
+    };
+
+    window.addEventListener('keydown', listener);
+
+    return () => window.removeEventListener('keydown', listener);
+  }, [audioRef, isInsideView]);
 
   return (
     <div className={isInsideView ? classes.dialogNarrow : classes.dialog}>
       <div className={classes.settings}>
         {!isInsideView && (
           <div className={classes.settingsColumn}>
-            <div>
-              <CircularSlider
-                onChange={(value) => {
-                  const prevValue = isGuessingMode ? guessedAzimuth : azimuth;
-                  const newValue = value === 1 ? prevValue : value;
+            <div className={classes.slider}>
+              {!isGuessMade && (
+                <CircularSlider
+                  onChange={(value) => {
+                    const prevValue = isGuessingMode ? guessedAzimuth : azimuth;
+                    const newValue = value === 1 ? prevValue : value;
 
-                  if (isGuessingMode) {
-                    setGuessedAzimuth(newValue);
-                    return;
-                  }
+                    if (isGuessingMode) {
+                      setGuessedAzimuth(newValue);
+                      return;
+                    }
 
-                  onAzimuthChange(360 - newValue);
-                }}
-              />
+                    onAzimuthChange(360 - newValue);
+                  }}
+                />
+              )}
             </div>
           </div>
         )}
@@ -208,7 +237,8 @@ export const AudioSettings = ({
                   width: '140px',
                 }}
               >
-                Elevation: {isGuessingMode ? guessedElevation : elevation}&deg;
+                Elevation:{' '}
+                {Math.round(isGuessingMode ? guessedElevation : elevation)}&deg;
               </div>
             </div>
           )}

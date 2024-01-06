@@ -23,6 +23,7 @@ export const useTestMode = () => {
   // Settings Store
   const {
     setRandomAngles,
+    setAppMode,
     setAngles,
     azimuth: trueAzimuth,
     elevation: trueElevation,
@@ -57,6 +58,7 @@ export const useTestMode = () => {
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
   const handleStartTest = useCallback(() => {
+    setAppMode('test');
     setIsTestFinished(false);
     setCurrentStep(0);
 
@@ -76,6 +78,7 @@ export const useTestMode = () => {
     setCurrentLibrary(newLibrary);
     router.push(`/library-redirect?library=${newLibrary}`);
   }, [
+    setAppMode,
     setIsTestFinished,
     setCurrentStep,
     experimentLibraries,
@@ -128,6 +131,7 @@ export const useTestMode = () => {
     const angles = testAngles[currentStepInLib];
 
     if (angles) {
+      console.log(angles);
       setAngles(angles.azimuth, angles.elevation);
     }
 

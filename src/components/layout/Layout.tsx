@@ -18,14 +18,23 @@ const useStyles = createStyles((theme) => ({
 
 type LayoutProps = {
   noPadding?: boolean;
+  withScroll?: boolean;
 } & PropsWithChildren;
 
-export const Layout = ({ children, noPadding }: LayoutProps) => {
+export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
   const { classes } = useStyles();
 
   return (
     <Center
       className={`${classes.wrapper} ${noPadding ? '' : classes.withPadding}`}
+      style={
+        withScroll
+          ? {
+              height: 'unset',
+              minHeight: '100vh',
+            }
+          : undefined
+      }
     >
       {children}
     </Center>

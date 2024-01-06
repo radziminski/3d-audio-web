@@ -5,6 +5,7 @@ import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToL
 import { useTestStore } from '~/store/settings/useTestStore';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
 import { Layout } from '~/components/layout/Layout';
+import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
 const useStyles = createStyles((theme) => ({
   content: {
@@ -75,9 +76,12 @@ export default function TestPage() {
     (state) => state.setExperimentLibraries
   );
 
+  const { setAppMode } = useSettingsStore((state) => state);
+
   useEffect(() => {
     reset();
-  }, [reset]);
+    setAppMode('test');
+  }, [reset, setAppMode]);
 
   return (
     <Providers>

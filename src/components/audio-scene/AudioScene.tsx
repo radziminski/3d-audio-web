@@ -69,7 +69,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
 
   return (
     <Providers>
-      <main className={poppins.className}>
+      <div className={poppins.className}>
         <div className={classes.title}>
           {appMode !== 'test' ? (
             <>
@@ -79,12 +79,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
                 &larr; Go back to libraries list
               </a>
             </>
-          ) : (
-            // eslint-disable-next-line @next/next/no-html-link-for-pages
-            <a href='/' className={classes.link}>
-              &larr; Go back to mode list
-            </a>
-          )}
+          ) : null}
         </div>
         <Layout noPadding>
           <Suspense fallback={<h5>Loading...</h5>}>
@@ -94,7 +89,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
         </Layout>
         <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
         {appMode === 'test' && <TestModeInfo />}
-      </main>
+      </div>
     </Providers>
   );
 };

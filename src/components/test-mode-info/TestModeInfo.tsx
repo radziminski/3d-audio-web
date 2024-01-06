@@ -1,6 +1,6 @@
 import { Button, createStyles } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
 import { useTestStore } from '~/store/settings/useTestStore';
 
@@ -70,14 +70,26 @@ export const TestModeInfo = () => {
 
   const { handleFinishStep } = useTestMode();
 
+  const isGuessMade = useTestStore((state) => state.isGuessMade);
+  const setIsGuessMade = useTestStore((state) => state.setIsGuessMade);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setIsGuessMade(false), 50);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
+
   const onMakeGuess = useCallback(() => {
+    setIsGuessMade(true);
     handleFinishStep();
     notifications.show({
       title: 'Guess saved!',
       message: 'Sound direction was changed. ',
       autoClose: 2000,
     });
-  }, [handleFinishStep]);
+  }, [handleFinishStep, setIsGuessMade]);
 
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
   const elevationGuess = useTestStore((state) => state.elevationGuess);
@@ -106,12 +118,14 @@ export const TestModeInfo = () => {
     },
     {
       left: 'Azimuth guess',
-      right: azimuthGuess,
+      right: `${
+        Math.floor(azimuthGuess) >= 360 ? 0 : Math.floor(azimuthGuess)
+      }°`,
       isBlurred: false,
     },
     {
       left: 'Elevation guess',
-      right: elevationGuess,
+      right: `${Math.round(elevationGuess)}°`,
       isBlurred: false,
     },
   ];

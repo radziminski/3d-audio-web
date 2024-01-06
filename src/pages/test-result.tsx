@@ -29,15 +29,16 @@ const cell = {
 
 const useStyles = createStyles((theme) => ({
   content: {
+    color: '#233',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    color: 'white',
     maxWidth: 1200,
     width: '100%',
     gap: '16px',
   },
   libraryResultGrid: {
+    color: 'white',
     width: '100%',
     background: 'rgba(0, 0, 0, 0.6)',
     maxWidth: 800,
@@ -52,6 +53,7 @@ const useStyles = createStyles((theme) => ({
     background: 'rgba(0, 0, 0, 0.6)',
   },
   fullResultsRow: {
+    color: 'white',
     display: 'grid',
     justifyContent: 'center',
     gridTemplateColumns: '1fr repeat(8, 2fr)',
@@ -169,9 +171,17 @@ export default function TestResultPage() {
   return (
     <Providers>
       {isClientRender && (
-        <Layout>
+        <Layout withScroll>
           <div className={classes.content}>
-            <h2>Test Result</h2>
+            <h2 style={{ margin: 0, paddingTop: '32px' }}>Test Result</h2>
+            <p>
+              Thank You for participating in this 3D Sound Test! Your
+              involvement has been invaluable in helping me explore the
+              potential of different 3D sound technologies. I truly appreciate
+              the time you spent and the feedback you provided. Your insights
+              are crucial in shaping the future of immersive audio experiences.
+              Feel free to share your experience with friends and family! 🙌
+            </p>
             <div className={classes.libraryResultGrid}>
               <div className={classes.libraryResultRow}>
                 {LIBRARY_RESULTS_COLUMN_LABELS.map((label) => (

@@ -7,31 +7,36 @@ import { StereoCheck } from '~/components/stereo-check/StereoCheck';
 
 const useStyles = createStyles(() => ({
   wrapper: {
-    maxWidth: 700,
+    maxWidth: 800,
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
-    alignItems: 'center',
+    gap: '24px',
   },
   header: {
-    color: '#333',
-    fontWeight: 600,
+    color: '#233',
+    fontWeight: 700,
     margin: 0,
     display: 'flex',
     alignItems: 'center',
     gap: 16,
   },
   paragraph: {
-    color: '#333',
+    color: '#233',
     margin: 0,
-    fontWeight: 500,
-    textAlign: 'center',
+    fontWeight: 400,
+    textAlign: 'left',
+    strong: {
+      fontWeight: 600,
+    },
   },
   buttonWrapper: {
     display: 'flex',
     alignItems: 'center',
-    height: 220,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height: 180,
     paddingBottom: 80,
+    width: '100%',
   },
   icon: {
     width: 34,
@@ -79,7 +84,7 @@ export default function StereoCheckPage() {
   if (isSuccess) {
     return (
       <Providers>
-        <Layout>
+        <Layout withScroll>
           <div className={classes.wrapper}>
             <h1 className={classes.header}>
               🎉 Your headphones are set up correctly!
@@ -88,7 +93,7 @@ export default function StereoCheckPage() {
             <div />
             <Button
               onClick={() => {
-                router.push('/test');
+                router.push('/preparation/tutorial');
               }}
               size='lg'
             >
@@ -102,7 +107,7 @@ export default function StereoCheckPage() {
 
   return (
     <Providers>
-      <Layout>
+      <Layout withScroll>
         <div className={classes.wrapper}>
           <h1 className={classes.header}>
             <div className={classes.icon}>
@@ -110,25 +115,27 @@ export default function StereoCheckPage() {
                 <path d='M4 12H7C8.10457 12 9 12.8954 9 14V19C9 20.1046 8.10457 21 7 21H4C2.89543 21 2 20.1046 2 19V12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12V19C22 20.1046 21.1046 21 20 21H17C15.8954 21 15 20.1046 15 19V14C15 12.8954 15.8954 12 17 12H20C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12Z'></path>
               </svg>
             </div>
-            Headphones check
+            First: Headphones check
           </h1>
           <p className={classes.paragraph}>
-            Before starting the tests, lets check your headphones setup.
+            Before starting the tests, lets check your{' '}
+            <strong>headphones setup</strong>.
             <br />
-            To start, put your headphones on and make sure that you have right
-            and left headphone in/on the correct ear.
+            To start, <strong>put your headphones on </strong>and make sure that
+            you have <strong>right</strong>. and <strong>left</strong> headphone
+            in/on the correct ear.
           </p>
 
           <p className={classes.paragraph}>
-            By hitting &quot;play&quot; on the underneath audio, you will hear a
-            guitar playing in only one ear. Please select the &quot;LEFT&quot;
-            or &quot;RIGHT&quot; button, depending on which ear you hear the
-            guitar playing. After each guess, the guitar might (but does not
-            have to) play in the other ear.
+            By hitting <strong>&quot;play&quot;</strong> on the underneath
+            audio, you will hear a guitar playing in only one ear. Please select
+            the &quot;LEFT&quot; or &quot;RIGHT&quot; button, depending on which
+            ear you hear the guitar playing. After each guess, the guitar might
+            (but does not have to) play in the other ear.
           </p>
           {!isStarted ? (
             <div className={classes.buttonWrapper}>
-              <Button size='lg' onClick={() => setIsStarted(true)}>
+              <Button size='md' onClick={() => setIsStarted(true)}>
                 Start
               </Button>
             </div>

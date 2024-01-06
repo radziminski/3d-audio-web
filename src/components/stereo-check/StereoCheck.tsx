@@ -6,10 +6,20 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Slider } from '../slider/Slider';
 
-const STEPS = 6;
+const STEPS = 5;
+
+const DEFAULT_GAIN = 0.5;
 
 const useStyles = createStyles(() => ({
+  wrapper: {
+    maxWidth: 800,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+    alignItems: 'center',
+  },
   paragraph: {
     color: '#333',
     margin: 0,
@@ -37,7 +47,12 @@ const useStyles = createStyles(() => ({
     fontWeight: 500,
   },
   hide: {
-    display: 'none',
+    display: 'none !important',
+  },
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '64px',
   },
 }));
 
@@ -65,6 +80,7 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCtxRef = useRef<AudioContext>();
   const stereoNodeRef = useRef<StereoPannerNode>();
+  const gainNodeRef = useRef<GainNode>();
 
   useLayoutEffect(() => {
     if (audioRef.current && !audioCtxRef.current) {
@@ -73,6 +89,8 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
       audioCtxRef.current = new AudioContext();
 
       stereoNodeRef.current = audioCtxRef.current.createStereoPanner();
+      gainNodeRef.current = audioCtxRef.current.createGain();
+      gainNodeRef.current.gain.value = DEFAULT_GAIN;
 
       // Connect the audio node
       const source = audioCtxRef.current.createMediaElementSource(
@@ -80,7 +98,8 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
       );
 
       source.connect(stereoNodeRef.current);
-      stereoNodeRef.current.connect(audioCtxRef.current.destination);
+      stereoNodeRef.current.connect(gainNodeRef.current);
+      gainNodeRef.current.connect(audioCtxRef.current.destination);
     }
 
     if (stereoNodeRef.current) {
@@ -92,7 +111,7 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
 
   const handleSelectDirection = useCallback(
     (direction: 'left' | 'right') => {
-      if (step > STEPS - 1) {
+      if (directionsList[step].name === direction && step > STEPS - 1) {
         onSuccess();
         return;
       }
@@ -106,6 +125,10 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
     },
     [directionsList, onError, onSuccess, step]
   );
+
+  const handleGainChange = useCallback((gain: number) => {
+    if (gainNodeRef.current) gainNodeRef.current.gain.value = gain / 100;
+  }, []);
 
   const handleNext = useCallback(() => {
     if (stereoNodeRef.current) {
@@ -124,14 +147,25 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
   }, [directionsList]);
 
   return (
-    <>
-      <audio
-        className={`${classes.audio} ${isCorrect ? classes.hide : ''}`}
-        controls
-        src={'/guitar.mp3'}
-        loop
-        ref={audioRef}
-      />
+    <div className={classes.wrapper}>
+      <div className={`${classes.container} ${isCorrect ? classes.hide : ''}`}>
+        <audio
+          className={classes.audio}
+          controls
+          src={'/guitar.mp3'}
+          loop
+          ref={audioRef}
+        />
+        <Slider
+          onChange={handleGainChange}
+          label='Adjust sound volume'
+          min={0}
+          max={100}
+          defaultValue={DEFAULT_GAIN * 100}
+          style={{ marginBottom: '24px' }}
+        />
+      </div>
+
       {isCorrect ? (
         <div className={classes.correctWrapper}>
           <p>✅ Correct!</p>
@@ -155,6 +189,6 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
