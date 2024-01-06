@@ -58,7 +58,7 @@ interface TestStore {
 
 export const INITIAL_STORE = {
   guesses: [] as readonly Guess[],
-  stepsPerLibrary: 10,
+  stepsPerLibrary: 15,
   experimentLibraries: [
     'web-api',
     'resonance',
