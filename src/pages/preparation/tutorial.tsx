@@ -38,7 +38,7 @@ const TUTORIAL_STEPS = [
       {
         title: 'Your Task:',
         points: [
-          `For each sound, adjust the arrow to point to where you believe the sound is coming from.`,
+          `For each sound, adjust the arrow to point to the direction where you believe the sound is coming from.`,
           `After you make a guess, the direction changes, and you should point the arrow again for the new sound.`,
         ],
       },
@@ -91,7 +91,7 @@ const TUTORIAL_STEPS = [
         points: [
           `Once you've positioned the arrow, click "Make a guess!" at the bottom center.`,
           `This saves your response and takes you to the next step (new sound direction).`,
-          `The page may reload sometimes when switching between libraries/technologies. Don't worry, that's supposed to happen!`,
+          `The page may reload sometimes after making a guess. Don't worry, that's supposed to happen!`,
         ],
       },
     ],
@@ -115,14 +115,14 @@ const TUTORIAL_STEPS = [
 
 const useStyles = createStyles(() => ({
   container: {
-    maxWidth: 1000,
+    maxWidth: 850,
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     margin: 'auto',
   },
   title: {
-    margin: '0 0 32px',
+    margin: '0 0 24px',
   },
   paragraph: {
     margin: 0,
@@ -133,7 +133,7 @@ const useStyles = createStyles(() => ({
       fontWeight: 600,
     },
     div: {
-      margin: '12px 16px',
+      margin: '10px 14px',
       fontWeight: 400,
       span: {
         fontWeight: 600,
@@ -149,7 +149,7 @@ const useStyles = createStyles(() => ({
   step: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '24px',
+    gap: '20px',
   },
 }));
 
@@ -203,7 +203,11 @@ export default function TutorialPage() {
                 alt='tutorial image'
                 width={700}
                 height={350}
-                style={{ objectFit: 'contain' }}
+                style={{
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  alignSelf: 'center',
+                }}
                 priority
               />
               {currentStep.paragraphs.map((paragraph, i) => (

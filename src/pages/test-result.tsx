@@ -182,6 +182,10 @@ export default function TestResultPage() {
               are crucial in shaping the future of immersive audio experiences.
               Feel free to share your experience with friends and family! 🙌
             </p>
+            <p>
+              Your testId: {testId} <br />
+              Your userId: {userId} <br />
+            </p>
             <div className={classes.libraryResultGrid}>
               <div className={classes.libraryResultRow}>
                 {LIBRARY_RESULTS_COLUMN_LABELS.map((label) => (
