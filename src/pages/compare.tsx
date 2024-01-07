@@ -1,4 +1,4 @@
-import { createStyles } from '@mantine/core';
+import { Button, createStyles } from '@mantine/core';
 import { useState } from 'react';
 import { Compare } from '~/components/compare/Compare';
 import { Layout } from '~/components/layout/Layout';
@@ -17,6 +17,7 @@ const useStyles = createStyles(() => ({
   },
   paragraph: {
     margin: 0,
+    marginBottom: '16px',
     color: '#233',
     fontWeight: 400,
     textAlign: 'left',
@@ -62,7 +63,33 @@ export default function ComparePage() {
     <Providers>
       <Layout withScroll>
         <div className={classes.container}>
-          <h1 className={classes.title}>Compare</h1>
+          <h1 className={classes.title}>
+            Explore and Rate the 3D Sound Technologies
+          </h1>
+          <p className={classes.paragraph}>
+            Welcome to the first interactive part of this test! Here, you have
+            the unique opportunity to switch between{' '}
+            <strong>various 3D sound technologies.</strong>
+          </p>
+          <p className={classes.paragraph}>
+            By clicking on one of the blue buttons below, you can select a given
+            technology that will be used to make the sound seem like it iss
+            coming from a given direction around you. After experimenting with
+            it, please rate your experience on two aspects:{' '}
+            <strong>overall sound quality</strong> and the{' '}
+            <strong>degree of 3D realism</strong>. Your ratings, on a scale from
+            0 to 10, will help us understand your experiences with each
+            technology.
+          </p>
+          <p className={classes.paragraph}>
+            Using two knobs below, you can adjust the{' '}
+            <strong>horizontal (azimuth knob)</strong>
+            and <strong>vertical (elevation slider) </strong> direction of the
+            sound. You can pick different sounds from the list next to the
+            sliders. Use the audio controls to play, pause, or skip through the
+            chosen track. The gain (volume) slider allows you to adjust how loud
+            the sound is.,
+          </p>
         </div>
         <Compare />
       </Layout>

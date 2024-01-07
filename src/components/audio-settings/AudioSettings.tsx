@@ -222,7 +222,7 @@ export const AudioSettings = ({
           )} */}
           <Slider
             onChange={onGainChange}
-            label='Gain'
+            label='Volume'
             min={0}
             max={100}
             defaultValue={100}

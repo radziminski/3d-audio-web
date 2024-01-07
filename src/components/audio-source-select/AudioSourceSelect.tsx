@@ -19,7 +19,7 @@ export const AudioSourceSelect = ({ onChange }: AudioSourceSelectProps) => {
 
   return (
     <Select
-      label='Pick audio source'
+      label='Pick audio track'
       placeholder='Choose audio sample'
       onChange={(value) => {
         setAudioSrc(value ?? '');

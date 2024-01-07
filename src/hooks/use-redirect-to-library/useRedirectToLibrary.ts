@@ -5,7 +5,8 @@ export type SupportedLibrary =
   | 'resonance'
   | 'web-api'
   | 'omnitone'
-  | 'js-ambisonics';
+  | 'js-ambisonics'
+  | 'js-ambisonics-hoa';
 
 export const useRedirectToLibrary = () => {
   const router = useRouter();

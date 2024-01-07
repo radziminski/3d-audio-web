@@ -18,6 +18,7 @@ export const CircularSlider = ({ onChange }: Props) => {
   return (
     <div>
       <ReactCircularSlider
+        label='Azimuth'
         dataIndex={1}
         min={0}
         max={360}
