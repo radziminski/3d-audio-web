@@ -22,6 +22,7 @@ interface SettingsState {
   audioSource: string;
   sceneType: SceneType;
   reset: () => void;
+  setIsContextStarted: (isStarted: boolean) => void;
   setAppMode: (mode: AppMode) => void;
   setAzimuth: (newAzimuth: number) => void;
   setElevation: (newElevation: number) => void;
@@ -115,3 +116,15 @@ export const useSettingsStore = create<SettingsState>()(
     }
   )
 );
+
+type ContextStore = {
+  isContextStarted: boolean;
+  setIsContextStarted: (isStarted: boolean) => void;
+};
+
+export const useContextStore = create<ContextStore>((set, get) => ({
+  isContextStarted: false,
+  setIsContextStarted: (isStarted: boolean) => {
+    set({ isContextStarted: isStarted });
+  },
+}));

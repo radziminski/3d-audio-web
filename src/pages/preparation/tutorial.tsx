@@ -7,6 +7,7 @@ import { Button, createStyles } from '@mantine/core';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 import Image from 'next/image';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const TUTORIAL_STEPS = [
   {
@@ -157,15 +158,16 @@ export default function TutorialPage() {
   const [tutorialStep, setTutorialStep] = useState(-1);
 
   const { handleStartTest } = useTestMode();
-  const router = useRouter();
   const resetStore = useSettingsStore((state) => state.reset);
   const isClientRender = useClientRender();
+  const { reset } = useTestStore();
 
   const { classes } = useStyles();
 
   useEffect(() => {
     resetStore();
-  }, [resetStore]);
+    reset();
+  }, [resetStore, reset]);
 
   const currentStep = TUTORIAL_STEPS[tutorialStep];
 

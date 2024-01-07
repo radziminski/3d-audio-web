@@ -10,10 +10,6 @@ export const TEST_ANGLES = [
     elevation: 45,
   },
   {
-    azimuth: 45,
-    elevation: 45,
-  },
-  {
     azimuth: 90 + 45,
     elevation: 45,
   },

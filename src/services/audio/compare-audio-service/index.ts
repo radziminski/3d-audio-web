@@ -248,11 +248,11 @@ export class CompareAudioService extends CommonAudioService {
   }
 
   public setDirection({ azimuth, elevation }: SpatialDirection): void {
-    if (azimuth) {
+    if (azimuth !== undefined) {
       this.azimuth = azimuth;
     }
 
-    if (elevation) {
+    if (elevation !== undefined) {
       this.elevation = elevation;
     }
 

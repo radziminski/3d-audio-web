@@ -44,6 +44,8 @@ export const Compare = () => {
 
   return (
     <div className={classes.container}>
+      <AudioSettings audioRef={audioRef} disableFixedPosition />
+
       <div className={classes.buttons}>
         {(
           [
@@ -64,7 +66,6 @@ export const Compare = () => {
           </Button>
         ))}
       </div>
-      <AudioSettings audioRef={audioRef} disableFixedPosition />
     </div>
   );
 };

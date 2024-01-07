@@ -1,5 +1,10 @@
-import { PropsWithChildren } from 'react';
-import { Center, createStyles } from '@mantine/core';
+import { PropsWithChildren, useEffect } from 'react';
+import { Button, Center, createStyles } from '@mantine/core';
+import {
+  useContextStore,
+  useSettingsStore,
+} from '../../store/settings/useSettingsStore';
+import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -22,7 +27,31 @@ type LayoutProps = {
 } & PropsWithChildren;
 
 export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
+  const isContextStarted = useContextStore((state) => state.isContextStarted);
+  const setIsContextStarted = useContextStore(
+    (state) => state.setIsContextStarted
+  );
+
   const { classes } = useStyles();
+  const { pathname } = useRouter();
+
+  useEffect(() => {
+    if (
+      [
+        '/',
+        '/preparation/stereo-check',
+        '/preparation/tutorial',
+        '/debug',
+        '/test',
+        '/js-ambisonics-audio',
+        '/omnitone-audio',
+        '/resonance-audio',
+        '/web-api-audio',
+      ].includes(pathname)
+    ) {
+      setIsContextStarted(true);
+    }
+  }, [pathname, setIsContextStarted]);
 
   return (
     <Center
@@ -36,7 +65,12 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
           : undefined
       }
     >
-      {children}
+      {!isContextStarted && (
+        <Button onClick={() => setIsContextStarted(true)}>
+          Initialize audio context
+        </Button>
+      )}
+      {isContextStarted && children}
     </Center>
   );
 };

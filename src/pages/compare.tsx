@@ -45,7 +45,6 @@ const useStyles = createStyles(() => ({
 }));
 
 export default function ComparePage() {
-  const [isVisible, setIsVisible] = useState(false);
   const { classes } = useStyles();
 
   const isClientRender = useClientRender();
@@ -65,8 +64,7 @@ export default function ComparePage() {
         <div className={classes.container}>
           <h1 className={classes.title}>Compare</h1>
         </div>
-        {!isVisible && <button onClick={() => setIsVisible(true)}>Show</button>}
-        {isVisible && <Compare />}
+        <Compare />
       </Layout>
     </Providers>
   );
