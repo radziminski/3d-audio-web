@@ -3,7 +3,9 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
-export const useCompareAudioService = (selectedLibrary?: SupportedLibrary) => {
+export const useCompareAudioService = (
+  selectedLibrary?: SupportedLibrary | 'js-ambisonics-hoa'
+) => {
   const { gain, azimuth, elevation } = useSettingsStore();
   const router = useRouter();
 

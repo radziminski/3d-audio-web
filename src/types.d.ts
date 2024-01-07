@@ -290,6 +290,21 @@ declare module 'ambisonics' {
   export class intensityAnalyser {
     constructor(context: AudioContext);
   }
+
+  export class orderLimiter {
+    constructor(context: AudioContext, maxOrder: number, orderOut: number);
+  }
+
+  export class HOAloader {
+    constructor(
+      context: AudioContext,
+      maxOrder: number,
+      iUrl: string,
+      onLoad: (buffer: AudioBuffer) => void
+    );
+
+    load();
+  }
 }
 
 declare module 'omnitone/build/omnitone.min.esm' {}

@@ -7,7 +7,9 @@ import { useSettingsStore } from '~/store/settings/useSettingsStore';
 export const Compare = () => {
   const setAppMode = useSettingsStore((state) => state.setAppMode);
 
-  const [selectedLibrary, setSelectedLibrary] = useState<SupportedLibrary>();
+  const [selectedLibrary, setSelectedLibrary] = useState<
+    SupportedLibrary | 'js-ambisonics-hoa'
+  >();
   const { audioRef } = useCompareAudioService(selectedLibrary);
 
   useEffect(() => {
@@ -21,6 +23,9 @@ export const Compare = () => {
       </button>
       <button onClick={() => setSelectedLibrary('js-ambisonics')}>
         JS Ambisonics
+      </button>
+      <button onClick={() => setSelectedLibrary('js-ambisonics-hoa')}>
+        JS Ambisonics Hoa
       </button>
       <button onClick={() => setSelectedLibrary('resonance')}>Resonance</button>
       <button onClick={() => setSelectedLibrary('omnitone')}>Omnitone</button>

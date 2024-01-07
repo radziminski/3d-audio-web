@@ -10,11 +10,30 @@ export class JsAmbisonicsAudioService extends CommonAudioService {
   private encoder: any;
   private decoder: any;
 
+  private loadSample(
+    url: string,
+    doAfterLoading: (buffer: AudioBuffer) => void
+  ) {
+    const fetchSound = new XMLHttpRequest(); // Load the Sound with XMLHttpRequest
+    fetchSound.open('GET', url, true); // Path to Audio File
+    fetchSound.responseType = 'arraybuffer'; // Read as Binary Data
+    fetchSound.onload = () => {
+      this.audioContext.decodeAudioData(fetchSound.response, (buffer) =>
+        doAfterLoading(buffer)
+      );
+    };
+    fetchSound.send();
+  }
+
   private constructor() {
     super();
 
     this.encoder = new monoEncoder(this.audioContext, 1);
     this.decoder = new binDecoder(this.audioContext, 1);
+    this.loadSample(
+      'https://pyrapple.github.io/JSAmbisonics/examples/IRs/ambisonic2binaural_filters/aalto2016_N1.wav',
+      (buffer) => this.decoder.updateFilters(buffer)
+    );
 
     // connect nodes
     this.encoder.out.connect(this.decoder.in);

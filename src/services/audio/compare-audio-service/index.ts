@@ -5,6 +5,7 @@ import {
   binDecoder,
   sceneMirror,
   intensityAnalyser,
+  orderLimiter,
 } from 'ambisonics';
 import { CommonAudioService } from '../common-audio-service';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
@@ -13,17 +14,28 @@ import { getUniSphereCoordinates } from '~/helpers/3D/getUnitSphereCoordinates';
 import { ResonanceAudio, Source } from 'resonance-audio';
 import { roomDimensions, roomMaterials } from '../resonance-audio/constants';
 import Omnitone from 'omnitone/build/omnitone.min.esm';
+import HOAloader from '../js-ambisonics/custom-hoa-loader';
 
 const OmnitoneLib = Omnitone as any;
 
 export class CompareAudioService extends CommonAudioService {
   private static instance: CompareAudioService;
   private static isInitialized = false;
-  private connectedLibrary: SupportedLibrary | null | undefined;
+  private connectedLibrary:
+    | SupportedLibrary
+    | 'js-ambisonics-hoa'
+    | null
+    | undefined;
 
-  // Js Ambisonics
+  // Js Ambisonics FOA
   private encoder: any;
   private decoder: any;
+
+  // JS Ambisonics HOA
+  private foaEncoder: any;
+  private foaDecoder: any;
+  private foaLimiter: any;
+  private foaLoader: any;
 
   // Web audio API
   private pannerNode: PannerNode;
@@ -77,13 +89,21 @@ export class CompareAudioService extends CommonAudioService {
   private constructor() {
     super();
 
-    // JS Ambisonics
+    // JS Ambisonics FOA
     this.encoder = new monoEncoder(this.audioContext, 1);
     this.decoder = new binDecoder(this.audioContext, 1);
     this.loadSample(
       'https://pyrapple.github.io/JSAmbisonics/examples/IRs/ambisonic2binaural_filters/aalto2016_N1.wav',
       (buffer) => this.decoder.updateFilters(buffer)
     );
+
+    // JS Ambisonics HOA
+    // define HOA encoder (panner)
+    this.foaEncoder = new monoEncoder(this.audioContext, 3);
+    // define HOA order limiter (to show the effect of order)
+    this.foaLimiter = new orderLimiter(this.audioContext, 3, 3);
+    // binaural HOA decoder
+    this.foaDecoder = new binDecoder(this.audioContext, 3);
 
     // Web audio API
     this.pannerNode = this.audioContext.createPanner();
@@ -98,9 +118,13 @@ export class CompareAudioService extends CommonAudioService {
     this.foaRenderer = OmnitoneLib.createFOARenderer(this.audioContext, {});
 
     // Connect nodes
-    // JS Ambisonics
+    // JS Ambisonics FOA
     this.encoder.out.connect(this.decoder.in);
     this.decoder.out.connect(this.gainNode);
+    // JS Ambisonics HOA
+    this.foaEncoder.out.connect(this.foaLimiter.in);
+    this.foaLimiter.out.connect(this.foaDecoder.in);
+    this.foaDecoder.out.connect(this.gainNode);
     // Web audio API
     this.pannerNode.connect(this.gainNode);
     // Resonance
@@ -113,6 +137,15 @@ export class CompareAudioService extends CommonAudioService {
     });
 
     this.gainNode.connect(this.audioContext.destination);
+
+    // JS Ambisonics FOA filters load
+    this.foaLoader = new HOAloader(
+      this.audioContext,
+      3,
+      'IRs/ambisonic2binaural_filters/HOA3_BRIRs-medium.wav',
+      (audioBuffer: AudioBuffer) => this.foaDecoder.updateFilters(audioBuffer)
+    );
+    this.foaLoader.load();
 
     CompareAudioService.isInitialized = true;
   }
@@ -152,6 +185,12 @@ export class CompareAudioService extends CommonAudioService {
         return;
       }
 
+      case 'js-ambisonics-hoa': {
+        this.audioSource?.disconnect(this.foaEncoder.in);
+
+        return;
+      }
+
       case 'omnitone': {
         this.audioSource?.disconnect(this.foaRenderer.input);
 
@@ -172,7 +211,9 @@ export class CompareAudioService extends CommonAudioService {
     }
   }
 
-  public connectAudioSource(library?: SupportedLibrary | null) {
+  public connectAudioSource(
+    library?: SupportedLibrary | 'js-ambisonics-hoa' | null
+  ) {
     if (library === this.connectedLibrary) {
       return;
     }
@@ -191,6 +232,10 @@ export class CompareAudioService extends CommonAudioService {
 
     if (library === 'js-ambisonics') {
       this.audioSource?.connect(this.encoder.in);
+    }
+
+    if (library === 'js-ambisonics-hoa') {
+      this.audioSource?.connect(this.foaEncoder.in);
     }
 
     if (library === 'web-api') {
@@ -223,6 +268,14 @@ export class CompareAudioService extends CommonAudioService {
       this.encoder.azim = -this.azimuth;
       this.encoder.elev = this.elevation;
       this.encoder.updateGains();
+
+      return;
+    }
+
+    if (this.connectedLibrary === 'js-ambisonics-hoa') {
+      this.foaEncoder.azim = -this.azimuth;
+      this.foaEncoder.elev = this.elevation;
+      this.foaEncoder.updateGains();
 
       return;
     }
