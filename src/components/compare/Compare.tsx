@@ -143,13 +143,13 @@ export const Compare = () => {
         os
       );
 
-      router.push('/preparation/tutorial');
+      window.location.assign('/preparation/tutorial');
     } catch {
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
-  }, [libraryQuality, os, router, testId, userId]);
+  }, [libraryQuality, os, testId, userId]);
 
   useEffect(() => {
     setAppMode('playground');

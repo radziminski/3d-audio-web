@@ -86,9 +86,9 @@ export const AudioScene = ({ audioRef, title }: Props) => {
             {sceneType === 'outside' && <Scene />}
             {sceneType === 'inside' && <SceneInside />}
           </Suspense>
+          <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
+          {appMode === 'test' && <TestModeInfo />}
         </Layout>
-        <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
-        {appMode === 'test' && <TestModeInfo />}
       </div>
     </Providers>
   );

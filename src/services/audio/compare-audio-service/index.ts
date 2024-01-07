@@ -1,12 +1,6 @@
 import { SpatialDirection } from '../types';
 import { getRandomAzimuthElevation } from '~/helpers/3D/getRadomAzimuthElevation';
-import {
-  monoEncoder,
-  binDecoder,
-  sceneMirror,
-  intensityAnalyser,
-  orderLimiter,
-} from 'ambisonics';
+import { monoEncoder, binDecoder, orderLimiter } from 'ambisonics';
 import { CommonAudioService } from '../common-audio-service';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { SpatialPoint } from '~/helpers/3D/types';
@@ -22,6 +16,12 @@ export class CompareAudioService extends CommonAudioService {
   private static instance: CompareAudioService;
   private static isInitialized = false;
   private connectedLibrary:
+    | SupportedLibrary
+    | 'js-ambisonics-foa'
+    | null
+    | undefined;
+
+  private defaultLibrary:
     | SupportedLibrary
     | 'js-ambisonics-foa'
     | null
@@ -86,7 +86,7 @@ export class CompareAudioService extends CommonAudioService {
     fetchSound.send();
   }
 
-  private constructor() {
+  private constructor(defaultLibrary?: SupportedLibrary) {
     super();
 
     // JS Ambisonics FOA
@@ -147,18 +147,23 @@ export class CompareAudioService extends CommonAudioService {
     );
     this.hoaLoader.load();
 
+    if (defaultLibrary) {
+      this.defaultLibrary = defaultLibrary;
+    }
+
     CompareAudioService.isInitialized = true;
   }
 
   public static getInstance(
-    shouldInitialize = false
+    shouldInitialize = false,
+    defaultLibrary?: SupportedLibrary
   ): CompareAudioService | undefined {
     if (!CompareAudioService.instance) {
       if (!shouldInitialize) {
         return undefined;
       }
 
-      CompareAudioService.instance = new CompareAudioService();
+      CompareAudioService.instance = new CompareAudioService(defaultLibrary);
     }
 
     return CompareAudioService.instance;
@@ -213,11 +218,13 @@ export class CompareAudioService extends CommonAudioService {
   }
 
   public connectAudioSource(
-    library?: SupportedLibrary | 'js-ambisonics-foa' | null
+    newLibrary?: SupportedLibrary | 'js-ambisonics-foa' | null | undefined
   ) {
-    if (library === this.connectedLibrary) {
+    if (newLibrary === this.connectedLibrary) {
       return;
     }
+
+    const library = newLibrary || this.defaultLibrary;
 
     try {
       console.log('disconnecting ', this.connectedLibrary);
@@ -228,7 +235,7 @@ export class CompareAudioService extends CommonAudioService {
     }
 
     console.log();
-    console.log('connecting ', library);
+    console.log('connecting library named: ', library);
     console.log('audio source', this.audioSource);
 
     this.connectedLibrary = library;

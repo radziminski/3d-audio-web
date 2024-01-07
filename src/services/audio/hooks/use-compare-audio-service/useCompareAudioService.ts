@@ -3,22 +3,25 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
-export const useCompareAudioService = (selectedLibrary?: SupportedLibrary) => {
+export const useCompareAudioService = (
+  selectedLibrary?: SupportedLibrary,
+  defaultLibrary?: SupportedLibrary
+) => {
   const { gain, azimuth, elevation } = useSettingsStore();
   const setGain = useSettingsStore((state) => state.setGain);
-  const router = useRouter();
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     import('~/services/audio/compare-audio-service').then(
       ({ CompareAudioService }) => {
-        CompareAudioService.getInstance(true);
+        CompareAudioService.getInstance(true, defaultLibrary);
 
         return CompareAudioService;
       }
     );
-  }, [router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useLayoutEffect(() => {
     import('~/services/audio/compare-audio-service').then(

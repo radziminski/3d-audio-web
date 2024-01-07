@@ -93,7 +93,6 @@ const TUTORIAL_STEPS = [
         points: [
           `Once you've positioned the arrow, click "Make a guess!" at the bottom center.`,
           `This saves your response and takes you to the next step (new sound direction).`,
-          `The page may reload sometimes after making a guess. Don't worry, that's supposed to happen!`,
         ],
       },
     ],
@@ -162,13 +161,15 @@ export default function TutorialPage() {
   const resetStore = useSettingsStore((state) => state.reset);
   const isClientRender = useClientRender();
   const { reset } = useTestStore();
+  const { setAppMode } = useSettingsStore((state) => state);
 
   const { classes } = useStyles();
 
   useEffect(() => {
     resetStore();
     reset();
-  }, [resetStore, reset]);
+    setAppMode('test');
+  }, [resetStore, reset, setAppMode]);
 
   const currentStep = TUTORIAL_STEPS[tutorialStep];
 

@@ -1,6 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { nanoid } from 'nanoid';
 import { useSettingsStore } from '~/store/settings/useSettingsStore'; // Assuming this is the correct import path
 import { useTestStore } from '~/store/settings/useTestStore';
 
@@ -74,7 +73,9 @@ export const useTestMode = () => {
 
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
-    router.push(`/library-redirect?library=${newLibrary}`);
+    setTimeout(() => {
+      router.push(`/guess`);
+    }, 500);
   }, [
     setAppMode,
     setIsTestFinished,
@@ -149,7 +150,6 @@ export const useTestMode = () => {
 
       const newLibrary = libraryOrder[currentLibraryIndex + 1];
       setCurrentLibrary(newLibrary);
-      router.push(`/library-redirect?library=${newLibrary}`);
     }
   }, [
     addGuess,
@@ -164,7 +164,6 @@ export const useTestMode = () => {
     incrementStep,
     libraryOrder,
     resetTestAngles,
-    router,
     setAngles,
     setCurrentLibrary,
     setGuessStart,
