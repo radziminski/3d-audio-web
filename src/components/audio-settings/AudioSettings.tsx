@@ -132,6 +132,7 @@ export const AudioSettings = ({
 
   const { classes } = useStyles();
   const onAzimuthChange = useSettingsStore(({ setAzimuth }) => setAzimuth);
+  const gain = useSettingsStore((state) => state.gain);
   const audioSource = useSettingsStore((state) => state.audioSource);
   const elevation = useSettingsStore((state) => state.elevation);
   const azimuth = useSettingsStore((state) => state.azimuth);
@@ -226,6 +227,7 @@ export const AudioSettings = ({
             min={0}
             max={100}
             defaultValue={100}
+            value={gain}
           />
           {!isInsideView && (
             <div

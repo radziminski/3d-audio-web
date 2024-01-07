@@ -49,7 +49,10 @@ export default function Home() {
 
   useEffect(() => {
     resetStore();
-  }, [resetStore]);
+    router.prefetch('/preparation/stereo-check');
+    router.prefetch('/preparation/tutorial');
+    router.prefetch('/compare');
+  }, [resetStore, router]);
 
   if (!isClientRender)
     return (

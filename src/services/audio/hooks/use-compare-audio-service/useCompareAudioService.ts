@@ -5,6 +5,7 @@ import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
 export const useCompareAudioService = (selectedLibrary?: SupportedLibrary) => {
   const { gain, azimuth, elevation } = useSettingsStore();
+  const setGain = useSettingsStore((state) => state.setGain);
   const router = useRouter();
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -65,6 +66,10 @@ export const useCompareAudioService = (selectedLibrary?: SupportedLibrary) => {
       }
     );
   }, [selectedLibrary]);
+
+  useEffect(() => {
+    setGain(65);
+  }, [setGain]);
 
   return { audioRef };
 };
