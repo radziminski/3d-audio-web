@@ -88,7 +88,12 @@ export const Scene = () => {
   }, [x, y, z]);
 
   return (
-    <Canvas onCreated={() => setTrigger((prevTrigger) => !prevTrigger)}>
+    <Canvas
+      onCreated={() => setTrigger((prevTrigger) => !prevTrigger)}
+      camera={{
+        position: [0, 2, -3],
+      }}
+    >
       <ambientLight intensity={0.5} />
       <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
       <spotLight position={[-10, 10, 10]} angle={0.15} intensity={0.1} />
