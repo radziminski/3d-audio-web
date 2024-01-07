@@ -140,7 +140,7 @@ export default function TestResultPage() {
   const router = useRouter();
   const isClientRender = useClientRender();
 
-  const os = useOs();
+  const os = useOs({ getValueInEffect: true });
 
   const { classes } = useStyles();
 
