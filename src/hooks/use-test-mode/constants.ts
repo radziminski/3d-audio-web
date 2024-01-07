@@ -1,22 +1,45 @@
 export const TEST_ANGLES = [
+  // top
+  {
+    azimuth: 0,
+    elevation: 90,
+  },
+  // elevation - 45deg
+  {
+    azimuth: 45,
+    elevation: 45,
+  },
+  {
+    azimuth: 45,
+    elevation: 45,
+  },
+  {
+    azimuth: 90 + 45,
+    elevation: 45,
+  },
+  {
+    azimuth: 180 + 45,
+    elevation: 45,
+  },
+  {
+    azimuth: 270 + 45,
+    elevation: 45,
+  },
+  // elevation - 0deg
+  {
+    azimuth: 0,
+    elevation: 0,
+  },
   {
     azimuth: 45,
     elevation: 0,
   },
   {
-    azimuth: 0,
+    azimuth: 90,
     elevation: 0,
   },
   {
-    azimuth: 0,
-    elevation: 90,
-  },
-  {
-    azimuth: 0,
-    elevation: -90,
-  },
-  {
-    azimuth: 360 - 45,
+    azimuth: 90 + 45,
     elevation: 0,
   },
   {
@@ -24,39 +47,37 @@ export const TEST_ANGLES = [
     elevation: 0,
   },
   {
-    azimuth: 135,
-    elevation: 45,
-  },
-  {
-    azimuth: 30,
-    elevation: 20,
-  },
-  {
-    azimuth: 290,
-    elevation: -40,
-  },
-  {
-    azimuth: 210,
-    elevation: 10,
-  },
-  {
-    azimuth: 30,
-    elevation: -30,
-  },
-  {
-    azimuth: 360 - 90,
+    azimuth: 180 + 45,
     elevation: 0,
   },
   {
-    azimuth: 0,
-    elevation: 45,
+    azimuth: 270,
+    elevation: 0,
   },
   {
-    azimuth: 0,
+    azimuth: 270 + 45,
+    elevation: 0,
+  },
+  // elevation - -45deg
+  {
+    azimuth: 45,
     elevation: -45,
   },
   {
-    azimuth: 360 - 100,
-    elevation: 30,
+    azimuth: 90 + 45,
+    elevation: -45,
+  },
+  {
+    azimuth: 180 + 45,
+    elevation: -45,
+  },
+  {
+    azimuth: 270 + 45,
+    elevation: -45,
+  },
+  // bottom
+  {
+    azimuth: 0,
+    elevation: -90,
   },
 ];
