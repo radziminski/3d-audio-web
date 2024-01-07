@@ -283,6 +283,13 @@ declare module 'ambisonics' {
   export class binDecoder {
     constructor(context: AudioContext, order: number);
   }
+
+  export class sceneMirror {
+    constructor(context: AudioContext, order: number);
+  }
+  export class intensityAnalyser {
+    constructor(context: AudioContext);
+  }
 }
 
 declare module 'omnitone/build/omnitone.min.esm' {}
