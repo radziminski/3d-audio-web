@@ -76,7 +76,7 @@ export default function Home() {
           </p>
           <p className={classes.paragraph}>
             <strong>What&apos;s this all about?</strong> This test is a fun and
-            interactive way to explore how 3D sound works in web applications.
+            interactive way to explore how 3D audio works in web applications.
             It will help me evaluate different 3D Sound technologies for my
             masters thesis. Think of it as an audio adventure where you get to
             experience sound in a completely new way.
@@ -97,8 +97,8 @@ export default function Home() {
           <p className={classes.paragraph}>
             <strong>What to expect:</strong>
             <div>
-              <span>1. Duration</span> The test will take about 15-20 minutes of
-              your time.
+              <span>1. Duration</span> The test will take around 15-20 minutes
+              of your time.
             </div>
             <div>
               <span>2. Choose sounds:</span> You&apos;ll get to pick from
@@ -107,7 +107,7 @@ export default function Home() {
             <div>
               <span>3. Evaluate sound quality:</span> Firstly, you will be asked
               to play around with each selected technology and evaluate its
-              quality and effectivness.
+              quality and effectiveness.
             </div>
             <div>
               <span>4. Discover Sound Directions:</span>{' '}

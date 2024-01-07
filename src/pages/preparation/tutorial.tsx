@@ -17,8 +17,8 @@ const TUTORIAL_STEPS = [
         title: 'How to describe direction of the sound you hear?',
         points: [
           `The direction of the sound that you hear can be simply described with two angles: <strong>azimuth</strong> and <strong>elevation</strong>.`,
-          `<strong>Azimuth:</strong> Imagine a flat circle around you. This is the horizontal plane. The sound can come from any point on this circle. If it's right in front of you, that's 0 degrees. Directly to the right is 90 degrees, behind you is 180 degrees, and to the left is 270 degrees.`,
-          `<strong>Elevation:</strong> Now, think of a vertical line that runs from the top of your head to the ground. This is the vertical plane. Sounds can come from above (90 degrees), the same level as your ears (0 degrees), or below you (-90 degrees).`,
+          `<strong>Azimuth:</strong> Imagine a flat circle around you. The sound can come from any point on this circle - such point is described by azimuth angle. If it's right in front of you, that's 0 degrees. Directly to the right is 90 degrees, behind you is 180 degrees, and to the left is 270 degrees.`,
+          `<strong>Elevation:</strong> Now, think of a vertical line that runs from the top of your head to the ground. A given point on it is described by elevation angle. Sounds can come from above (90 degrees), the same level as your ears (0 degrees), or below you (-90 degrees).`,
           `The distance of the sound will be ignored in this test.`,
         ],
       },
