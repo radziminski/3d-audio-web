@@ -99,7 +99,20 @@ const TUTORIAL_STEPS = [
     image: '/dashboard-make.png',
   } as const,
   {
-    title: '6: Changing to first-person view',
+    title: "6: It's a trap!",
+    paragraphs: [
+      {
+        title: 'Be ready for traps!',
+        points: [
+          `As you navigate through the sounds in the application, it's important to be aware that occasionally, <strong>you may hear a sound that has not been processed by any 3D sound library</strong>. It will sound like any other sound you would hear on your headphones outside of this test. This is a deliberate "trap" where the sound does not originate from any particular direction in space and is not modified to create a 3D audio effect.`,
+          `🚨 When you come across such a sound, it's crucial <u><b>not</b> to click the "Make a Guess!" button</u>. Instead,  <strong>click "Mark as not 3D sound (trap)" </strong> button right underneath it. `,
+        ],
+      },
+    ],
+    image: '/dashboard-trap.png',
+  } as const,
+  {
+    title: '7: Changing to first-person view',
     paragraphs: [
       {
         title: 'See through different eyes:',
@@ -132,6 +145,9 @@ const useStyles = createStyles(() => ({
     textAlign: 'left',
     strong: {
       fontWeight: 600,
+    },
+    b: {
+      fontWeight: 800,
     },
     div: {
       margin: '10px 14px',

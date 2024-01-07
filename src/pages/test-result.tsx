@@ -34,7 +34,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    maxWidth: 1200,
+    maxWidth: 1400,
     width: '100%',
     gap: '16px',
   },
@@ -57,7 +57,7 @@ const useStyles = createStyles((theme) => ({
     color: 'white',
     display: 'grid',
     justifyContent: 'center',
-    gridTemplateColumns: '1fr repeat(8, 2fr)',
+    gridTemplateColumns: '1fr repeat(10, 2fr)',
   },
   cell: {
     ...cell,
@@ -83,6 +83,8 @@ const LIBRARY_RESULTS_COLUMN_LABELS = [
 const FULL_RESULTS_COLUMN_LABELS = [
   'Step',
   'Library',
+  'True trap',
+  'Guessed trap',
   'True Azimuth',
   'Guessed Azimuth',
   'Azimuth Error',
@@ -227,6 +229,12 @@ export default function TestResultPage() {
                 <div key={`guess-${index}`} className={classes.fullResultsRow}>
                   <div className={classes.cell}>{index + 1}</div>
                   <div className={classes.cell}>{guess.library}</div>
+                  <div className={classes.cell}>
+                    {guess.isBypassed ? 'yes' : 'no'}
+                  </div>
+                  <div className={classes.cell}>
+                    {guess.guessedIsBypassed ? 'yes' : 'no'}
+                  </div>
                   <div className={classes.cell}>
                     {roundToDecimal(guess.trueAzimuth)}
                   </div>

@@ -16,6 +16,7 @@ interface SettingsState {
   appMode: AppMode | undefined;
   azimuth: number;
   elevation: number;
+  isBypassed: boolean;
   gain: number;
   panning: number;
   sourcePosition: SpatialPoint;
@@ -31,9 +32,11 @@ interface SettingsState {
   setPanning: (newPanning: number) => void;
   setAudioSource: (newSource: string) => void;
   setSceneType: (newSceneType: SceneType) => void;
+  setIsBypassed: (isBypassed: boolean) => void;
 }
 
 export const INITIAL_STORE = {
+  isBypassed: false,
   appMode: undefined,
   azimuth: DEFAULT_AZIMUTH,
   elevation: DEFAULT_ELEVATION,
@@ -107,6 +110,9 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setSceneType: (newSceneType) => {
         set({ sceneType: newSceneType });
+      },
+      setIsBypassed: (isBypassed) => {
+        set({ isBypassed });
       },
     }),
     {

@@ -52,6 +52,7 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
         '/omnitone-audio',
         '/resonance-audio',
         '/web-api-audio',
+        '/test-result',
       ].includes(pathname)
     ) {
       setIsContextStarted(true);

@@ -1,5 +1,6 @@
 import {
   bigint,
+  boolean,
   pgTable,
   serial,
   smallint,
@@ -17,6 +18,8 @@ export const guessesTable = pgTable('guesses', {
   trueElevation: smallint('trueElevation').notNull(),
   guessedAzimuth: smallint('guessedAzimuth').notNull(),
   guessedElevation: smallint('guessedElevation').notNull(),
+  isBypassed: boolean('isBypassed').default(false),
+  guessedIsBypassed: boolean('guessedIsBypassed').default(false),
   library: text('library').notNull(),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
   updatedAt: timestamp('updatedAt').defaultNow().notNull(),

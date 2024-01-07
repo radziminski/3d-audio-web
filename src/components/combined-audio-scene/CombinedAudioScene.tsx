@@ -6,8 +6,6 @@ import { useTestStore } from '~/store/settings/useTestStore';
 export const CombinedAudioScene = () => {
   const currentLibrary = useTestStore((state) => state.currentLibrary);
 
-  console.log('CURR LIB', currentLibrary);
-
   const { audioRef } = useCompareAudioService(currentLibrary, currentLibrary);
 
   return <AudioScene audioRef={audioRef} title='Combined' />;

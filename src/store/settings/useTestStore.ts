@@ -12,9 +12,11 @@ export type Guess = {
   library: SupportedLibrary;
   guessStart: number;
   guessEnd: number;
+  isBypassed?: boolean;
+  guessedIsBypassed?: boolean;
 };
 
-type Angles = { azimuth: number; elevation: number };
+type Angles = { azimuth: number; elevation: number; isBypassed?: boolean };
 
 interface TestStore {
   guesses: readonly Guess[];

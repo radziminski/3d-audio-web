@@ -224,7 +224,7 @@ export class CompareAudioService extends CommonAudioService {
       return;
     }
 
-    const library = newLibrary || this.defaultLibrary;
+    const library = newLibrary === undefined ? this.defaultLibrary : newLibrary;
 
     try {
       console.log('disconnecting ', this.connectedLibrary);

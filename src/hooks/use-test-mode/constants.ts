@@ -76,4 +76,15 @@ export const TEST_ANGLES = [
     azimuth: 0,
     elevation: -90,
   },
+  // traps
+  {
+    azimuth: 0,
+    elevation: 0,
+    isBypassed: true,
+  },
+  {
+    azimuth: 0,
+    elevation: 0,
+    isBypassed: true,
+  },
 ];

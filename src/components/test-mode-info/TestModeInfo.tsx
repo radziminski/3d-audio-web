@@ -55,11 +55,17 @@ const useStyles = createStyles((theme) => ({
       fontWeight: 600,
     },
   },
-  button: {
+  buttons: {
     position: 'fixed',
     left: '50%',
     bottom: '48px',
     transform: 'translateX(-50%)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+    alignItems: 'center',
+  },
+  button: {
     fontSize: '14px',
     boxShadow: '0 12px 24px rgba(0, 0, 0, 0.2)',
   },
@@ -86,6 +92,16 @@ export const TestModeInfo = () => {
     handleFinishStep();
     notifications.show({
       title: 'Guess saved!',
+      message: 'Sound direction was changed. ',
+      autoClose: 2000,
+    });
+  }, [handleFinishStep, setIsGuessMade]);
+
+  const onMakeBypassedGuess = useCallback(() => {
+    setIsGuessMade(true);
+    handleFinishStep(true);
+    notifications.show({
+      title: 'Guess saved as trap!',
       message: 'Sound direction was changed. ',
       autoClose: 2000,
     });
@@ -145,9 +161,14 @@ export const TestModeInfo = () => {
           ))}
         </div>
       </div>
-      <div className={classes.button}>
-        <Button onClick={onMakeGuess} size='lg'>
-          Make a guess!
+      <div className={classes.buttons}>
+        <div className={classes.button}>
+          <Button onClick={onMakeGuess} size='lg'>
+            Make a guess!
+          </Button>
+        </div>
+        <Button onClick={onMakeBypassedGuess} size='xs'>
+          Mark as not 3D sound (trap)
         </Button>
       </div>
     </>
