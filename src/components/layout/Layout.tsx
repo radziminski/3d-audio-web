@@ -3,8 +3,11 @@ import { Button, Center, createStyles } from '@mantine/core';
 import {
   useContextStore,
   useSettingsStore,
+  useTestId,
+  useTestIdStore,
 } from '../../store/settings/useSettingsStore';
 import { useRouter } from 'next/router';
+import { nanoid } from 'nanoid';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -31,6 +34,8 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
   const setIsContextStarted = useContextStore(
     (state) => state.setIsContextStarted
   );
+  const testId = useTestIdStore((state) => state.testId);
+  const setTestId = useTestIdStore((state) => state.setTestId);
 
   const { classes } = useStyles();
   const { pathname } = useRouter();
@@ -52,6 +57,16 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
       setIsContextStarted(true);
     }
   }, [pathname, setIsContextStarted]);
+
+  useEffect(() => {
+    if (testId === null) {
+      console.log('SETTING TEST ID');
+
+      setTestId(nanoid());
+    } else {
+      console.log('TEST ID ALREADY SET:', testId);
+    }
+  }, [setTestId, testId]);
 
   return (
     <Center

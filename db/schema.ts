@@ -29,3 +29,22 @@ export type Guess = InferSelectModel<typeof guessesTable>;
 export type NewGuess = InferInsertModel<typeof guessesTable>;
 
 export const insertGuessSchema = createInsertSchema(guessesTable);
+
+export const qualityGuessesTable = pgTable('quality', {
+  id: serial('id').primaryKey(),
+  userId: text('userId').notNull(),
+  testId: text('testId').notNull(),
+  library: text('library').notNull(),
+  soundQuality: smallint('soundQuality').notNull(),
+  soundSpatialQuality: smallint('soundSpatialQuality').notNull(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt').defaultNow().notNull(),
+  duration: bigint('duration', { mode: 'number' }),
+  versionSha: text('versionSha').notNull(),
+  os: text('os'),
+});
+
+export type QualityGuess = InferSelectModel<typeof qualityGuessesTable>;
+export type NewQualityGuess = InferInsertModel<typeof qualityGuessesTable>;
+
+export const insertQualityGuessSchema = createInsertSchema(qualityGuessesTable);

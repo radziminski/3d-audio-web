@@ -93,7 +93,7 @@ export default function StereoCheckPage() {
             <div />
             <Button
               onClick={() => {
-                router.push('/preparation/tutorial');
+                router.push('/compare');
               }}
               size='lg'
             >

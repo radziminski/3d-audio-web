@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
 import { useSettingsStore } from '~/store/settings/useSettingsStore'; // Assuming this is the correct import path
@@ -49,7 +49,6 @@ export const useTestMode = () => {
     stepsPerLibrary,
     libraryOrder,
     experimentLibraries,
-    setTestId,
     setCurrentGuessStart: setGuessStart,
     testAngles,
     resetTestAngles,
@@ -69,7 +68,6 @@ export const useTestMode = () => {
     clearCurrentGuess();
     setTestStart(Date.now());
     setGuessStart(Date.now());
-    setTestId(nanoid());
 
     const testa = resetTestAngles();
     setAngles(testa[0].azimuth, testa[0].elevation);
@@ -87,7 +85,6 @@ export const useTestMode = () => {
     clearCurrentGuess,
     setTestStart,
     setGuessStart,
-    setTestId,
     resetTestAngles,
     setAngles,
     setCurrentLibrary,

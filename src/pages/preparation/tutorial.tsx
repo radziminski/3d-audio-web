@@ -19,7 +19,7 @@ const TUTORIAL_STEPS = [
           `The direction of the sound that you hear can be simply described with two angles: <strong>azimuth</strong> and <strong>elevation</strong>.`,
           `<strong>Azimuth:</strong> Imagine a flat circle around you. This is the horizontal plane. The sound can come from any point on this circle. If it's right in front of you, that's 0 degrees. Directly to the right is 90 degrees, behind you is 180 degrees, and to the left is 270 degrees.`,
           `<strong>Elevation:</strong> Now, think of a vertical line that runs from the top of your head to the ground. This is the vertical plane. Sounds can come from above (90 degrees), the same level as your ears (0 degrees), or below you (-90 degrees).`,
-          `You can ignore the distance of the sound in this test.`,
+          `The distance of the sound will be ignored in this test.`,
         ],
       },
     ],
@@ -54,7 +54,8 @@ const TUTORIAL_STEPS = [
         points: [
           `Use the round slider in the bottom right to change the arrow's azimuth (the horizontal direction of the sound).`,
           `The vertical slider next to it adjusts the elevation (the vertical direction).`,
-          `By moving these sliders, you can aim the arrow in any direction around the sitting figure. <strong>You should use it, to point the arrow in the direction you think the sound is coming from.</strong>`,
+          `By moving these sliders, you can aim the arrow in any direction around the sitting figure.`,
+          `In the first step you've used the azimuth and elevation sliders to change sound direction.  Now, <strong>you should use it, to point the arrow in the direction you think the sound is coming from.</strong>`,
         ],
       },
       {
@@ -184,11 +185,26 @@ export default function TutorialPage() {
     <Providers>
       <Layout withScroll>
         <div className={classes.container}>
-          <h1 className={classes.title}>Test tutorial</h1>
+          <h1 className={classes.title}>Guessing sound direction - tutorial</h1>
 
           {tutorialStep === -1 && (
             <>
-              <p className={classes.paragraph}>
+              <Image
+                src={'/dashboard.png'}
+                alt='tutorial image'
+                width={700}
+                height={350}
+                style={{
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  alignSelf: 'center',
+                }}
+                priority
+              />
+              <p className={classes.paragraph} style={{ marginTop: '24px' }}>
+                <strong>
+                  Time for the second (and last) interactive part of the test.{' '}
+                </strong>
                 Get ready to learn how to navigate through the testing platform.
                 This simple step-by-step guide will show you how to guess the
                 direction of sounds in a virtual environment. It wll walk you

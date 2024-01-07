@@ -1,12 +1,54 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useCompareAudioService } from '~/services/audio/hooks/use-compare-audio-service/useCompareAudioService';
 import { AudioSettings } from '../audio-settings/AudioSettings';
-import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { useSettingsStore, useTestId } from '~/store/settings/useSettingsStore';
 import { Button, Tooltip, createStyles } from '@mantine/core';
 import { Slider } from '../slider/Slider';
-import { useQualityStore } from '~/store/settings/useQualityStore';
+import {
+  LibraryQuality,
+  useQualityStore,
+} from '~/store/settings/useQualityStore';
 import { useRouter } from 'next/router';
+import type { NewQualityGuess, QualityGuess } from '../../../db/schema';
+import { VERSION_SHA } from '~/constants';
+import { useUserId } from '~/hooks/use-user-id/useUserId';
+import { useOs } from '@mantine/hooks';
+import { useTestStore } from '~/store/settings/useTestStore';
+import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
+
+async function submitGuesses(
+  guesses: (LibraryQuality & { library: SupportedLibrary })[],
+  userId: string,
+  testId: string,
+  os: string
+): Promise<void> {
+  const apiUrl = '/api/submit-quality-guesses';
+
+  const guessesDto: NewQualityGuess[] = guesses.map((guess) => ({
+    ...guess,
+    soundQuality: guess.soundQuality ?? 0,
+    soundSpatialQuality: guess.soundSpatialQuality ?? 0,
+    userId,
+    testId,
+    versionSha: VERSION_SHA ?? 'unknown',
+    os,
+  }));
+
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(guessesDto),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  console.log('Guesses submitted successfully!');
+}
 
 const useStyles = createStyles(() => ({
   container: {
@@ -62,6 +104,10 @@ const useStyles = createStyles(() => ({
 }));
 
 export const Compare = () => {
+  useTestMode();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const { classes } = useStyles();
   const router = useRouter();
   const setAzimuth = useSettingsStore((state) => state.setAzimuth);
@@ -75,6 +121,37 @@ export const Compare = () => {
     SupportedLibrary | 'js-ambisonics-hoa'
   >();
   const { audioRef } = useCompareAudioService(selectedLibrary);
+
+  const userId = useUserId();
+  const testId = useTestId();
+  const os = useOs();
+
+  const onSubmit = useCallback(async () => {
+    try {
+      setIsLoading(true);
+
+      const quesses = Object.entries(libraryQuality).map(
+        ([library, quality]) =>
+          ({
+            ...quality,
+            library: library as SupportedLibrary,
+          } as const)
+      );
+
+      await submitGuesses(
+        quesses,
+        userId || 'unknown',
+        testId ?? 'unknown',
+        os
+      );
+
+      router.push('/preparation/tutorial');
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [libraryQuality, os, router, testId, userId]);
 
   useEffect(() => {
     setAppMode('playground');
@@ -200,13 +277,8 @@ export const Compare = () => {
       </div>
       <div className={classes.continue}>
         {canContinue ? (
-          <Button
-            size='lg'
-            onClick={() => {
-              router.push('/preparation/tutorial');
-            }}
-          >
-            Continue &rarr;
+          <Button size='lg' onClick={onSubmit}>
+            {isLoading ? 'Loading...' : <>Continue &rarr;</>}
           </Button>
         ) : (
           <Tooltip label='Please rate all libraries to continue'>

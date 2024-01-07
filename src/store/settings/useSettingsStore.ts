@@ -127,3 +127,25 @@ export const useContextStore = create<ContextStore>((set, get) => ({
     set({ isContextStarted: isStarted });
   },
 }));
+
+type TestIdStore = {
+  testId: string | null;
+  setTestId: (testId: string) => void;
+};
+
+export const useTestIdStore = create<TestIdStore>()(
+  persist(
+    (set, get) => ({
+      testId: null,
+      setTestId: (testId: string) => {
+        set({ testId });
+      },
+    }),
+    {
+      name: 'test-id-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
+
+export const useTestId = () => useTestIdStore((state) => state.testId);

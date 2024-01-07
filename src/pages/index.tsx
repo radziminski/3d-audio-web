@@ -1,10 +1,14 @@
 import { Providers } from '~/components/providers/Providers';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import {
+  useSettingsStore,
+  useTestIdStore,
+} from '~/store/settings/useSettingsStore';
 import { Layout } from '~/components/layout/Layout';
 import { Button, createStyles } from '@mantine/core';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
+import { nanoid } from 'nanoid';
 
 const useStyles = createStyles(() => ({
   container: {
@@ -40,6 +44,8 @@ export default function Home() {
   const isClientRender = useClientRender();
 
   const { classes } = useStyles();
+
+  const { setTestId } = useTestIdStore();
 
   useEffect(() => {
     resetStore();
@@ -99,15 +105,26 @@ export default function Home() {
               various audio tracks, each offering a unique 3D sound experience.
             </div>
             <div>
-              <span>3. Discover Sound Directions:</span>{' '}
+              <span>3. Evaluate sound quality:</span> Firstly, you will be asked
+              to play around with each selected technology and evaluate its
+              quality and effectivness.
+            </div>
+            <div>
+              <span>4. Discover Sound Directions:</span>{' '}
               <u>
-                Your task is simply to identify where the sound seems to be
+                Later, your task will be to identify where the sound seems to be
                 coming from. Is it above, below, behind, or maybe right in front
                 of you?
               </u>
             </div>
           </p>
-          <Button size='md' onClick={() => router.push('/preparation')}>
+          <Button
+            size='md'
+            onClick={() => {
+              setTestId(nanoid());
+              router.push('/preparation');
+            }}
+          >
             Let&apos;s begin!
           </Button>
         </div>

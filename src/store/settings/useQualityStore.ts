@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 
-interface LibraryQuality {
+export interface LibraryQuality {
   soundQuality: number | undefined;
   soundSpatialQuality: number | undefined;
 }
@@ -61,7 +61,7 @@ export const useQualityStore = create<QualityStore>()(
       },
     }),
     {
-      name: 'settings-storage',
+      name: 'quality-storage',
       storage: createJSONStorage(() => sessionStorage),
     }
   )

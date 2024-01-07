@@ -29,7 +29,6 @@ interface TestStore {
   testStart: number;
   testEnd: number;
   currentGuessStart: number;
-  testId: string | undefined;
   testAngles: Angles[];
   isStereoCorrect: boolean;
   isGuessMade: boolean;
@@ -50,7 +49,6 @@ interface TestStore {
   setCurrentLibrary: (library: SupportedLibrary) => void;
   setIsTestFinished: (isTestFinished: boolean) => void;
   clearCurrentGuess: () => void;
-  setTestId: (testId: string) => void;
   setIsStereoCorrect: () => void;
   setIsGuessMade(isGuessMade: boolean): void;
   resetTestAngles: () => Angles[];
@@ -74,7 +72,6 @@ export const INITIAL_STORE = {
   testStart: 0,
   testEnd: 0,
   currentGuessStart: 0,
-  testId: undefined,
   testAngles: TEST_ANGLES as Angles[],
   isStereoCorrect: false,
   isGuessMade: false,
@@ -136,9 +133,6 @@ export const useTestStore = create<TestStore>()(
       },
       clearCurrentGuess: () => {
         set({ azimuthGuess: 0, elevationGuess: 0 });
-      },
-      setTestId: (testId) => {
-        set({ testId });
       },
       setIsStereoCorrect: () => {
         set({ isStereoCorrect: true });

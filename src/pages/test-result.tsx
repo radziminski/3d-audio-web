@@ -15,6 +15,7 @@ import { useOs } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 import { Layout } from '~/components/layout/Layout';
+import { useTestId } from '~/store/settings/useSettingsStore';
 
 const cell = {
   padding: '8px',
@@ -147,7 +148,7 @@ export default function TestResultPage() {
   );
 
   const userId = useUserId();
-  const testId = useTestStore((state) => state.testId);
+  const testId = useTestId();
 
   useEffect(() => {
     if (userId && testId && !areGuessesSubmitted.current) {
