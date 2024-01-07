@@ -31,6 +31,22 @@ const useStyles = createStyles((theme) => ({
     bottom: '48px',
     backdropFilter: 'blur(30px)',
   },
+  dialogNotFixed: {
+    background:
+      'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
+    borderRadius: '12px',
+    maxWidth: 650,
+    maxHeight: 280,
+    width: '100%',
+    height: '100%',
+    padding: '64px 48px',
+    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.04)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backdropFilter: 'blur(30px)',
+  },
   dialogNarrow: {
     background:
       'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
@@ -103,11 +119,13 @@ const useStyles = createStyles((theme) => ({
 type AudioSettingsProps = {
   isInsideView?: boolean;
   audioRef?: RefObject<HTMLAudioElement>;
+  disableFixedPosition?: boolean;
 };
 
 export const AudioSettings = ({
   isInsideView = false,
   audioRef,
+  disableFixedPosition = false,
 }: AudioSettingsProps) => {
   const mode = useSettingsStore((state) => state.appMode);
   const isGuessingMode = mode === 'guess' || mode === 'test';
@@ -150,7 +168,15 @@ export const AudioSettings = ({
   }, [audioRef, isInsideView]);
 
   return (
-    <div className={isInsideView ? classes.dialogNarrow : classes.dialog}>
+    <div
+      className={
+        disableFixedPosition
+          ? classes.dialogNotFixed
+          : isInsideView
+          ? classes.dialogNarrow
+          : classes.dialog
+      }
+    >
       <div className={classes.settings}>
         {!isInsideView && (
           <div className={classes.settingsColumn}>

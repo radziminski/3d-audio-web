@@ -3,8 +3,27 @@ import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedire
 import { useCompareAudioService } from '~/services/audio/hooks/use-compare-audio-service/useCompareAudioService';
 import { AudioSettings } from '../audio-settings/AudioSettings';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { Button, createStyles } from '@mantine/core';
+
+const useStyles = createStyles(() => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '64px',
+  },
+  buttons: {
+    display: 'flex',
+    gap: '24px',
+  },
+}));
 
 export const Compare = () => {
+  const [isReady, setIsReady] = useState(false);
+
+  const { classes } = useStyles();
+  const setAzimuth = useSettingsStore((state) => state.setAzimuth);
+  const setElevation = useSettingsStore((state) => state.setElevation);
   const setAppMode = useSettingsStore((state) => state.setAppMode);
 
   const [selectedLibrary, setSelectedLibrary] = useState<
@@ -14,23 +33,38 @@ export const Compare = () => {
 
   useEffect(() => {
     setAppMode('playground');
-  }, [setAppMode]);
+    setElevation(0);
+    setAzimuth(0);
+    setIsReady(true);
+  }, [setAppMode, setAzimuth, setElevation]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
-    <div>
-      <button onClick={() => setSelectedLibrary('web-api')}>
-        Web Audio API
-      </button>
-      <button onClick={() => setSelectedLibrary('js-ambisonics')}>
-        JS Ambisonics
-      </button>
-      <button onClick={() => setSelectedLibrary('js-ambisonics-hoa')}>
-        JS Ambisonics Hoa
-      </button>
-      <button onClick={() => setSelectedLibrary('resonance')}>Resonance</button>
-      <button onClick={() => setSelectedLibrary('omnitone')}>Omnitone</button>
-
-      <AudioSettings audioRef={audioRef} />
+    <div className={classes.container}>
+      <div className={classes.buttons}>
+        {(
+          [
+            undefined,
+            'web-api',
+            'js-ambisonics',
+            'js-ambisonics-hoa',
+            'resonance',
+            'omnitone',
+          ] as const
+        ).map((library) => (
+          <Button
+            key={library}
+            onClick={() => setSelectedLibrary(library)}
+            color={selectedLibrary === library ? 'red' : undefined}
+          >
+            {library ?? 'Bypass'}
+          </Button>
+        ))}
+      </div>
+      <AudioSettings audioRef={audioRef} disableFixedPosition />
     </div>
   );
 };

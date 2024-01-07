@@ -62,7 +62,7 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
-        audioService?.connectAudioSource(selectedLibrary);
+        audioService?.connectAudioSource(selectedLibrary ?? null);
       }
     );
   }, [selectedLibrary]);

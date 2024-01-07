@@ -170,10 +170,6 @@ export class CompareAudioService extends CommonAudioService {
 
   private disconnectConnectedLibrary() {
     switch (this.connectedLibrary) {
-      case undefined: {
-        return;
-      }
-
       case null: {
         this.audioSource?.disconnect(this.gainNode);
         return;
@@ -218,13 +214,11 @@ export class CompareAudioService extends CommonAudioService {
       return;
     }
 
-    console.log('disconnection library', this.connectedLibrary);
-
-    this.disconnectConnectedLibrary();
+    try {
+      this.disconnectConnectedLibrary();
+    } catch {}
 
     this.connectedLibrary = library;
-
-    console.log('connecting library', library);
 
     if (!library) {
       this.audioSource?.connect(this.gainNode);
