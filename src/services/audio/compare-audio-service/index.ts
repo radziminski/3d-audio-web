@@ -175,6 +175,11 @@ export class CompareAudioService extends CommonAudioService {
         return;
       }
 
+      case undefined: {
+        this.audioSource?.disconnect(this.gainNode);
+        return;
+      }
+
       case 'js-ambisonics': {
         this.audioSource?.disconnect(this.encoder.in);
 
@@ -215,8 +220,16 @@ export class CompareAudioService extends CommonAudioService {
     }
 
     try {
+      console.log('disconnecting ', this.connectedLibrary);
       this.disconnectConnectedLibrary();
-    } catch {}
+      console.log('disconnected successfully');
+    } catch {
+      console.log('error while disconnecting');
+    }
+
+    console.log();
+    console.log('connecting ', library);
+    console.log('audio source', this.audioSource);
 
     this.connectedLibrary = library;
 
@@ -245,6 +258,8 @@ export class CompareAudioService extends CommonAudioService {
     }
 
     this.setDirection({ azimuth: this.azimuth, elevation: this.elevation });
+
+    console.log('connecting success');
   }
 
   public setDirection({ azimuth, elevation }: SpatialDirection): void {
@@ -256,7 +271,7 @@ export class CompareAudioService extends CommonAudioService {
       this.elevation = elevation;
     }
 
-    console.log('setting', azimuth, elevation);
+    console.log('setting', this.connectedLibrary, this.azimuth, this.elevation);
 
     if (this.connectedLibrary === 'js-ambisonics') {
       this.encoder.azim = -this.azimuth;

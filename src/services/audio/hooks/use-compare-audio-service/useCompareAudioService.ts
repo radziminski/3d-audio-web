@@ -28,6 +28,7 @@ export const useCompareAudioService = (
           const audioService = CompareAudioService.getInstance();
 
           if (audioService?.isAudioElementLinked()) {
+            console.log('Audio element already linked');
             return;
           }
 
@@ -35,7 +36,7 @@ export const useCompareAudioService = (
         }
       }
     );
-  }, []);
+  }, [audioRef.current]);
 
   useEffect(() => {
     import('~/services/audio/compare-audio-service').then(

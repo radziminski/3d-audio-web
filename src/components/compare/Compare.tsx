@@ -19,8 +19,6 @@ const useStyles = createStyles(() => ({
 }));
 
 export const Compare = () => {
-  const [isReady, setIsReady] = useState(false);
-
   const { classes } = useStyles();
   const setAzimuth = useSettingsStore((state) => state.setAzimuth);
   const setElevation = useSettingsStore((state) => state.setElevation);
@@ -35,12 +33,7 @@ export const Compare = () => {
     setAppMode('playground');
     setElevation(0);
     setAzimuth(0);
-    setIsReady(true);
   }, [setAppMode, setAzimuth, setElevation]);
-
-  if (!isReady) {
-    return null;
-  }
 
   return (
     <div className={classes.container}>
