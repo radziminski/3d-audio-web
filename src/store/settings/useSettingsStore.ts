@@ -22,7 +22,6 @@ interface SettingsState {
   audioSource: string;
   sceneType: SceneType;
   reset: () => void;
-  setIsContextStarted: (isStarted: boolean) => void;
   setAppMode: (mode: AppMode) => void;
   setAzimuth: (newAzimuth: number) => void;
   setElevation: (newElevation: number) => void;

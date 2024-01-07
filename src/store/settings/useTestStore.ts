@@ -54,7 +54,6 @@ interface TestStore {
   setIsStereoCorrect: () => void;
   setIsGuessMade(isGuessMade: boolean): void;
   resetTestAngles: () => Angles[];
-  setDefaultTestConfig: () => void;
 }
 
 export const INITIAL_STORE = {
