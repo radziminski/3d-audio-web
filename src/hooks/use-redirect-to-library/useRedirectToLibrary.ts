@@ -5,8 +5,7 @@ export type SupportedLibrary =
   | 'resonance'
   | 'web-api'
   | 'omnitone'
-  | 'js-ambisonics'
-  | 'js-ambisonics-hoa';
+  | 'js-ambisonics';
 
 export const useRedirectToLibrary = () => {
   const router = useRouter();
@@ -53,9 +52,9 @@ export const useRedirectToLibrary = () => {
     if (!isJsAmbisonics) {
       return;
     }
-    import('~/services/audio/js-ambisonics').then(
-      ({ JsAmbisonicsAudioService }) => {
-        (window as any).as = JsAmbisonicsAudioService.getInstance(true);
+    import('~/services/audio/js-ambisonics-hoa').then(
+      ({ JsAmbisonicsHoaAudioService }) => {
+        (window as any).as = JsAmbisonicsHoaAudioService.getInstance(true);
         router.push('./js-ambisonics-audio');
       }
     );

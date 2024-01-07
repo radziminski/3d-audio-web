@@ -117,9 +117,7 @@ export const Compare = () => {
   const libraryQuality = useQualityStore((state) => state.libraryQuality);
   const setLibraryQuality = useQualityStore((state) => state.setLibraryQuality);
 
-  const [selectedLibrary, setSelectedLibrary] = useState<
-    SupportedLibrary | 'js-ambisonics-hoa'
-  >();
+  const [selectedLibrary, setSelectedLibrary] = useState<SupportedLibrary>();
   const { audioRef } = useCompareAudioService(selectedLibrary);
 
   const userId = useUserId();
@@ -198,7 +196,6 @@ export const Compare = () => {
             { label: 'Original Sound', value: undefined },
             { label: 'Technology 1', value: 'web-api' },
             { label: 'Technology 2', value: 'js-ambisonics' },
-            { label: 'Technology 3', value: 'js-ambisonics-hoa' },
             { label: 'Technology 4', value: 'resonance' },
             { label: 'Technology 5', value: 'omnitone' },
           ] as const

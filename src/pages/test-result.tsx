@@ -255,7 +255,7 @@ export default function TestResultPage() {
               ))}
             </div>
 
-            <Button onClick={() => window.location.assign('/test')}>
+            <Button onClick={() => window.location.assign('/')}>
               Start new test
             </Button>
           </div>

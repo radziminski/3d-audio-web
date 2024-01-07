@@ -34,10 +34,6 @@ export const INITIAL_STORE = {
       soundQuality: undefined,
       soundSpatialQuality: undefined,
     },
-    'js-ambisonics-hoa': {
-      soundQuality: undefined,
-      soundSpatialQuality: undefined,
-    },
   },
 } as const;
 
