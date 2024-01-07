@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../../db';
-import { Guess, guessesTable } from '../../../db/schema';
+import { QualityGuess, qualityGuessesTable } from '../../../db/schema';
 import { and, eq, or } from 'drizzle-orm';
 
-type ResponseDto = Guess[];
+type ResponseDto = QualityGuess[];
 
 const getCondition = (condition: string | string[], column: any) => {
   if (Array.isArray(condition)) {
@@ -18,48 +18,38 @@ const getCondition = (condition: string | string[], column: any) => {
   return eq(column, condition);
 };
 
-export const retrieveGuesses = async (req: NextApiRequest) => {
+export const retrieveQualityGuesses = async (req: NextApiRequest) => {
   const testId = req.query.testId as string;
   const userId = req.query.userId as string;
   const library = req.query.library as string;
-  const trueAzimuth = req.query.trueAzimuth as string;
-  const trueElevation = req.query.trueElevation as string;
   const versionSha = req.query.versionSha as string;
 
   const conditions = [];
 
   if (testId) {
-    conditions.push(getCondition(testId, guessesTable.testId));
+    conditions.push(getCondition(testId, qualityGuessesTable.testId));
   }
 
   if (userId) {
-    conditions.push(getCondition(userId, guessesTable.userId));
+    conditions.push(getCondition(userId, qualityGuessesTable.userId));
   }
 
   if (library) {
-    conditions.push(getCondition(library, guessesTable.library));
-  }
-
-  if (trueAzimuth) {
-    conditions.push(getCondition(trueAzimuth, guessesTable.trueAzimuth));
-  }
-
-  if (trueElevation) {
-    conditions.push(getCondition(trueElevation, guessesTable.trueElevation));
+    conditions.push(getCondition(library, qualityGuessesTable.library));
   }
 
   if (versionSha) {
-    conditions.push(getCondition(versionSha, guessesTable.versionSha));
+    conditions.push(getCondition(versionSha, qualityGuessesTable.versionSha));
   }
 
-  const guesses = await db.query.guessesTable.findMany({
+  const guesses = await db.query.qualityGuessesTable.findMany({
     where: and(...conditions),
   });
 
   return guesses;
 };
 
-const retrieveGuessesHandler = async (
+const retrieveQualityGuessesHandler = async (
   req: NextApiRequest,
   res: NextApiResponse<ResponseDto>
 ) => {
@@ -69,9 +59,9 @@ const retrieveGuessesHandler = async (
     return;
   }
 
-  const guesses = await retrieveGuesses(req);
+  const guesses = await retrieveQualityGuesses(req);
 
   res.status(200).json(guesses);
 };
 
-export default retrieveGuessesHandler;
+export default retrieveQualityGuessesHandler;

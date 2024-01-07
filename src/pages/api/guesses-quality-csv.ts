@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { retrieveGuesses } from './guesses';
 import fs from 'fs';
 import { createObjectCsvWriter } from 'csv-writer';
+import { retrieveQualityGuesses } from './guesses-quality';
 
-const retrieveGuessesCsvHandler = async (
+const retrieveQualityGuessesCsvHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -13,7 +13,7 @@ const retrieveGuessesCsvHandler = async (
     return;
   }
 
-  const guesses = await retrieveGuesses(req);
+  const guesses = await retrieveQualityGuesses(req);
 
   const path = '/tmp/data.csv';
 
@@ -24,13 +24,11 @@ const retrieveGuessesCsvHandler = async (
       { id: 'userId', title: 'UserID' },
       { id: 'testId', title: 'TestID' },
       { id: 'library', title: 'library' },
-      { id: 'trueAzimuth', title: 'trueAzimuth' },
-      { id: 'trueElevation', title: 'trueElevation' },
-      { id: 'guessedAzimuth', title: 'guessedAzimuth' },
-      { id: 'guessedElevation', title: 'guessedElevation' },
-      { id: 'os', title: 'os' },
-      { id: 'versionSha', title: 'versionSha' },
+      { id: 'soundQuality', title: 'soundQuality' },
+      { id: 'soundSpatialQuality', title: 'soundSpatialQuality' },
       { id: 'duration', title: 'duration' },
+      { id: 'versionSha', title: 'versionSha' },
+      { id: 'os', title: 'os' },
     ],
   });
 
@@ -52,4 +50,4 @@ const retrieveGuessesCsvHandler = async (
     });
 };
 
-export default retrieveGuessesCsvHandler;
+export default retrieveQualityGuessesCsvHandler;
