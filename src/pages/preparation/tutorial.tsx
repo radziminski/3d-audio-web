@@ -209,8 +209,8 @@ export default function TutorialPage() {
               <Image
                 src={'/dashboard.png'}
                 alt='tutorial image'
-                width={700}
-                height={350}
+                width={820}
+                height={420}
                 style={{
                   objectFit: 'contain',
                   objectPosition: 'center',
@@ -236,8 +236,8 @@ export default function TutorialPage() {
               <Image
                 src={currentStep.image}
                 alt='tutorial image'
-                width={700}
-                height={350}
+                width={820}
+                height={420}
                 style={{
                   objectFit: 'contain',
                   objectPosition: 'center',
