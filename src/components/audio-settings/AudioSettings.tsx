@@ -1,7 +1,13 @@
 import { createStyles } from '@mantine/core';
 import { Slider } from '~/components/slider/Slider';
 import { CircularSlider } from '~/components/circular-slider/CircularSlider';
-import { RefObject, useLayoutEffect, useState } from 'react';
+import {
+  RefObject,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import {
   DEFAULT_ELEVATION,
@@ -150,6 +156,7 @@ export const AudioSettings = ({
   const guessedAzimuth = useTestStore((state) => state.azimuthGuess);
   const guessedElevation = useTestStore((state) => state.elevationGuess);
   const isGuessMade = useTestStore((state) => state.isGuessMade);
+  const currentStep = useTestStore((state) => state.currentStep);
 
   useLayoutEffect(() => {
     const listener = (event: KeyboardEvent) => {
@@ -167,6 +174,34 @@ export const AudioSettings = ({
 
     return () => window.removeEventListener('keydown', listener);
   }, [audioRef, isInsideView]);
+
+  const appMode = useSettingsStore(({ appMode }) => appMode);
+  const setLastSample = useTestStore(({ setLastSample }) => setLastSample);
+  const addUsedSample = useTestStore(({ addUsedSample }) => addUsedSample);
+
+  const handlePlay = useCallback(() => {
+    if (appMode === 'test') {
+      console.log('setting source', audioSource);
+      setLastSample(audioSource);
+      addUsedSample(audioSource);
+    }
+  }, [addUsedSample, appMode, audioSource, setLastSample]);
+
+  useLayoutEffect(() => {
+    if (
+      appMode === 'test' &&
+      audioRef?.current &&
+      !audioRef.current.paused &&
+      !audioRef.current.ended &&
+      audioRef.current.currentTime > 0
+    ) {
+      console.log('setting source', audioSource);
+      setLastSample(audioSource);
+      addUsedSample(audioSource);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appMode, addUsedSample, audioRef, currentStep, setLastSample]);
 
   return (
     <div
@@ -208,7 +243,13 @@ export const AudioSettings = ({
           <div className={classes.select}>
             <AudioSourceSelect />
           </div>
-          <audio controls src={audioSource} ref={audioRef} loop />
+          <audio
+            onPlay={handlePlay}
+            controls
+            src={audioSource}
+            ref={audioRef}
+            loop
+          />
           {/* {!isInsideView && (
             <Slider
               min={MIN_ELEVATION}

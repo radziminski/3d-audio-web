@@ -45,6 +45,7 @@ export const useTestMode = () => {
     setTestStart,
     setTestEnd,
     resetUsedSamples,
+    setLastSample,
     currentGuessStart,
     currentLibrary,
     currentStep,
@@ -130,6 +131,7 @@ export const useTestMode = () => {
       });
 
       resetUsedSamples();
+      setLastSample(undefined);
 
       setGuessStart(now);
 
@@ -184,6 +186,7 @@ export const useTestMode = () => {
       lastSample,
       libraryOrder,
       resetTestAngles,
+      resetUsedSamples,
       setAngles,
       setCurrentLibrary,
       setGuessStart,

@@ -57,7 +57,7 @@ interface TestStore {
   clearCurrentGuess: () => void;
   setIsStereoCorrect: () => void;
   setIsGuessMade(isGuessMade: boolean): void;
-  setLastSample(lastSample: string): void;
+  setLastSample(lastSample: string | undefined): void;
   addUsedSample(usedSample: string): void;
   resetUsedSamples(): void;
   resetTestAngles: () => Angles[];
@@ -199,8 +199,7 @@ export const useTestStore = create<TestStore>()(
         }
       },
       resetUsedSamples: () => {
-        const lastSample = get().lastSample;
-        set({ usedSamples: lastSample ? [lastSample] : [] });
+        set({ usedSamples: [] });
       },
     }),
     {
