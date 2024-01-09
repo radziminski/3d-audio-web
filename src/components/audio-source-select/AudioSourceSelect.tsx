@@ -31,6 +31,8 @@ export const AudioSourceSelect = ({ onChange }: AudioSourceSelectProps) => {
       }}
       data={[
         { value: '/sine.ogg', label: 'Sine' },
+        { value: '/bicycle-bells.mp3', label: 'Bicycle bells' },
+        { value: '/pink-noise.mp3', label: 'Pink noise' },
         { value: '/guitar.mp3', label: 'Guitar' },
         { value: '/test.mp3', label: 'Full Song' },
         { value: '/female-voice.mp3', label: 'Female voice' },

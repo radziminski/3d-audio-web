@@ -196,8 +196,8 @@ export const Compare = () => {
             { label: 'Original Sound', value: undefined },
             { label: 'Technology 1', value: 'web-api' },
             { label: 'Technology 2', value: 'js-ambisonics' },
-            { label: 'Technology 4', value: 'resonance' },
-            { label: 'Technology 5', value: 'omnitone' },
+            { label: 'Technology 3', value: 'resonance' },
+            { label: 'Technology 4', value: 'omnitone' },
           ] as const
         ).map(({ label, value }) => (
           <Button
