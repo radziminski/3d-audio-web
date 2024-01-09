@@ -1,5 +1,7 @@
 import { Select, createStyles } from '@mantine/core';
+import { useEffect } from 'react';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles((theme) => ({
   label: {
@@ -16,6 +18,17 @@ export const AudioSourceSelect = ({ onChange }: AudioSourceSelectProps) => {
 
   const setAudioSrc = useSettingsStore(({ setAudioSource }) => setAudioSource);
   const audioSource = useSettingsStore(({ audioSource }) => audioSource);
+
+  const appMode = useSettingsStore(({ appMode }) => appMode);
+  const setLastSample = useTestStore(({ setLastSample }) => setLastSample);
+  const addUsedSample = useTestStore(({ addUsedSample }) => addUsedSample);
+
+  useEffect(() => {
+    if (appMode === 'test') {
+      setLastSample(audioSource);
+      addUsedSample(audioSource);
+    }
+  }, [addUsedSample, appMode, audioSource, setLastSample]);
 
   return (
     <Select

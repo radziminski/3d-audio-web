@@ -1,6 +1,7 @@
 import {
   bigint,
   boolean,
+  json,
   pgTable,
   serial,
   smallint,
@@ -21,6 +22,8 @@ export const guessesTable = pgTable('guesses', {
   isBypassed: boolean('isBypassed').default(false),
   guessedIsBypassed: boolean('guessedIsBypassed').default(false),
   library: text('library').notNull(),
+  lastSample: text('lastSample'),
+  usedSamples: json('usedSamples').$type<string[]>(),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
   updatedAt: timestamp('updatedAt').defaultNow().notNull(),
   duration: bigint('duration', { mode: 'number' }),

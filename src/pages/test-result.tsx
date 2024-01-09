@@ -1,5 +1,5 @@
 import { Button, Center, createStyles } from '@mantine/core';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Providers } from '~/components/providers/Providers';
 import { Guess, useTestStore } from '~/store/settings/useTestStore';
 import { roundToDecimal } from '../helpers/math/roundToDecimal';
@@ -99,7 +99,7 @@ async function submitGuesses(
   userId: string,
   testId: string,
   os: string
-): Promise<void> {
+): Promise<boolean> {
   const apiUrl = '/api/submit-guesses';
 
   try {
@@ -130,8 +130,12 @@ async function submitGuesses(
     }
 
     console.log('Guesses submitted successfully!');
+
+    return true;
   } catch (error) {
     console.error('Error:', error);
+
+    return false;
   }
 }
 
@@ -139,6 +143,7 @@ export default function TestResultPage() {
   const areGuessesSubmitted = useRef(false);
   const router = useRouter();
   const isClientRender = useClientRender();
+  const [isSubmitError, setIsSubmitError] = useState(false);
 
   const os = useOs({ getValueInEffect: true });
 
@@ -152,6 +157,32 @@ export default function TestResultPage() {
   const userId = useUserId();
   const testId = useTestId();
 
+  const handleSubmit = useCallback(() => {
+    if (!userId || !testId) return;
+
+    submitGuesses(guesses, userId, testId, os).then((isSuccess) => {
+      if (!isSuccess) {
+        notifications.show({
+          title: '🚨 Test results submission failed',
+          message: 'Please try again later',
+          autoClose: 10000,
+        });
+
+        setIsSubmitError(true);
+
+        return;
+      }
+
+      notifications.show({
+        title: 'Test submitted successfully 🎉',
+        message: 'You can now safely leave the site',
+        autoClose: 10000,
+      });
+      setIsSubmitError(false);
+    });
+    areGuessesSubmitted.current = true;
+  }, [guesses, os, testId, userId]);
+
   useEffect(() => {
     if (userId && testId && !areGuessesSubmitted.current) {
       notifications.show({
@@ -160,16 +191,9 @@ export default function TestResultPage() {
         autoClose: 3000,
       });
 
-      submitGuesses(guesses, userId, testId, os).then(() => {
-        notifications.show({
-          title: 'Test submitted successfully 🎉',
-          message: 'You can now safely leave the site',
-          autoClose: 10000,
-        });
-      });
-      areGuessesSubmitted.current = true;
+      handleSubmit();
     }
-  }, [guesses, os, testId, userId]);
+  }, [guesses, handleSubmit, os, testId, userId]);
 
   return (
     <Providers>
@@ -185,6 +209,23 @@ export default function TestResultPage() {
               are crucial in shaping the future of immersive audio experiences.
               Feel free to share your experience with friends and family! 🙌
             </p>
+            {isSubmitError && (
+              <div
+                style={{
+                  maxWidth: 600,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                }}
+              >
+                <h3>
+                  There was a problem with submitting results. Please make sure
+                  you have internet connection and try again:
+                </h3>
+                <Button onClick={handleSubmit}>🚀 Submit results</Button>
+              </div>
+            )}
             <p>
               Your testId: {testId} <br />
               Your userId: {userId} <br />

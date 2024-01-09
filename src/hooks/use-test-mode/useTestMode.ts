@@ -44,6 +44,7 @@ export const useTestMode = () => {
     clearCurrentGuess,
     setTestStart,
     setTestEnd,
+    resetUsedSamples,
     currentGuessStart,
     currentLibrary,
     currentStep,
@@ -52,6 +53,8 @@ export const useTestMode = () => {
     experimentLibraries,
     setCurrentGuessStart: setGuessStart,
     testAngles,
+    lastSample,
+    usedSamples,
     resetTestAngles,
   } = useTestStore();
 
@@ -61,6 +64,7 @@ export const useTestMode = () => {
     setAppMode('test');
     setIsTestFinished(false);
     setCurrentStep(0);
+    resetUsedSamples();
 
     const randomLibraryOrder = shuffleArray([...experimentLibraries]);
     setLibraryOrder(randomLibraryOrder);
@@ -83,6 +87,7 @@ export const useTestMode = () => {
     setAppMode,
     setIsTestFinished,
     setCurrentStep,
+    resetUsedSamples,
     experimentLibraries,
     setLibraryOrder,
     clearGuesses,
@@ -120,7 +125,11 @@ export const useTestMode = () => {
         library: currentLibrary,
         guessStart: currentGuessStart,
         guessEnd: now,
+        lastSample,
+        usedSamples,
       });
+
+      resetUsedSamples();
 
       setGuessStart(now);
 
@@ -172,6 +181,7 @@ export const useTestMode = () => {
       guessedElevation,
       handleFinishTest,
       incrementStep,
+      lastSample,
       libraryOrder,
       resetTestAngles,
       setAngles,
@@ -183,6 +193,7 @@ export const useTestMode = () => {
       trueAzimuth,
       trueElevation,
       trueIsBypassed,
+      usedSamples,
     ]
   );
 

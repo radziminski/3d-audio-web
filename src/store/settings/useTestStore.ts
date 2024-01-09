@@ -14,6 +14,8 @@ export type Guess = {
   guessEnd: number;
   isBypassed?: boolean;
   guessedIsBypassed?: boolean;
+  lastSample?: string;
+  usedSamples?: string[];
 };
 
 type Angles = { azimuth: number; elevation: number; isBypassed?: boolean };
@@ -34,6 +36,8 @@ interface TestStore {
   testAngles: Angles[];
   isStereoCorrect: boolean;
   isGuessMade: boolean;
+  lastSample: string | undefined;
+  usedSamples: string[];
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -53,6 +57,9 @@ interface TestStore {
   clearCurrentGuess: () => void;
   setIsStereoCorrect: () => void;
   setIsGuessMade(isGuessMade: boolean): void;
+  setLastSample(lastSample: string): void;
+  addUsedSample(usedSample: string): void;
+  resetUsedSamples(): void;
   resetTestAngles: () => Angles[];
 }
 
@@ -64,7 +71,7 @@ export const INITIAL_STORE = {
     'resonance',
     'omnitone',
     'js-ambisonics',
-  ] as const,
+  ] as const satisfies SupportedLibrary[],
   libraryOrder: ['web-api', 'resonance', 'omnitone', 'js-ambisonics'] as const,
   azimuthGuess: 0,
   elevationGuess: 0,
@@ -77,6 +84,8 @@ export const INITIAL_STORE = {
   testAngles: TEST_ANGLES as Angles[],
   isStereoCorrect: false,
   isGuessMade: false,
+  lastSample: undefined,
+  usedSamples: [],
 };
 
 export const useTestStore = create<TestStore>()(
@@ -178,6 +187,20 @@ export const useTestStore = create<TestStore>()(
         set({ testAngles: angles });
 
         return angles;
+      },
+      setLastSample: (lastSample) => {
+        set({ lastSample });
+      },
+      addUsedSample: (usedSample) => {
+        const currentSamples = get().usedSamples;
+
+        if (!currentSamples.includes(usedSample)) {
+          set({ usedSamples: [...currentSamples, usedSample] });
+        }
+      },
+      resetUsedSamples: () => {
+        const lastSample = get().lastSample;
+        set({ usedSamples: lastSample ? [lastSample] : [] });
       },
     }),
     {
