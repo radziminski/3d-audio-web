@@ -71,7 +71,7 @@ export const INITIAL_STORE = {
     'resonance',
     'omnitone',
     'js-ambisonics',
-  ] as const satisfies SupportedLibrary[],
+  ] as const satisfies readonly SupportedLibrary[],
   libraryOrder: ['web-api', 'resonance', 'omnitone', 'js-ambisonics'] as const,
   azimuthGuess: 0,
   elevationGuess: 0,
