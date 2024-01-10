@@ -150,7 +150,9 @@ export class CompareAudioService extends CommonAudioService {
     this.hoaLoader = new HOAloader(
       this.audioContext,
       3,
-      'IRs/ambisonic2binaural_filters/HOA3_BRIRs-medium.wav',
+      // 'IRs/ambisonic2binaural_filters/HOA3_BRIRs-medium.wav',
+      // 'IRs/ambisonic2binaural_filters/HOA3_IRC_1008_virtual.wav',
+      'IRs/ambisonic2binaural_filters/aalto2016_N3.wav',
       (audioBuffer: AudioBuffer) => this.hoaDecoder.updateFilters(audioBuffer)
     );
     this.hoaLoader.load();
