@@ -224,6 +224,7 @@ export const Compare = () => {
             <h4 className={classes.sliderLabel}>Sounds Terrible</h4>
             <div className={classes.slider}>
               <Slider
+                defaultValue={5}
                 key={`${visibleLibrary}-quality-slider`}
                 value={currentQualityValue ?? 5}
                 onChange={(value) => {
@@ -252,6 +253,7 @@ export const Compare = () => {
             </h4>
             <div className={classes.slider}>
               <Slider
+                defaultValue={5}
                 key={`${visibleLibrary}-spatial-slider`}
                 value={currentSpatialQualityValue ?? 5}
                 onChange={(value) => {

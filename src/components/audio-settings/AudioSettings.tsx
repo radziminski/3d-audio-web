@@ -267,7 +267,7 @@ export const AudioSettings = ({
             label='Volume'
             min={0}
             max={100}
-            defaultValue={100}
+            defaultValue={75}
             value={gain}
           />
           {!isInsideView && (
@@ -276,6 +276,13 @@ export const AudioSettings = ({
                 position: 'absolute',
                 left: '-50px',
                 top: '0px',
+              }}
+              onDoubleClick={() => {
+                const fn = isGuessingMode
+                  ? setGuessedElevation
+                  : onElevationChange;
+
+                fn(DEFAULT_ELEVATION);
               }}
             >
               <input

@@ -22,7 +22,15 @@ export const Slider = ({ label, ...props }: SliderProps) => {
   const { classes } = useStyles();
 
   return (
-    <div className={classes.slider}>
+    <div
+      className={classes.slider}
+      onDoubleClick={() => {
+        console.log(props.defaultValue);
+        if (props.defaultValue) {
+          props.onChange?.(props.defaultValue);
+        }
+      }}
+    >
       <h2 className={classes.sliderTitle}>{label}</h2>
       <MantineSlider
         defaultValue={40}
