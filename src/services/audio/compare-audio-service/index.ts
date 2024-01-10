@@ -18,12 +18,14 @@ export class CompareAudioService extends CommonAudioService {
   private connectedLibrary:
     | SupportedLibrary
     | 'js-ambisonics-foa'
+    | 'stereo-panner'
     | null
     | undefined;
 
   private defaultLibrary:
     | SupportedLibrary
     | 'js-ambisonics-foa'
+    | 'stereo-panner'
     | null
     | undefined;
 
@@ -61,6 +63,9 @@ export class CompareAudioService extends CommonAudioService {
   private roomDimensions = roomDimensions;
   private roomMaterials = roomMaterials;
 
+  // Stereo traps
+  private stereoPannerNode: StereoPannerNode;
+
   private setResonanceRoomDefaults() {
     this.roomDimensions = roomDimensions;
     this.roomMaterials = roomMaterials;
@@ -88,6 +93,8 @@ export class CompareAudioService extends CommonAudioService {
 
   private constructor(defaultLibrary?: SupportedLibrary) {
     super();
+
+    this.stereoPannerNode = this.audioContext.createStereoPanner();
 
     // JS Ambisonics FOA
     this.encoder = new monoEncoder(this.audioContext, 1);
@@ -118,6 +125,7 @@ export class CompareAudioService extends CommonAudioService {
     this.foaRenderer = OmnitoneLib.createFOARenderer(this.audioContext, {});
 
     // Connect nodes
+    this.stereoPannerNode.connect(this.gainNode);
     // JS Ambisonics FOA
     this.encoder.out.connect(this.decoder.in);
     this.decoder.out.connect(this.gainNode);
@@ -185,6 +193,10 @@ export class CompareAudioService extends CommonAudioService {
         return;
       }
 
+      case 'stereo-panner': {
+        this.audioSource?.disconnect(this.stereoPannerNode);
+      }
+
       case 'js-ambisonics-foa': {
         this.audioSource?.disconnect(this.encoder.in);
 
@@ -218,7 +230,12 @@ export class CompareAudioService extends CommonAudioService {
   }
 
   public connectAudioSource(
-    newLibrary?: SupportedLibrary | 'js-ambisonics-foa' | null | undefined
+    newLibrary?:
+      | SupportedLibrary
+      | 'js-ambisonics-foa'
+      | 'stereo-panner'
+      | null
+      | undefined
   ) {
     if (newLibrary === this.connectedLibrary) {
       return;
@@ -242,6 +259,10 @@ export class CompareAudioService extends CommonAudioService {
 
     if (!library) {
       this.audioSource?.connect(this.gainNode);
+    }
+
+    if (library === 'stereo-panner') {
+      this.audioSource?.connect(this.stereoPannerNode);
     }
 
     if (library === 'js-ambisonics-foa') {
@@ -360,6 +381,15 @@ export class CompareAudioService extends CommonAudioService {
   }
 
   setSourcePosition({ x, y, z }: SpatialPoint): void {}
+
+  setPanner(pan: 'left-only' | 'right-only') {
+    if (pan === 'left-only') {
+      this.stereoPannerNode.pan.value = -1;
+      return;
+    }
+
+    this.stereoPannerNode.pan.value = 1;
+  }
 
   public randomizeSourcePosition() {
     this.setDirection(getRandomAzimuthElevation());

@@ -4,6 +4,8 @@ import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToL
 import { TEST_ANGLES } from '~/hooks/use-test-mode/constants';
 import { shuffleArray } from '~/hooks/use-test-mode/useTestMode';
 
+export type GuessType = 'normal' | 'bypassed' | 'left-only' | 'right-only';
+
 export type Guess = {
   trueAzimuth: number;
   trueElevation: number;
@@ -16,9 +18,15 @@ export type Guess = {
   guessedIsBypassed?: boolean;
   lastSample?: string;
   usedSamples?: string[];
+  type: GuessType;
 };
 
-type Angles = { azimuth: number; elevation: number; isBypassed?: boolean };
+type Angles = {
+  azimuth: number;
+  elevation: number;
+  isBypassed?: boolean;
+  type?: GuessType;
+};
 
 interface TestStore {
   guesses: readonly Guess[];
@@ -38,6 +46,7 @@ interface TestStore {
   isGuessMade: boolean;
   lastSample: string | undefined;
   usedSamples: string[];
+  guessType: GuessType;
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -59,6 +68,7 @@ interface TestStore {
   setIsGuessMade(isGuessMade: boolean): void;
   setLastSample(lastSample: string | undefined): void;
   addUsedSample(usedSample: string): void;
+  setGuessType(guessType: GuessType): void;
   resetUsedSamples(): void;
   resetTestAngles: () => Angles[];
 }
@@ -71,12 +81,17 @@ export const INITIAL_STORE = {
     'resonance',
     'omnitone',
     'js-ambisonics',
-  ] as const satisfies readonly SupportedLibrary[],
-  libraryOrder: ['web-api', 'resonance', 'omnitone', 'js-ambisonics'] as const,
+  ] as readonly SupportedLibrary[],
+  libraryOrder: [
+    'web-api',
+    'resonance',
+    'omnitone',
+    'js-ambisonics',
+  ] as readonly SupportedLibrary[],
   azimuthGuess: 0,
   elevationGuess: 0,
   currentStep: 0,
-  currentLibrary: 'web-api' as const,
+  currentLibrary: 'web-api' as SupportedLibrary,
   isTestFinished: false,
   testStart: 0,
   testEnd: 0,
@@ -86,6 +101,7 @@ export const INITIAL_STORE = {
   isGuessMade: false,
   lastSample: undefined,
   usedSamples: [],
+  guessType: 'normal' as GuessType,
 };
 
 export const useTestStore = create<TestStore>()(
@@ -197,6 +213,9 @@ export const useTestStore = create<TestStore>()(
         if (!currentSamples.includes(usedSample)) {
           set({ usedSamples: [...currentSamples, usedSample] });
         }
+      },
+      setGuessType: (guessType) => {
+        set({ guessType });
       },
       resetUsedSamples: () => {
         set({ usedSamples: [] });

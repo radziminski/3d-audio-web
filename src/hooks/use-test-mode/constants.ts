@@ -81,10 +81,24 @@ export const TEST_ANGLES = [
     azimuth: 0,
     elevation: 0,
     isBypassed: true,
-  },
+    type: 'bypassed',
+  } as const,
   {
     azimuth: 0,
     elevation: 0,
     isBypassed: true,
-  },
+    type: 'bypassed',
+  } as const,
+  {
+    azimuth: 270,
+    elevation: 0,
+    isBypassed: false,
+    type: 'left-only',
+  } as const,
+  {
+    azimuth: 90,
+    elevation: 0,
+    isBypassed: false,
+    type: 'right-only',
+  } as const,
 ];

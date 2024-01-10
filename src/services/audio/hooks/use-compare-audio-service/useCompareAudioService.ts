@@ -2,12 +2,14 @@ import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 export const useCompareAudioService = (
   selectedLibrary?: SupportedLibrary,
   defaultLibrary?: SupportedLibrary
 ) => {
   const { gain, azimuth, elevation, isBypassed } = useSettingsStore();
+  const { guessType } = useTestStore();
 
   console.log('IS TRAP: ', isBypassed);
 
@@ -68,12 +70,25 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
-        audioService?.connectAudioSource(
-          isBypassed ? null : selectedLibrary ?? null
-        );
+        if (!isBypassed && guessType === 'normal') {
+          audioService?.connectAudioSource(selectedLibrary);
+
+          return;
+        }
+
+        if (isBypassed || guessType === 'bypassed') {
+          audioService?.connectAudioSource(null);
+
+          return;
+        }
+
+        if (guessType !== 'normal') {
+          audioService?.connectAudioSource('stereo-panner');
+          audioService?.setPanner(guessType);
+        }
       }
     );
-  }, [selectedLibrary, isBypassed]);
+  }, [selectedLibrary, isBypassed, guessType]);
 
   useEffect(() => {
     setGain(65);

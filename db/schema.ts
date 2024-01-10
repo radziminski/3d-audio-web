@@ -21,6 +21,7 @@ export const guessesTable = pgTable('guesses', {
   guessedElevation: smallint('guessedElevation').notNull(),
   isBypassed: boolean('isBypassed').default(false),
   guessedIsBypassed: boolean('guessedIsBypassed').default(false),
+  type: text('guessType').default('normal'), // or bypassed or left-only or right-only
   library: text('library').notNull(),
   lastSample: text('lastSample'),
   usedSamples: json('usedSamples').$type<string[]>(),
