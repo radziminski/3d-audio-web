@@ -8,28 +8,6 @@ import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
 import { useCameraControl } from './use-camera-control';
 
-const setCameraAngle = ({
-  azimuth,
-  elevation,
-  camera,
-}: {
-  azimuth: number;
-  elevation: number;
-  camera: Camera;
-}) => {
-  const azimuthRad = degToRad(360 - azimuth);
-  const elevationRad = degToRad(elevation);
-
-  const x = Math.sin(elevationRad) * Math.sin(azimuthRad);
-  const y = Math.cos(elevationRad);
-  const z = Math.sin(elevationRad) * Math.cos(azimuthRad);
-
-  const target = new Vector3(x, y, z);
-  // const target = new Vector3(-1, 1, 0);
-
-  camera.lookAt(target);
-};
-
 export const CameraRotation = () => {
   const { orbitControlsRef } = useCameraControl();
 
@@ -52,10 +30,6 @@ export const CameraRotation = () => {
     200
   );
 
-  const azimuthGuess = useTestStore((state) => state.azimuthGuess);
-  const elevationGuess = useTestStore((state) => state.elevationGuess);
-  const isRotatedRef = useRef(false);
-
   useEffect(() => {
     if (mode !== 'playground') {
       orbitControlsRef.current?.reset();
@@ -75,18 +49,6 @@ export const CameraRotation = () => {
   }, [mode, setAzimuth, setElevation, setGuessedDirections, value]);
 
   useFrame(({ camera }) => {
-    // if (!isRotatedRef.current && camera) {
-    //   setTimeout(() => {
-    //     setCameraAngle({
-    //       azimuth: azimuthGuess,
-    //       elevation: elevationGuess,
-    //       camera,
-    //     });
-    //   }, 100);
-
-    //   isRotatedRef.current = true;
-    // }
-
     const vector = new Vector3();
 
     const { x, y, z } = camera.getWorldDirection(vector);

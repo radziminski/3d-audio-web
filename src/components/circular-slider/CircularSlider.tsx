@@ -2,21 +2,26 @@ import ReactCircularSlider from '@fseehawer/react-circular-slider';
 import { useState } from 'react';
 import { createStyles } from '@mantine/core';
 
-const styles = createStyles(() => ({
+const useStyles = createStyles(() => ({
   wrapper: {
-    '.s': '1 !important',
+    opacity: '50% !important',
+    pointerEvents: 'none',
+    cursor: 'not-allowed',
   },
 }));
 
 type Props = {
   onChange?: (value: number) => void;
+  disabled?: boolean;
 };
 
-export const CircularSlider = ({ onChange }: Props) => {
+export const CircularSlider = ({ onChange, disabled }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
 
+  const { classes } = useStyles();
+
   return (
-    <div>
+    <section className={disabled ? classes.wrapper : undefined}>
       <ReactCircularSlider
         label='Azimuth'
         dataIndex={1}
@@ -34,6 +39,6 @@ export const CircularSlider = ({ onChange }: Props) => {
         onChange={(value: number) => onChange?.(Number(value))}
         width={200}
       />
-    </div>
+    </section>
   );
 };

@@ -158,6 +158,8 @@ export const AudioSettings = ({
   const isGuessMade = useTestStore((state) => state.isGuessMade);
   const currentStep = useTestStore((state) => state.currentStep);
 
+  const guessType = useTestStore((state) => state.guessType);
+
   useLayoutEffect(() => {
     const listener = (event: KeyboardEvent) => {
       if (event.code === 'Space') {
@@ -203,6 +205,11 @@ export const AudioSettings = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appMode, addUsedSample, audioRef, currentStep, setLastSample]);
 
+  const isAzimuthDisabled = appMode === 'test' && guessType === 'elevation';
+  const isElevationDisabled =
+    appMode === 'test' &&
+    ['azimuth', 'left-only', 'right-only', 'bypassed'].includes(guessType);
+
   return (
     <div
       className={
@@ -230,6 +237,7 @@ export const AudioSettings = ({
 
                     onAzimuthChange(360 - newValue);
                   }}
+                  disabled={isAzimuthDisabled}
                 />
               )}
             </div>
@@ -300,8 +308,9 @@ export const AudioSettings = ({
                 value={isGuessingMode ? guessedElevation : elevation}
                 style={{
                   height: '210px',
-                  cursor: 'pointer',
+                  cursor: isElevationDisabled ? 'not-allowed' : 'pointer',
                 }}
+                disabled={isElevationDisabled}
               />
               <div
                 style={{

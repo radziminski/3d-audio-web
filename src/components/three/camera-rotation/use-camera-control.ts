@@ -1,11 +1,16 @@
 import { useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import { Vector3 } from 'three';
+import { MathUtils, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 export const useCameraControl = () => {
   const { camera, gl } = useThree();
   const orbitControlsRef = useRef<OrbitControls>();
+
+  const appMode = useSettingsStore((state) => state.appMode);
+  const guessType = useTestStore((state) => state.guessType);
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,12 +29,35 @@ export const useCameraControl = () => {
     controls.enableZoom = false;
     controls.enableRotate = true;
 
+    const isRestrictionEnabled = appMode === 'test';
+    const isAzimuthOnly =
+      guessType === 'azimuth' ||
+      guessType === 'left-only' ||
+      guessType === 'right-only' ||
+      guessType === 'bypassed';
+
+    if (isRestrictionEnabled) {
+      // Set azimuth (horizontal) rotation limits
+      if (isAzimuthOnly) {
+        controls.maxAzimuthAngle = Infinity; // Full horizontal rotation
+        controls.minAzimuthAngle = Infinity; // Full horizontal rotation
+        controls.maxPolarAngle = MathUtils.degToRad(90);
+        controls.minPolarAngle = MathUtils.degToRad(90);
+      } else {
+        // Lock horizontal rotation
+        controls.maxAzimuthAngle = 0;
+        controls.minAzimuthAngle = 0;
+        controls.maxPolarAngle = Math.PI; // Full vertical rotation
+        controls.minPolarAngle = 0; // Full vertic
+      }
+    }
+
     controls.saveState();
 
     return () => {
       controls.dispose();
     };
-  }, [camera, gl]);
+  }, [appMode, camera, gl, guessType]);
 
   return { orbitControlsRef };
 };

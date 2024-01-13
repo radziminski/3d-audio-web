@@ -40,6 +40,7 @@ const TUTORIAL_STEPS = [
         title: 'Your Task:',
         points: [
           `For each sound, adjust the arrow to point to the direction where you believe the sound is coming from.`,
+          `To simplify things, you'll be asked to <strong>guess only the azimuth (horizontal angle)</strong> or <strong>elevation (vertical angle)</strong> of the sound - never both.`,
           `After you make a guess, the direction changes, and you should point the arrow again for the new sound.`,
         ],
       },
@@ -54,8 +55,8 @@ const TUTORIAL_STEPS = [
         points: [
           `Use the round slider in the bottom right to change the arrow's azimuth (the horizontal direction of the sound).`,
           `The vertical slider next to it adjusts the elevation (the vertical direction).`,
-          `By moving these sliders, you can aim the arrow in any direction around the sitting figure.`,
           `In the first step you've used the azimuth and elevation sliders to change sound direction.  Now, <strong>you should use it, to point the arrow in the direction you think the sound is coming from.</strong>`,
+          `In each step <strong>one of the sliders will be disabled</strong> (you won't be able to change it). If the vertical slider is disabled, you should only guess the azimuth of the sound (the horizontal direction) and vice-versa.`,
         ],
       },
       {
