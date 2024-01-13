@@ -233,9 +233,10 @@ export default function TutorialPage() {
             </>
           )}
           {currentStep && (
-            <div className={classes.step}>
+            <div className={classes.step} key={currentStep.title}>
               <h2>{currentStep.title}</h2>
               <Image
+                key={currentStep.image}
                 src={currentStep.image}
                 alt='tutorial image'
                 width={820}
