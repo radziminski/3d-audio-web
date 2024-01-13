@@ -84,7 +84,7 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
     >
       {!isContextStarted && (
         <Button onClick={() => setIsContextStarted(true)}>
-          Initialize audio context
+          Start application 🚀
         </Button>
       )}
       {isContextStarted && children}

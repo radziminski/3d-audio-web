@@ -80,6 +80,12 @@ export default function ComparePage() {
             <strong>degree of 3D realism</strong>. Your ratings, on a scale from
             0 to 10, will help us understand your experiences with each
             technology.
+            <br />
+            <i>
+              Note: Value <strong>-1</strong> on the slider means that a given
+              aspects has not been rated yet. Please choose score of both
+              aspects for all 4 technologies to continue.
+            </i>
           </p>
           <p className={classes.paragraph}>
             Using two knobs below, you can adjust the{' '}

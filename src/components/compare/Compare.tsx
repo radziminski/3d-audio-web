@@ -157,27 +157,13 @@ export const Compare = () => {
     setAzimuth(0);
   }, [setAppMode, setAzimuth, setElevation]);
 
-  useEffect(() => {
-    if (
-      selectedLibrary &&
-      (libraryQuality[selectedLibrary].soundQuality === undefined ||
-        libraryQuality[selectedLibrary].soundSpatialQuality === undefined)
-    ) {
-      setLibraryQuality(selectedLibrary, {
-        soundQuality: libraryQuality[selectedLibrary].soundQuality ?? 5,
-        soundSpatialQuality:
-          libraryQuality[selectedLibrary].soundSpatialQuality ?? 5,
-      });
-    }
-  }, [libraryQuality, selectedLibrary, setLibraryQuality]);
-
   let currentQualityValue = selectedLibrary
-    ? libraryQuality[selectedLibrary].soundQuality
-    : 0;
+    ? libraryQuality[selectedLibrary].soundQuality ?? -1
+    : -1;
 
   let currentSpatialQualityValue = selectedLibrary
-    ? libraryQuality[selectedLibrary].soundSpatialQuality
-    : 0;
+    ? libraryQuality[selectedLibrary].soundSpatialQuality ?? -1
+    : -1;
 
   const visibleLibrary = selectedLibrary ?? 'web-api';
 
@@ -224,15 +210,15 @@ export const Compare = () => {
             <h4 className={classes.sliderLabel}>Sounds Terrible</h4>
             <div className={classes.slider}>
               <Slider
-                defaultValue={5}
+                defaultValue={-1}
                 key={`${visibleLibrary}-quality-slider`}
-                value={currentQualityValue ?? 5}
+                value={currentQualityValue}
                 onChange={(value) => {
                   setLibraryQuality(visibleLibrary, {
                     soundQuality: value,
                   });
                 }}
-                min={0}
+                min={currentQualityValue >= 0 ? 0 : -1}
                 max={10}
                 step={1}
                 label={''}
@@ -253,15 +239,15 @@ export const Compare = () => {
             </h4>
             <div className={classes.slider}>
               <Slider
-                defaultValue={5}
+                defaultValue={-1}
                 key={`${visibleLibrary}-spatial-slider`}
-                value={currentSpatialQualityValue ?? 5}
+                value={currentSpatialQualityValue}
                 onChange={(value) => {
                   setLibraryQuality(visibleLibrary, {
                     soundSpatialQuality: value,
                   });
                 }}
-                min={0}
+                min={currentSpatialQualityValue >= 0 ? 0 : -1}
                 max={10}
                 step={1}
                 label={''}
@@ -280,7 +266,7 @@ export const Compare = () => {
             {isLoading ? 'Loading...' : <>Continue &rarr;</>}
           </Button>
         ) : (
-          <Tooltip label='Please rate all libraries to continue'>
+          <Tooltip label='Please rate both aspects (from 0 to 10) for all technologies to continue'>
             <Button style={{ cursor: 'not-allowed', opacity: 0.65 }} size='lg'>
               Continue &rarr;
             </Button>

@@ -45,7 +45,7 @@ const TUTORIAL_STEPS = [
         ],
       },
     ],
-    image: '/dashboard.png',
+    image: '/step1.gif',
   } as const,
   {
     title: '3: Controlling the arrow',
@@ -68,7 +68,7 @@ const TUTORIAL_STEPS = [
         ],
       },
     ],
-    image: '/dashboard-settings.png',
+    image: '/step2.gif',
   } as const,
   {
     title: '4: Current step information',
@@ -97,7 +97,7 @@ const TUTORIAL_STEPS = [
         ],
       },
     ],
-    image: '/dashboard-make.png',
+    image: '/step4.gif',
   } as const,
   {
     title: "6: It's a trap!",
@@ -107,10 +107,11 @@ const TUTORIAL_STEPS = [
         points: [
           `As you navigate through the sounds in the application, it's important to be aware that occasionally, <strong>you may hear a sound that has not been processed by any 3D sound library</strong>. It will sound like any other sound you would hear on your headphones outside of this test. This is a deliberate "trap" where the sound does not originate from any particular direction in space and is not modified to create a 3D audio effect.`,
           `🚨 When you come across such a sound, it's crucial <u><b>not</b> to click the "Make a Guess!" button</u>. Instead,  <strong>click "Mark as not 3D sound (trap)" </strong> button right underneath it. `,
+          `Moreover, sometimes the sound will play in only one headphone. When that happens, simply choose the azimuth of 90 degrees for right-only sounds, and 270 degrees for left-only sounds.`,
         ],
       },
     ],
-    image: '/dashboard-trap.png',
+    image: '/step5.gif',
   } as const,
   {
     title: '7: Changing to first-person view',
@@ -124,7 +125,7 @@ const TUTORIAL_STEPS = [
         ],
       },
     ],
-    image: '/dashboard-change.png',
+    image: '/step7.gif',
   } as const,
 ];
 

@@ -37,14 +37,12 @@ export const useCameraControl = () => {
       guessType === 'bypassed';
 
     if (isRestrictionEnabled) {
-      // Set azimuth (horizontal) rotation limits
       if (isAzimuthOnly) {
         controls.maxAzimuthAngle = Infinity; // Full horizontal rotation
         controls.minAzimuthAngle = Infinity; // Full horizontal rotation
         controls.maxPolarAngle = MathUtils.degToRad(90);
         controls.minPolarAngle = MathUtils.degToRad(90);
       } else {
-        // Lock horizontal rotation
         controls.maxAzimuthAngle = 0;
         controls.minAzimuthAngle = 0;
         controls.maxPolarAngle = Math.PI; // Full vertical rotation
