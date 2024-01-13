@@ -68,22 +68,21 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
-        if (appMode !== 'test' || (!isBypassed && guessType === 'normal')) {
-          audioService?.connectAudioSource(selectedLibrary ?? null);
-
-          return;
-        }
-
         if (isBypassed || guessType === 'bypassed') {
           audioService?.connectAudioSource(null);
 
           return;
         }
 
-        if (guessType !== 'normal') {
+        if (guessType === 'left-only' || guessType === 'right-only') {
           audioService?.connectAudioSource('stereo-panner');
           audioService?.setPanner(guessType);
+          return;
         }
+
+        audioService?.connectAudioSource(selectedLibrary ?? null);
+
+        return;
       }
     );
   }, [selectedLibrary, isBypassed, guessType, appMode]);

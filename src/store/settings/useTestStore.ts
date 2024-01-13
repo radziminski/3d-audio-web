@@ -4,7 +4,13 @@ import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToL
 import { TEST_ANGLES } from '~/hooks/use-test-mode/constants';
 import { shuffleArray } from '~/hooks/use-test-mode/useTestMode';
 
-export type GuessType = 'normal' | 'bypassed' | 'left-only' | 'right-only';
+export type GuessType =
+  | 'normal'
+  | 'bypassed'
+  | 'left-only'
+  | 'right-only'
+  | 'azimuth'
+  | 'elevation';
 
 export type Guess = {
   trueAzimuth: number;
