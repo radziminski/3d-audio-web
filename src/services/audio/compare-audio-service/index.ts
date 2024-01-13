@@ -55,6 +55,7 @@ export class CompareAudioService extends CommonAudioService {
 
   // Omnitone
   private foaRenderer: any;
+  private stereoReplicationMergerNode: ChannelMergerNode;
 
   // Resonance
   private resonanceAudioScene: ResonanceAudio;
@@ -119,10 +120,13 @@ export class CompareAudioService extends CommonAudioService {
 
     // Resonance
     this.resonanceAudioScene = new ResonanceAudio(this.audioContext);
+    // Disabling room defaults since it modifies the output too much.
     this.setResonanceRoomDefaults();
+    this.resonanceAudioScene.setAmbisonicOrder(3);
 
     // Omnitone
     this.foaRenderer = OmnitoneLib.createFOARenderer(this.audioContext, {});
+    this.stereoReplicationMergerNode = this.audioContext.createChannelMerger(2);
 
     // Connect nodes
     this.stereoPannerNode.connect(this.gainNode);
@@ -142,6 +146,7 @@ export class CompareAudioService extends CommonAudioService {
     this.foaRenderer.initialize().then(() => {
       this.foaRenderer.output.connect(this.gainNode);
       this.foaRenderer.setRenderingMode('ambisonic');
+      this.stereoReplicationMergerNode.connect(this.foaRenderer.input);
     });
 
     this.gainNode.connect(this.audioContext.destination);
@@ -212,7 +217,9 @@ export class CompareAudioService extends CommonAudioService {
       }
 
       case 'omnitone': {
-        this.audioSource?.disconnect(this.foaRenderer.input);
+        this.audioSource?.disconnect(
+          this.foaRenderer.stereoReplicationMergerNode
+        );
 
         return;
       }
@@ -253,9 +260,7 @@ export class CompareAudioService extends CommonAudioService {
       console.log('error while disconnecting');
     }
 
-    console.log();
     console.log('connecting library named: ', library);
-    console.log('audio source', this.audioSource);
 
     this.connectedLibrary = library;
 
@@ -284,7 +289,8 @@ export class CompareAudioService extends CommonAudioService {
     }
 
     if (library === 'omnitone') {
-      this.audioSource?.connect(this.foaRenderer.input);
+      this.audioSource?.connect(this.stereoReplicationMergerNode, 0, 0);
+      this.audioSource?.connect(this.stereoReplicationMergerNode, 0, 1);
     }
 
     this.setDirection({ azimuth: this.azimuth, elevation: this.elevation });
@@ -300,8 +306,6 @@ export class CompareAudioService extends CommonAudioService {
     if (elevation !== undefined) {
       this.elevation = elevation;
     }
-
-    console.log('setting', this.connectedLibrary, this.azimuth, this.elevation);
 
     if (this.connectedLibrary === 'js-ambisonics-foa') {
       this.encoder.azim = -this.azimuth;

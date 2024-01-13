@@ -8,10 +8,8 @@ export const useCompareAudioService = (
   selectedLibrary?: SupportedLibrary,
   defaultLibrary?: SupportedLibrary
 ) => {
-  const { gain, azimuth, elevation, isBypassed } = useSettingsStore();
+  const { gain, azimuth, elevation, isBypassed, appMode } = useSettingsStore();
   const { guessType } = useTestStore();
-
-  console.log('IS TRAP: ', isBypassed);
 
   const setGain = useSettingsStore((state) => state.setGain);
 
@@ -70,8 +68,8 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
-        if (!isBypassed && guessType === 'normal') {
-          audioService?.connectAudioSource(selectedLibrary);
+        if (appMode !== 'test' || (!isBypassed && guessType === 'normal')) {
+          audioService?.connectAudioSource(selectedLibrary ?? null);
 
           return;
         }
@@ -88,7 +86,7 @@ export const useCompareAudioService = (
         }
       }
     );
-  }, [selectedLibrary, isBypassed, guessType]);
+  }, [selectedLibrary, isBypassed, guessType, appMode]);
 
   useEffect(() => {
     setGain(65);

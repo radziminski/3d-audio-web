@@ -1,17 +1,29 @@
 export const roomDimensions = {
-  width: 3.1,
-  height: 2.5,
-  depth: 3.4,
+  width: 0,
+  height: 0,
+  depth: 0,
 };
 
 export const roomMaterials = {
-  // Room wall materials
-  left: 'brick-bare',
-  right: 'curtain-heavy',
-  front: 'marble',
-  back: 'glass-thin',
-  // Room floor
-  down: 'grass',
-  // Room ceiling
+  left: 'transparent',
+  right: 'transparent',
+  front: 'transparent',
+  back: 'transparent',
+  down: 'transparent',
   up: 'transparent',
 };
+
+// export const roomDimensions = {
+//   width: 10,
+//   height: 10,
+//   depth: 10,
+// };
+
+// export const roomMaterials = {
+//   left: 'brick-bare',
+//   right: 'brick-bare',
+//   front: 'brick-bare',
+//   back: 'brick-bare',
+//   down: 'brick-bare',
+//   up: 'brick-bare',
+// };
