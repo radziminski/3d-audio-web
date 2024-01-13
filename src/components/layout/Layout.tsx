@@ -53,6 +53,7 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
         '/resonance-audio',
         '/web-api-audio',
         '/test-result',
+        '/preparation/about',
       ].includes(pathname)
     ) {
       setIsContextStarted(true);
