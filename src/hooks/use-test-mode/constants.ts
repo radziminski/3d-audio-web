@@ -1,82 +1,72 @@
 export const TEST_ANGLES = [
-  // top
-  {
-    azimuth: 0,
-    elevation: 90,
-  },
-  // elevation - 45deg
-  {
-    azimuth: 45,
-    elevation: 45,
-  },
-  {
-    azimuth: 90 + 45,
-    elevation: 45,
-  },
-  {
-    azimuth: 180 + 45,
-    elevation: 45,
-  },
-  {
-    azimuth: 270 + 45,
-    elevation: 45,
-  },
-  // elevation - 0deg
+  // Azimuth
   {
     azimuth: 0,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 45,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 90,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 90 + 45,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 180,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 180 + 45,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 270,
     elevation: 0,
-  },
+    type: 'azimuth',
+  } as const,
   {
     azimuth: 270 + 45,
     elevation: 0,
-  },
-  // elevation - -45deg
-  {
-    azimuth: 45,
-    elevation: -45,
-  },
-  {
-    azimuth: 90 + 45,
-    elevation: -45,
-  },
-  {
-    azimuth: 180 + 45,
-    elevation: -45,
-  },
-  {
-    azimuth: 270 + 45,
-    elevation: -45,
-  },
-  // bottom
+    type: 'azimuth',
+  } as const,
+  // Elevation
   {
     azimuth: 0,
     elevation: -90,
-  },
-  // traps
+    type: 'elevation',
+  } as const,
+  {
+    azimuth: 0,
+    elevation: -45,
+    type: 'elevation',
+  } as const,
+  {
+    azimuth: 0,
+    elevation: 0,
+    type: 'elevation',
+  } as const,
+  {
+    azimuth: 0,
+    elevation: 45,
+    type: 'elevation',
+  } as const,
+  {
+    azimuth: 0,
+    elevation: 90,
+    type: 'elevation',
+  } as const,
+  // Traps
   {
     azimuth: 0,
     elevation: 0,
