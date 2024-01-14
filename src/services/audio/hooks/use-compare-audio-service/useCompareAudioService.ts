@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';

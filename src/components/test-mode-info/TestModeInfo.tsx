@@ -128,11 +128,6 @@ export const TestModeInfo = () => {
       isBlurred: true,
     },
     {
-      left: 'Steps per library',
-      right: stepsPerLibrary,
-      isBlurred: false,
-    },
-    {
       left: 'Azimuth guess',
       right: `${
         Math.floor(azimuthGuess) >= 360 ? 0 : Math.floor(azimuthGuess)
