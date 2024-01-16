@@ -1,4 +1,5 @@
 import { Button, createStyles } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useCallback, useEffect } from 'react';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
@@ -21,6 +22,14 @@ const useStyles = createStyles((theme) => ({
     gap: '16px',
     color: 'white',
     width: 320,
+    '@media (max-width: 700px)': {
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 'calc(100% - 32px)',
+      top: '16px',
+      gap: '8px',
+      padding: '12px',
+    },
   },
   title: {
     margin: 0,
@@ -64,6 +73,20 @@ const useStyles = createStyles((theme) => ({
     flexDirection: 'column',
     gap: '24px',
     alignItems: 'center',
+    '@media (max-width: 1300px)': {
+      right: '24px',
+      top: '64px',
+      transform: 'none',
+      left: 'unset',
+      alignItems: 'flex-end',
+      gap: '16px',
+      maxHeight: 100,
+    },
+    '@media (max-width: 700px)': {
+      right: '24px',
+      top: '130px',
+      gap: '8px',
+    },
   },
   button: {
     fontSize: '14px',
@@ -141,24 +164,29 @@ export const TestModeInfo = () => {
     },
   ];
 
+  const isMobile = useMediaQuery('(max-width: 1000px)');
+  const isSmallMobile = useMediaQuery('(max-width: 700px)');
+
   return (
     <>
       <div className={classes.wrapper}>
-        <h2 className={classes.title}>Current Step Info</h2>
+        {!isSmallMobile && <h2 className={classes.title}>Current Step Info</h2>}
         <div className={classes.content}>
-          {entries.map(({ left, right, isBlurred }) => (
-            <div className={classes.entry} key={left}>
-              <div className={classes.left}>{left}:</div>
-              <div className={isBlurred ? classes.rightBlur : classes.right}>
-                {right}
+          {entries.map(({ left, right, isBlurred }) =>
+            isSmallMobile && left === 'Running library' ? null : (
+              <div className={classes.entry} key={left}>
+                <div className={classes.left}>{left}:</div>
+                <div className={isBlurred ? classes.rightBlur : classes.right}>
+                  {right}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
       <div className={classes.buttons}>
         <div className={classes.button}>
-          <Button onClick={onMakeGuess} size='lg'>
+          <Button onClick={onMakeGuess} size={isMobile ? 'md' : 'lg'}>
             Make a guess!
           </Button>
         </div>

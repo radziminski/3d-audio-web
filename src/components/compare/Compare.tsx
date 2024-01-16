@@ -58,10 +58,17 @@ const useStyles = createStyles(() => ({
     gap: '36px',
     maxWidth: 850,
     color: '#223',
+    '@media (max-width: 1200px)': {
+      paddingBottom: 100,
+    },
   },
   buttons: {
     display: 'flex',
     gap: '24px',
+    '@media (max-width: 1200px)': {
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
   },
   sliders: {
     width: '100%',
@@ -83,6 +90,9 @@ const useStyles = createStyles(() => ({
     margin: 0,
     paddingTop: '12px',
     width: '150px',
+    '@media (max-width: 700px)': {
+      width: '60px',
+    },
   },
   sliderTitle: {
     margin: 0,

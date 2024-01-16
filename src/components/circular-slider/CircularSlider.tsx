@@ -1,6 +1,7 @@
 import ReactCircularSlider from '@fseehawer/react-circular-slider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createStyles } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
 const useStyles = createStyles(() => ({
   wrapper: {
@@ -16,9 +17,19 @@ type Props = {
 };
 
 export const CircularSlider = ({ onChange, disabled }: Props) => {
+  const [hide, setHide] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const mediaQuery = useMediaQuery('(max-width: 1500px)', false);
+  const mediaQuerySmall = useMediaQuery('(max-width: 700px)', false);
+
+  useEffect(() => {
+    setHide(true);
+    setTimeout(() => setHide(false), 50);
+  }, [mediaQuery, mediaQuerySmall]);
 
   const { classes } = useStyles();
+
+  if (hide) return null;
 
   return (
     <section className={disabled ? classes.wrapper : undefined}>
@@ -29,7 +40,7 @@ export const CircularSlider = ({ onChange, disabled }: Props) => {
         max={360}
         direction={1}
         knobPosition='top'
-        valueFontSize='4rem'
+        valueFontSize={mediaQuery ? '1rem' : '4rem'}
         trackColor='#eeeeee'
         progressColorFrom={isDragging ? '#F0A367' : '#00bfbd'}
         progressColorTo={isDragging ? '#F65749' : '#009c9a'}
@@ -37,7 +48,7 @@ export const CircularSlider = ({ onChange, disabled }: Props) => {
         knobColor={isDragging ? '#F0A367' : '#00bfbd'}
         isDragging={(value: boolean) => setIsDragging(value)}
         onChange={(value: number) => onChange?.(Number(value))}
-        width={200}
+        width={mediaQuery ? (mediaQuerySmall ? 120 : 160) : 200}
       />
     </section>
   );

@@ -53,6 +53,10 @@ const useStyles = createStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     gap: '64px',
+    '@media (max-width: 1200px)': {
+      flexDirection: 'column',
+      gap: 0,
+    },
   },
 }));
 

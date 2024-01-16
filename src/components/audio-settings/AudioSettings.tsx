@@ -36,6 +36,20 @@ const useStyles = createStyles((theme) => ({
     right: '48px',
     bottom: '48px',
     backdropFilter: 'blur(30px)',
+    '@media (max-width: 1500px)': {
+      maxWidth: 520,
+      maxHeight: 270,
+      padding: '32px',
+    },
+    '@media (max-width: 700px)': {
+      right: 0,
+      left: 0,
+      bottom: 0,
+      maxHeight: 260,
+      maxWidth: '100%',
+      padding: '16px',
+      paddingBottom: '76px',
+    },
   },
   dialogNotFixed: {
     background:
@@ -52,16 +66,28 @@ const useStyles = createStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     backdropFilter: 'blur(30px)',
+    '@media (max-width: 1500px)': {
+      maxWidth: 520,
+      maxHeight: 270,
+      padding: '32px',
+    },
+    '@media (max-width: 700px)': {
+      maxHeight: 260,
+      maxWidth: '95vw',
+      overflow: 'hidden',
+      padding: '16px',
+      paddingBottom: '76px',
+    },
   },
   dialogNarrow: {
     background:
       'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.1))',
     borderRadius: '12px',
     maxWidth: 380,
-    maxHeight: 310,
+    maxHeight: 280,
     width: '100%',
     height: '100%',
-    padding: '64px 48px',
+    padding: '48px',
     boxShadow: '0 12px 32px rgba(0, 0, 0, 0.04)',
     display: 'flex',
     flexDirection: 'column',
@@ -71,11 +97,37 @@ const useStyles = createStyles((theme) => ({
     right: '48px',
     bottom: '48px',
     backdropFilter: 'blur(30px)',
+    '@media (max-width: 1500px)': {
+      maxHeight: 270,
+      padding: '32px',
+    },
+    '@media (max-width: 700px)': {
+      right: 0,
+      left: 0,
+      bottom: 0,
+      maxHeight: 220,
+      maxWidth: '100%',
+      padding: '16px',
+      paddingBottom: '76px',
+    },
   },
   settings: {
     display: 'flex',
     width: '100%',
     gap: '80px',
+    '@media (max-width: 700px)': {
+      justifyContent: 'center',
+      gap: '60px',
+    },
+  },
+  settingsNotFixed: {
+    display: 'flex',
+    width: '100%',
+    gap: '80px',
+    '@media (max-width: 700px)': {
+      justifyContent: 'center',
+      gap: '60px',
+    },
   },
   settingsColumn: {
     display: 'flex',
@@ -85,6 +137,12 @@ const useStyles = createStyles((theme) => ({
     gap: '8px',
     ':last-child': {
       paddingBottom: '32px',
+      '@media (max-width: 1500px)': {
+        width: '230px',
+      },
+      '@media (max-width: 450px)': {
+        width: '200px',
+      },
     },
   },
   settingsColumnFull: {
@@ -94,6 +152,12 @@ const useStyles = createStyles((theme) => ({
     justifyContent: 'center',
     position: 'relative',
     gap: '16px',
+    '@media (max-width: 700px)': {
+      gap: '0px',
+      h2: {
+        margin: 0,
+      },
+    },
   },
   select: {
     marginBottom: '16px',
@@ -118,6 +182,46 @@ const useStyles = createStyles((theme) => ({
       div: {
         opacity: '1 !important',
       },
+    },
+    '@media (max-width: 1500px)': {
+      width: 160,
+    },
+    '@media (max-width: 700px)': {
+      width: 120,
+    },
+  },
+  audio: {
+    '@media (max-width: 1500px)': {
+      maxWidth: 250,
+    },
+    '@media (max-width: 700px)': {
+      position: 'fixed',
+      bottom: '4px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      maxWidth: '80vw',
+    },
+  },
+  elevation: {
+    position: 'absolute',
+    left: '-50px',
+    bottom: '-30px',
+    color: 'white',
+    fontWeight: 600,
+    width: '140px',
+  },
+  elevationSlider: {
+    position: 'absolute',
+    left: '-50px',
+    top: '0px',
+    '@media (max-width: 1500px)': {
+      left: '-35px',
+    },
+  },
+  elevationInput: {
+    height: '210px !important',
+    '@media (max-width: 700px)': {
+      height: '150px !important',
     },
   },
 }));
@@ -220,7 +324,11 @@ export const AudioSettings = ({
           : classes.dialog
       }
     >
-      <div className={classes.settings}>
+      <div
+        className={
+          disableFixedPosition ? classes.settingsNotFixed : classes.settings
+        }
+      >
         {!isInsideView && (
           <div className={classes.settingsColumn}>
             <div className={classes.slider}>
@@ -257,6 +365,7 @@ export const AudioSettings = ({
             src={audioSource}
             ref={audioRef}
             loop
+            className={classes.audio}
           />
           {/* {!isInsideView && (
             <Slider
@@ -280,11 +389,7 @@ export const AudioSettings = ({
           />
           {!isInsideView && (
             <div
-              style={{
-                position: 'absolute',
-                left: '-50px',
-                top: '0px',
-              }}
+              className={classes.elevationSlider}
               onDoubleClick={() => {
                 const fn = isGuessingMode
                   ? setGuessedElevation
@@ -306,22 +411,13 @@ export const AudioSettings = ({
                   fn(Number(e.target.value));
                 }}
                 value={isGuessingMode ? guessedElevation : elevation}
+                className={classes.elevationInput}
                 style={{
-                  height: '210px',
                   cursor: isElevationDisabled ? 'not-allowed' : 'pointer',
                 }}
                 disabled={isElevationDisabled}
               />
-              <div
-                style={{
-                  position: 'absolute',
-                  left: '-50px',
-                  bottom: '-30px',
-                  color: 'white',
-                  fontWeight: 600,
-                  width: '140px',
-                }}
-              >
+              <div className={classes.elevation}>
                 Elevation:{' '}
                 {Math.round(isGuessingMode ? guessedElevation : elevation)}&deg;
               </div>

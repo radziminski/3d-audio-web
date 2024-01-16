@@ -11,6 +11,7 @@ const useStyles = createStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
+    width: '100%',
   },
   header: {
     color: '#233',
@@ -42,6 +43,9 @@ const useStyles = createStyles(() => ({
     width: 34,
     height: 34,
     marginBottom: 4,
+    '@media (max-width: 1200px)': {
+      display: 'none',
+    },
   },
 }));
 

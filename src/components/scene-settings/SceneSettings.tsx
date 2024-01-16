@@ -1,6 +1,6 @@
 import { Button, createStyles } from '@mantine/core';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { LocationGuessModal } from '../location-guess-modal/LocationGuessModal';
 
 const useStyles = createStyles((theme) => ({
@@ -15,6 +15,18 @@ const useStyles = createStyles((theme) => ({
     bottom: '20px',
     backdropFilter: 'blur(30px)',
     gap: '16px',
+    '@media (max-width: 1000px)': {
+      left: 'auto',
+      right: '24px',
+      top: '170px',
+      bottom: 'auto',
+      padding: 0,
+    },
+    '@media (max-width: 700px)': {
+      top: '130px',
+      left: '24px',
+      right: 'auto',
+    },
   },
   sceneTypeButtons: {
     display: 'flex',
@@ -39,12 +51,14 @@ export const SceneSettings = ({ isInsideView = false }: SceneSettingsProps) => {
 
   const [isOpened, { open, close }] = useDisclosure(false);
 
+  const isMobile = useMediaQuery('(max-width: 1000px)');
+
   return (
     <>
       <div className={classes.sceneType}>
         <div className={classes.sceneTypeButtons}>
           <Button
-            size='lg'
+            size={isMobile ? 'md' : 'lg'}
             onClick={() =>
               setSceneType(sceneType === 'outside' ? 'inside' : 'outside')
             }

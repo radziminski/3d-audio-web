@@ -21,6 +21,9 @@ const useStyles = createStyles((theme) => ({
   },
   withPadding: {
     padding: '64px 32px',
+    '@media (max-width: 700px)': {
+      padding: '64px 16px',
+    },
   },
 }));
 

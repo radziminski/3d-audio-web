@@ -164,6 +164,9 @@ const useStyles = createStyles(() => ({
     gap: '32px',
     flexWrap: 'wrap',
     margin: '32px 0 0',
+    '@media (max-width: 700px)': {
+      gap: '16px',
+    },
   },
   step: {
     display: 'flex',
@@ -217,6 +220,9 @@ export default function TutorialPage() {
                   objectFit: 'contain',
                   objectPosition: 'center',
                   alignSelf: 'center',
+                  height: '50%',
+                  width: '100%',
+                  maxWidth: 820,
                 }}
                 priority
               />
@@ -245,6 +251,9 @@ export default function TutorialPage() {
                   objectFit: 'contain',
                   objectPosition: 'center',
                   alignSelf: 'center',
+                  width: '100%',
+                  height: '50%',
+                  maxWidth: 820,
                 }}
                 priority
               />
