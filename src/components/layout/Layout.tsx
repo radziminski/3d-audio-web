@@ -30,9 +30,15 @@ const useStyles = createStyles((theme) => ({
 type LayoutProps = {
   noPadding?: boolean;
   withScroll?: boolean;
+  asFragment?: boolean;
 } & PropsWithChildren;
 
-export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
+export const Layout = ({
+  children,
+  noPadding,
+  withScroll,
+  asFragment,
+}: LayoutProps) => {
   const isContextStarted = useContextStore((state) => state.isContextStarted);
   const setIsContextStarted = useContextStore(
     (state) => state.setIsContextStarted
@@ -72,6 +78,25 @@ export const Layout = ({ children, noPadding, withScroll }: LayoutProps) => {
       console.log('TEST ID ALREADY SET:', testId);
     }
   }, [setTestId, testId]);
+
+  if (asFragment) {
+    return (
+      <>
+        {!isContextStarted && (
+          <Center
+            className={`${classes.wrapper} ${
+              noPadding ? '' : classes.withPadding
+            }`}
+          >
+            <Button onClick={() => setIsContextStarted(true)}>
+              Start application 🚀
+            </Button>
+          </Center>
+        )}
+        {isContextStarted && children}
+      </>
+    );
+  }
 
   return (
     <Center

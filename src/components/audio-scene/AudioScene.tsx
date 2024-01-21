@@ -23,6 +23,12 @@ const Scene = dynamic(
     ssr: false,
   }
 );
+const SceneAlt = dynamic(
+  () => import('../three/scene-alt/SceneAlt').then((module) => module.Stage),
+  {
+    ssr: false,
+  }
+);
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '800'],
@@ -85,8 +91,12 @@ export const AudioScene = ({ audioRef, title }: Props) => {
           <Suspense fallback={<h5>Loading...</h5>}>
             {sceneType === 'outside' && <Scene />}
             {sceneType === 'inside' && <SceneInside />}
+            {sceneType === 'alt' && <SceneAlt />}
           </Suspense>
-          <Settings isInsideView={sceneType === 'inside'} audioRef={audioRef} />
+          <Settings
+            isInsideView={sceneType === 'inside' || sceneType === 'alt'}
+            audioRef={audioRef}
+          />
           {appMode === 'test' && <TestModeInfo />}
         </Layout>
       </div>

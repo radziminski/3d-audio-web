@@ -1,5 +1,5 @@
 import { Button, createStyles } from '@mantine/core';
-import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { SceneType, useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { LocationGuessModal } from '../location-guess-modal/LocationGuessModal';
 
@@ -32,6 +32,10 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     gap: '16px',
+    '@media (max-width: 700px)': {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
   },
 }));
 
@@ -53,18 +57,35 @@ export const SceneSettings = ({ isInsideView = false }: SceneSettingsProps) => {
 
   const isMobile = useMediaQuery('(max-width: 1000px)');
 
+  const buttons = [
+    {
+      label: 'Outside view',
+      sceneType: 'outside',
+    },
+    {
+      label: 'Inside view',
+      sceneType: 'inside',
+    },
+
+    {
+      label: 'Alt view',
+      sceneType: 'alt',
+    },
+  ].filter((button) => button.sceneType !== sceneType);
+
   return (
     <>
       <div className={classes.sceneType}>
         <div className={classes.sceneTypeButtons}>
-          <Button
-            size={isMobile ? 'md' : 'lg'}
-            onClick={() =>
-              setSceneType(sceneType === 'outside' ? 'inside' : 'outside')
-            }
-          >
-            Change view
-          </Button>
+          {buttons.map(({ label, sceneType }) => (
+            <Button
+              key={sceneType}
+              size={'md'}
+              onClick={() => setSceneType(sceneType as SceneType)}
+            >
+              {label}
+            </Button>
+          ))}
         </div>
         {mode === 'guess' && (
           <div className={classes.sceneTypeButtons}>

@@ -8,7 +8,7 @@ import {
 } from '../../services/audio/constants';
 import { getRandomAzimuthElevation } from '~/helpers/3D/getRadomAzimuthElevation';
 
-export type SceneType = 'inside' | 'outside';
+export type SceneType = 'inside' | 'outside' | 'alt';
 
 export type AppMode = 'playground' | 'guess' | 'test';
 

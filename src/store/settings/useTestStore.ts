@@ -27,7 +27,7 @@ export type Guess = {
   type: GuessType;
 };
 
-type Angles = {
+export type Angles = {
   azimuth: number;
   elevation: number;
   isBypassed?: boolean;
