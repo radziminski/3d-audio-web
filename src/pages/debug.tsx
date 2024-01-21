@@ -21,8 +21,8 @@ export default function Home() {
 
   const onGoToPlayground = useCallback(() => {
     setMode('playground');
-    onGoToLibraryChoice();
-  }, [setMode, onGoToLibraryChoice]);
+    router.push('/playground');
+  }, [setMode, router]);
 
   const onGoToGuessing = useCallback(() => {
     setMode('guess');
@@ -38,7 +38,7 @@ export default function Home() {
     <Providers>
       <Layout>
         <Button onClick={onGoToPlayground}>Playground</Button>
-        <Button onClick={onGoToGuessing}>Guessing</Button>
+        <Button onClick={onGoToGuessing}>Guessing (outdated)</Button>
         <Button onClick={onGoToTest}>Test</Button>
       </Layout>
     </Providers>

@@ -81,8 +81,8 @@ export const AudioScene = ({ audioRef, title }: Props) => {
             <>
               {title}
               {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-              <a href='/library' className={classes.link}>
-                &larr; Go back to libraries list
+              <a href='/debug' className={classes.link}>
+                &larr; Go back to debug
               </a>
             </>
           ) : null}
