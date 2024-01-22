@@ -3,6 +3,7 @@ import { StageContent } from './StageAltContent';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
+import { roundToNearest } from '~/helpers/math/roundToNearest';
 
 export const Stage = (): JSX.Element => {
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
@@ -34,7 +35,7 @@ export const Stage = (): JSX.Element => {
       />
 
       <StageContent
-        selection={roundToNearest15(selectedAzimuth, selectedElevation)}
+        selection={roundToNearest(selectedAzimuth, selectedElevation)}
         setSelection={({ azimuth, elevation }) => {
           if (isGuessingMode) {
             setGuessedDirections(azimuth, elevation);
@@ -49,22 +50,3 @@ export const Stage = (): JSX.Element => {
     </Canvas>
   );
 };
-
-function roundToNearest15(
-  azimuth: number,
-  elevation: number
-): { azimuth: number; elevation: number } {
-  // Ensure azimuth is within the range 0 to 360
-  const normalizedAzimuth = ((azimuth % 360) + 360) % 360;
-
-  // Round azimuth to the nearest multiple of 15
-  const roundedAzimuth = Math.round(normalizedAzimuth / 15) * 15;
-
-  // Ensure elevation is within the range -90 to 90
-  const clampedElevation = Math.max(-90, Math.min(90, elevation));
-
-  // Round elevation to the nearest multiple of 15
-  const roundedElevation = Math.round(clampedElevation / 15) * 15;
-
-  return { azimuth: roundedAzimuth, elevation: roundedElevation };
-}

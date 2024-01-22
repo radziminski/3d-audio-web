@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useSettingsStore } from '~/store/settings/useSettingsStore'; // Assuming this is the correct import path
 import { useTestStore } from '~/store/settings/useTestStore';
+import { roundToNearest } from '~/helpers/math/roundToNearest';
 
 export const SUPPORTED_LIBRARIES = [
   'web-api',
@@ -120,11 +121,13 @@ export const useTestMode = () => {
 
       const now = Date.now();
 
+      const parsedGuess = roundToNearest(guessedAzimuth, guessedElevation);
+
       addGuess({
         trueAzimuth,
         trueElevation,
-        guessedAzimuth,
-        guessedElevation,
+        guessedAzimuth: parsedGuess.azimuth,
+        guessedElevation: parsedGuess.elevation,
         guessedIsBypassed: asBypassed,
         isBypassed: trueIsBypassed,
         library: currentLibrary,

@@ -2,6 +2,7 @@ import { Button, createStyles } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useCallback, useEffect } from 'react';
+import { roundToNearest } from '~/helpers/math/roundToNearest';
 import { useTestMode } from '~/hooks/use-test-mode/useTestMode';
 import { useTestStore } from '~/store/settings/useTestStore';
 
@@ -152,14 +153,12 @@ export const TestModeInfo = () => {
     },
     {
       left: 'Azimuth guess',
-      right: `${
-        Math.floor(azimuthGuess) >= 360 ? 0 : Math.floor(azimuthGuess)
-      }°`,
+      right: `${roundToNearest(azimuthGuess, 0).azimuth}°`,
       isBlurred: false,
     },
     {
       left: 'Elevation guess',
-      right: `${Math.round(elevationGuess)}°`,
+      right: `${roundToNearest(0, elevationGuess).elevation}°`,
       isBlurred: false,
     },
   ];

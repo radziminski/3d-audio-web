@@ -6,6 +6,7 @@ import {
   Text,
   Instance,
   Html,
+  Clone,
 } from '@react-three/drei';
 import { Canvas, useFrame, useLoader, type Vector3 } from '@react-three/fiber';
 import { useRef, useState } from 'react';
@@ -16,7 +17,7 @@ import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { Angles, useTestStore } from '~/store/settings/useTestStore';
 
 const DIVISIONS_AZIMUTH = 24;
-const DIVISIONS_ELEVATION = 12;
+const DIVISIONS_ELEVATION = 4;
 const RADIUS = 10;
 
 export const sphericalToCartesian = (
@@ -198,6 +199,9 @@ export const StageContent = ({
       gl.render(scene, camera);
     }, Math.max(0, timeUntilNextFrame));
   }, 1);
+
+  const arrow = useLoader(OBJLoader, '/arrow2.obj');
+
   return (
     <>
       <OrbitControls enablePan={false} />
@@ -209,6 +213,15 @@ export const StageContent = ({
       <Box position={[0, -2.5, 0]} scale={[4, 0.5, 4]}>
         <meshStandardMaterial color={'orange'} />
       </Box>
+
+      <mesh position={[0, -0.8, 1.8]}>
+        <Clone
+          object={arrow}
+          scale={[0.07, 0.07, 0.12]}
+          rotation={[0, -3.14 / 2, 0]}
+        />
+        <meshStandardMaterial color={'orange'} />
+      </mesh>
 
       {azimuthAngles.map((azimuth) =>
         elevationAngles.map((elevation) => {
@@ -234,6 +247,20 @@ export const StageContent = ({
       <Torus
         position={[0, 0, 0]}
         args={[RADIUS, 0.03]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial color={'#00d2ff'} />
+      </Torus>
+      <Torus
+        position={[0, 7.1, 0]}
+        args={[RADIUS / 1.4, 0.03]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial color={'#00d2ff'} />
+      </Torus>
+      <Torus
+        position={[0, -7.1, 0]}
+        args={[RADIUS / 1.4, 0.03]}
         rotation={[Math.PI / 2, 0, 0]}
       >
         <meshStandardMaterial color={'#00d2ff'} />
