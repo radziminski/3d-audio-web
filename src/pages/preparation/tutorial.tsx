@@ -40,8 +40,9 @@ const TUTORIAL_STEPS = [
         title: 'Your Task:',
         points: [
           `For each sound, adjust the arrow to point to the direction where you believe the sound is coming from.`,
-          `To simplify things, you'll be asked to <strong>guess only the azimuth (horizontal angle)</strong> or <strong>elevation (vertical angle)</strong> of the sound - never both.`,
-          `After you make a guess, the direction changes, and you should point the arrow again for the new sound.`,
+          `To make your task easier, you'll be asked to <strong>guess only the azimuth (horizontal angle)</strong> or <strong>elevation (vertical angle)</strong> of the sound - never both.`,
+          `After you make a guess, the direction changes, and you should repeat guessing direction of the new sound.`,
+          'To simplify the process, while you can aim for any direction around you, your guesses for azimuth will be rounded to the nearest multiple of 15° (0°, 15°, 30°, ..., 345°) and 45° for elevation(-90°, -45°, 0°, 45°, 90°).',
         ],
       },
     ],
