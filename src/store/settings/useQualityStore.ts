@@ -34,6 +34,10 @@ export const INITIAL_STORE = {
       soundQuality: undefined,
       soundSpatialQuality: undefined,
     },
+    mach1: {
+      soundQuality: undefined,
+      soundSpatialQuality: undefined,
+    },
   },
 } as const;
 

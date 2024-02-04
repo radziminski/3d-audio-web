@@ -7,12 +7,16 @@ export const useCompareAudioService = (
   selectedLibrary?: SupportedLibrary,
   defaultLibrary?: SupportedLibrary
 ) => {
-  const { gain, azimuth, elevation, isBypassed, appMode } = useSettingsStore();
+  const { gain, azimuth, elevation, isBypassed, appMode, audioSource } =
+    useSettingsStore();
   const { guessType } = useTestStore();
 
   const setGain = useSettingsStore((state) => state.setGain);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // const machPlay = useRef<() => void>();
+  // const machPause = useRef<() => void>();
 
   useEffect(() => {
     import('~/services/audio/compare-audio-service').then(
@@ -57,10 +61,17 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
+        if (selectedLibrary === 'mach1') {
+          setTimeout(() => {
+            audioService?.setOutputGain(gain / 100);
+          }, 500);
+
+          return;
+        }
         audioService?.setOutputGain(gain / 100);
       }
     );
-  }, [gain]);
+  }, [gain, selectedLibrary]);
 
   useEffect(() => {
     import('~/services/audio/compare-audio-service').then(
@@ -90,5 +101,27 @@ export const useCompareAudioService = (
     setGain(65);
   }, [setGain]);
 
-  return { audioRef };
+  useEffect(() => {
+    import('~/services/audio/compare-audio-service').then(
+      ({ CompareAudioService }) => {
+        const audioService = CompareAudioService.getInstance();
+
+        if (selectedLibrary === 'mach1') {
+          audioService?.setSourceForMach(audioSource);
+          // machPlay.current = audioService?.machPlay;
+          // machPause.current = audioService?.machPause;
+        } else {
+          audioService?.machPause();
+        }
+      }
+    );
+  }, [audioSource, selectedLibrary]);
+
+  // @ts-expect-error
+  const machPause = window.controls?.pause;
+
+  // @ts-expect-error
+  const machPlay = window.controls?.play;
+
+  return { audioRef, machPause, machPlay };
 };

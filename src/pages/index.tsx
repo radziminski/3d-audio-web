@@ -9,6 +9,7 @@ import { Layout } from '~/components/layout/Layout';
 import { Button, createStyles } from '@mantine/core';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 import { nanoid } from 'nanoid';
+import { useQualityStore } from '~/store/settings/useQualityStore';
 
 const useStyles = createStyles(() => ({
   container: {
@@ -47,12 +48,15 @@ export default function Home() {
 
   const { setTestId } = useTestIdStore();
 
+  const resetQuality = useQualityStore((state) => state.reset);
+
   useEffect(() => {
+    resetQuality();
     resetStore();
     router.prefetch('/preparation/stereo-check');
     router.prefetch('/preparation/tutorial');
     router.prefetch('/compare');
-  }, [resetStore, router]);
+  }, [resetStore, router, resetQuality]);
 
   if (!isClientRender)
     return (

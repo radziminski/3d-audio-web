@@ -128,7 +128,8 @@ export const Compare = () => {
   const setLibraryQuality = useQualityStore((state) => state.setLibraryQuality);
 
   const [selectedLibrary, setSelectedLibrary] = useState<SupportedLibrary>();
-  const { audioRef } = useCompareAudioService(selectedLibrary);
+  const { audioRef, machPause, machPlay } =
+    useCompareAudioService(selectedLibrary);
 
   const userId = useUserId();
   const testId = useTestId();
@@ -168,11 +169,11 @@ export const Compare = () => {
   }, [setAppMode, setAzimuth, setElevation]);
 
   let currentQualityValue = selectedLibrary
-    ? libraryQuality[selectedLibrary].soundQuality ?? -1
+    ? libraryQuality[selectedLibrary]?.soundQuality ?? -1
     : -1;
 
   let currentSpatialQualityValue = selectedLibrary
-    ? libraryQuality[selectedLibrary].soundSpatialQuality ?? -1
+    ? libraryQuality[selectedLibrary]?.soundSpatialQuality ?? -1
     : -1;
 
   const visibleLibrary = selectedLibrary ?? 'web-api';
@@ -185,7 +186,13 @@ export const Compare = () => {
 
   return (
     <div className={classes.container}>
-      <AudioSettings audioRef={audioRef} disableFixedPosition />
+      <AudioSettings
+        audioRef={audioRef}
+        disableFixedPosition
+        machPause={machPause}
+        machPlay={machPlay}
+        isMach={selectedLibrary === 'mach1'}
+      />
       <div className={classes.buttons}>
         {(
           [
@@ -193,7 +200,7 @@ export const Compare = () => {
             { label: 'Technology 1', value: 'web-api' },
             { label: 'Technology 2', value: 'js-ambisonics' },
             { label: 'Technology 3', value: 'resonance' },
-            { label: 'Technology 4', value: 'omnitone' },
+            { label: 'Technology 4', value: 'mach1' },
           ] as const
         ).map(({ label, value }) => (
           <Button

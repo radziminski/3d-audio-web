@@ -1,4 +1,4 @@
-import { createStyles } from '@mantine/core';
+import { Button, createStyles } from '@mantine/core';
 import { Slider } from '~/components/slider/Slider';
 import { CircularSlider } from '~/components/circular-slider/CircularSlider';
 import {
@@ -230,12 +230,18 @@ type AudioSettingsProps = {
   isInsideView?: boolean;
   audioRef?: RefObject<HTMLAudioElement>;
   disableFixedPosition?: boolean;
+  machPlay?: () => void;
+  machPause?: () => void;
+  isMach?: boolean;
 };
 
 export const AudioSettings = ({
   isInsideView = false,
   audioRef,
   disableFixedPosition = false,
+  machPause,
+  machPlay,
+  isMach,
 }: AudioSettingsProps) => {
   const mode = useSettingsStore((state) => state.appMode);
   const isGuessingMode = mode === 'guess' || mode === 'test';
@@ -246,6 +252,8 @@ export const AudioSettings = ({
   const audioSource = useSettingsStore((state) => state.audioSource);
   const elevation = useSettingsStore((state) => state.elevation);
   const azimuth = useSettingsStore((state) => state.azimuth);
+
+  const [isMachPlaying, setIsMachPlaying] = useState(false);
 
   const onElevationChange = useSettingsStore(
     ({ setElevation }) => setElevation
@@ -309,6 +317,15 @@ export const AudioSettings = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appMode, addUsedSample, audioRef, currentStep, setLastSample]);
 
+  useEffect(() => {
+    if (!isMach) {
+      setIsMachPlaying(false);
+      return;
+    }
+
+    audioRef?.current?.pause();
+  }, [isMach, audioRef]);
+
   const isAzimuthDisabled = appMode === 'test' && guessType === 'elevation';
   const isElevationDisabled =
     appMode === 'test' &&
@@ -359,14 +376,38 @@ export const AudioSettings = ({
           <div className={classes.select}>
             <AudioSourceSelect />
           </div>
-          <audio
-            onPlay={handlePlay}
-            controls
-            src={audioSource}
-            ref={audioRef}
-            loop
-            className={classes.audio}
-          />
+          <div style={{ height: 54, width: 250 }}>
+            <audio
+              onPlay={handlePlay}
+              controls
+              src={audioSource}
+              ref={audioRef}
+              loop
+              className={classes.audio}
+              style={{
+                display: isMach ? 'none' : 'block',
+              }}
+            />
+            {isMach && (
+              <Button
+                onClick={() => {
+                  if (isMachPlaying) {
+                    machPause?.();
+                    setIsMachPlaying(false);
+                    return;
+                  }
+
+                  machPlay?.();
+                  setIsMachPlaying(true);
+                }}
+                size='md'
+                style={{ width: '90%' }}
+              >
+                {isMachPlaying ? 'Pause' : 'Play'}
+              </Button>
+            )}
+          </div>
+
           {/* {!isInsideView && (
             <Slider
               min={MIN_ELEVATION}

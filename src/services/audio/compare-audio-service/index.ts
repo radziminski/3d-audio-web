@@ -9,13 +9,14 @@ import { ResonanceAudio, Source } from 'resonance-audio';
 import { roomDimensions, roomMaterials } from '../resonance-audio/constants';
 import Omnitone from 'omnitone/build/omnitone.min.esm';
 import HOAloader from '../js-ambisonics-hoa/custom-hoa-loader';
+import initializeMachService from '../mach/Mach1Starter';
 
 const OmnitoneLib = Omnitone as any;
 
 export class CompareAudioService extends CommonAudioService {
   private static instance: CompareAudioService;
   private static isInitialized = false;
-  private connectedLibrary:
+  public connectedLibrary:
     | SupportedLibrary
     | 'js-ambisonics-foa'
     | 'stereo-panner'
@@ -92,6 +93,8 @@ export class CompareAudioService extends CommonAudioService {
     fetchSound.send();
   }
 
+  private mach1Controls: any;
+
   private constructor(defaultLibrary?: SupportedLibrary) {
     super();
 
@@ -161,6 +164,9 @@ export class CompareAudioService extends CommonAudioService {
       (audioBuffer: AudioBuffer) => this.hoaDecoder.updateFilters(audioBuffer)
     );
     this.hoaLoader.load();
+
+    // MACH 1
+    this.mach1Controls = initializeMachService();
 
     if (defaultLibrary) {
       this.defaultLibrary = defaultLibrary;
@@ -307,6 +313,13 @@ export class CompareAudioService extends CommonAudioService {
       this.elevation = elevation;
     }
 
+    if (this.connectedLibrary === 'mach1') {
+      this.mach1Controls.setAzimuth(this.azimuth);
+      this.mach1Controls.setElevation(this.elevation);
+
+      return;
+    }
+
     if (this.connectedLibrary === 'js-ambisonics-foa') {
       this.encoder.azim = -this.azimuth;
       this.encoder.elev = this.elevation;
@@ -399,5 +412,22 @@ export class CompareAudioService extends CommonAudioService {
 
   public randomizeSourcePosition() {
     this.setDirection(getRandomAzimuthElevation());
+  }
+
+  public setSourceForMach(source: string) {
+    this.mach1Controls.prepare(source);
+  }
+
+  public machPlay() {
+    this.mach1Controls?.play();
+  }
+
+  public machPause() {
+    this.mach1Controls?.pause();
+  }
+
+  public setOutputGain(gain: number): void {
+    this.gainNode.gain.value = gain;
+    this.mach1Controls.setGain(gain);
   }
 }
