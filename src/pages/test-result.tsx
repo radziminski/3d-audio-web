@@ -83,7 +83,7 @@ const LIBRARY_RESULTS_COLUMN_LABELS = [
 const FULL_RESULTS_COLUMN_LABELS = [
   'Step',
   'Library',
-  'True trap',
+  'Type',
   'Guessed trap',
   'True Azimuth',
   'Guessed Azimuth',
@@ -126,6 +126,12 @@ async function submitGuesses(
     });
 
     if (!response.ok) {
+      const error = await response.json();
+
+      if (error.message === 'Test already submitted') {
+        return true;
+      }
+
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -194,6 +200,11 @@ export default function TestResultPage() {
       handleSubmit();
     }
   }, [guesses, handleSubmit, os, testId, userId]);
+
+  useEffect(() => {
+    // @ts-expect-error
+    window.controls?.pause?.();
+  }, []);
 
   return (
     <Providers>
@@ -270,9 +281,7 @@ export default function TestResultPage() {
                 <div key={`guess-${index}`} className={classes.fullResultsRow}>
                   <div className={classes.cell}>{index + 1}</div>
                   <div className={classes.cell}>{guess.library}</div>
-                  <div className={classes.cell}>
-                    {guess.isBypassed ? 'yes' : 'no'}
-                  </div>
+                  <div className={classes.cell}>{guess.type}</div>
                   <div className={classes.cell}>
                     {guess.guessedIsBypassed ? 'yes' : 'no'}
                   </div>

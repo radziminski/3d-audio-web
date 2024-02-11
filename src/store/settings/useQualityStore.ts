@@ -26,10 +26,6 @@ export const INITIAL_STORE = {
       soundQuality: undefined,
       soundSpatialQuality: undefined,
     },
-    omnitone: {
-      soundQuality: undefined,
-      soundSpatialQuality: undefined,
-    },
     'js-ambisonics': {
       soundQuality: undefined,
       soundSpatialQuality: undefined,

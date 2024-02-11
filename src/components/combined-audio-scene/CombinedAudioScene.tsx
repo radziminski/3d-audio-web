@@ -6,7 +6,18 @@ import { useTestStore } from '~/store/settings/useTestStore';
 export const CombinedAudioScene = () => {
   const currentLibrary = useTestStore((state) => state.currentLibrary);
 
-  const { audioRef } = useCompareAudioService(currentLibrary, currentLibrary);
+  const { audioRef, machPause, machPlay } = useCompareAudioService(
+    currentLibrary,
+    currentLibrary
+  );
 
-  return <AudioScene audioRef={audioRef} title='Combined' />;
+  return (
+    <AudioScene
+      audioRef={audioRef}
+      title='Combined'
+      machPause={machPause}
+      machPlay={machPlay}
+      isMach={currentLibrary === 'mach1'}
+    />
+  );
 };

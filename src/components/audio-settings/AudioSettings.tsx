@@ -358,8 +358,6 @@ export const AudioSettings = ({
     appMode === 'test' &&
     ['azimuth', 'left-only', 'right-only', 'bypassed'].includes(guessType);
 
-  console.log(isPlaying);
-
   return (
     <div
       className={

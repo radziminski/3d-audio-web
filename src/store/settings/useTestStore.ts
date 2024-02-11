@@ -83,15 +83,15 @@ export const INITIAL_STORE = {
   guesses: [] as readonly Guess[],
   stepsPerLibrary: TEST_ANGLES.length,
   experimentLibraries: [
+    'js-ambisonics',
     'web-api',
     'resonance',
-    'omnitone',
-    'js-ambisonics',
+    'mach1',
   ] as readonly SupportedLibrary[],
   libraryOrder: [
     'web-api',
     'resonance',
-    'omnitone',
+    'mach1',
     'js-ambisonics',
   ] as readonly SupportedLibrary[],
   azimuthGuess: 0,

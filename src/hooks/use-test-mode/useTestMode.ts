@@ -9,6 +9,7 @@ export const SUPPORTED_LIBRARIES = [
   'js-ambisonics',
   'resonance',
   'omnitone',
+  'mach1',
 ];
 
 export const shuffleArray = <T>(arr: T[]) =>
@@ -70,7 +71,8 @@ export const useTestMode = () => {
     setCurrentStep(0);
     resetUsedSamples();
 
-    const randomLibraryOrder = shuffleArray([...experimentLibraries]);
+    // const randomLibraryOrder = shuffleArray([...experimentLibraries]);
+    const randomLibraryOrder = [...experimentLibraries];
     setLibraryOrder(randomLibraryOrder);
 
     clearGuesses();

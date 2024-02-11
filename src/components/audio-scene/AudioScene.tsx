@@ -65,9 +65,12 @@ const useStyles = createStyles((theme) => ({
 type Props = {
   audioRef: React.RefObject<HTMLAudioElement>;
   title?: string;
+  machPlay?: () => void;
+  machPause?: () => void;
+  isMach?: boolean;
 };
 
-export const AudioScene = ({ audioRef, title }: Props) => {
+export const AudioScene = ({ audioRef, title, ...machProps }: Props) => {
   const sceneType = useSettingsStore((state) => state.sceneType);
   const { classes } = useStyles();
 
@@ -96,6 +99,7 @@ export const AudioScene = ({ audioRef, title }: Props) => {
           <Settings
             isInsideView={sceneType === 'inside' || sceneType === 'alt'}
             audioRef={audioRef}
+            {...machProps}
           />
           {appMode === 'test' && <TestModeInfo />}
         </Layout>
