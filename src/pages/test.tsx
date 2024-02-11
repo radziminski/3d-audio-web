@@ -57,7 +57,7 @@ const useStyles = createStyles((theme) => ({
 const librariesSelect: { value: SupportedLibrary; label: string }[] = [
   { value: 'web-api', label: 'Web Audio API' },
   { value: 'resonance', label: 'Resonance Audio' },
-  { value: 'omnitone', label: 'Omnitone' },
+  { value: 'mach1', label: 'Mach1' },
   { value: 'js-ambisonics', label: 'JS Ambisonics' },
 ];
 

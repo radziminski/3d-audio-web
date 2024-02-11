@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 export type SupportedLibrary =
   | 'resonance'
   | 'web-api'
-  | 'omnitone'
   | 'js-ambisonics'
   | 'mach1';
 
@@ -14,7 +13,7 @@ export const useRedirectToLibrary = () => {
 
   const isWebAudio = library === 'web-api';
   const isResonance = library === 'resonance';
-  const isOmnitone = library === 'omnitone';
+  // const isOmnitone = library === 'omnitone';
   const isJsAmbisonics = library === 'js-ambisonics';
 
   useEffect(() => {
@@ -39,15 +38,15 @@ export const useRedirectToLibrary = () => {
     });
   }, [isWebAudio, router]);
 
-  useEffect(() => {
-    if (!isOmnitone) {
-      return;
-    }
-    import('~/services/audio/omnitone').then(({ OmnitoneService }) => {
-      (window as any).as = OmnitoneService.getInstance(true);
-      router.push('./omnitone-audio');
-    });
-  }, [isOmnitone, router]);
+  // useEffect(() => {
+  //   if (!isOmnitone) {
+  //     return;
+  //   }
+  //   import('~/services/audio/omnitone').then(({ OmnitoneService }) => {
+  //     (window as any).as = OmnitoneService.getInstance(true);
+  //     router.push('./omnitone-audio');
+  //   });
+  // }, [isOmnitone, router]);
 
   useEffect(() => {
     if (!isJsAmbisonics) {

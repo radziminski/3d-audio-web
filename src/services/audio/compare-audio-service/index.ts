@@ -222,13 +222,13 @@ export class CompareAudioService extends CommonAudioService {
         return;
       }
 
-      case 'omnitone': {
-        this.audioSource?.disconnect(
-          this.foaRenderer.stereoReplicationMergerNode
-        );
+      // case 'omnitone': {
+      //   this.audioSource?.disconnect(
+      //     this.foaRenderer.stereoReplicationMergerNode
+      //   );
 
-        return;
-      }
+      //   return;
+      // }
 
       case 'resonance': {
         this.audioSource?.disconnect(this.resonanceAudioSource.input);
@@ -294,10 +294,10 @@ export class CompareAudioService extends CommonAudioService {
       this.audioSource?.connect(this.resonanceAudioSource.input);
     }
 
-    if (library === 'omnitone') {
-      this.audioSource?.connect(this.stereoReplicationMergerNode, 0, 0);
-      this.audioSource?.connect(this.stereoReplicationMergerNode, 0, 1);
-    }
+    // if (library === 'omnitone') {
+    //   this.audioSource?.connect(this.stereoReplicationMergerNode, 0, 0);
+    //   this.audioSource?.connect(this.stereoReplicationMergerNode, 0, 1);
+    // }
 
     this.setDirection({ azimuth: this.azimuth, elevation: this.elevation });
 
@@ -355,48 +355,48 @@ export class CompareAudioService extends CommonAudioService {
       return;
     }
 
-    if (this.connectedLibrary === 'omnitone') {
-      // Assume the listener is at the origin (0, 0, 0)
-      const listenerPosition = { x: 0, y: 0, z: 0 };
+    // if (this.connectedLibrary === 'omnitone') {
+    //   // Assume the listener is at the origin (0, 0, 0)
+    //   const listenerPosition = { x: 0, y: 0, z: 0 };
 
-      // Assume the sound source position on the unit sphere
-      var soundSourcePosition = { x, y, z };
+    //   // Assume the sound source position on the unit sphere
+    //   var soundSourcePosition = { x, y, z };
 
-      // Calculate the direction vector from listener to sound source
-      var directionVector = {
-        x: -soundSourcePosition.x - listenerPosition.x,
-        y: -soundSourcePosition.y - listenerPosition.y,
-        z: soundSourcePosition.z - listenerPosition.z,
-      };
+    //   // Calculate the direction vector from listener to sound source
+    //   var directionVector = {
+    //     x: -soundSourcePosition.x - listenerPosition.x,
+    //     y: -soundSourcePosition.y - listenerPosition.y,
+    //     z: soundSourcePosition.z - listenerPosition.z,
+    //   };
 
-      // Normalize the direction vector
-      var length = Math.sqrt(
-        directionVector.x * directionVector.x +
-          directionVector.y * directionVector.y +
-          directionVector.z * directionVector.z
-      );
-      directionVector.x /= length;
-      directionVector.y /= length;
-      directionVector.z /= length;
+    //   // Normalize the direction vector
+    //   var length = Math.sqrt(
+    //     directionVector.x * directionVector.x +
+    //       directionVector.y * directionVector.y +
+    //       directionVector.z * directionVector.z
+    //   );
+    //   directionVector.x /= length;
+    //   directionVector.y /= length;
+    //   directionVector.z /= length;
 
-      // Calculate the rotation matrix
-      var rotationMatrix = [
-        directionVector.x,
-        0,
-        -directionVector.z, // Column 1 (X-axis)
-        directionVector.y,
-        1,
-        directionVector.x, // Column 2 (Y-axis)
-        directionVector.z,
-        0,
-        directionVector.x, // Column 3 (Z-axis)
-      ];
+    //   // Calculate the rotation matrix
+    //   var rotationMatrix = [
+    //     directionVector.x,
+    //     0,
+    //     -directionVector.z, // Column 1 (X-axis)
+    //     directionVector.y,
+    //     1,
+    //     directionVector.x, // Column 2 (Y-axis)
+    //     directionVector.z,
+    //     0,
+    //     directionVector.x, // Column 3 (Z-axis)
+    //   ];
 
-      // Pass the rotation matrix to the Omnitone renderer
-      this.foaRenderer.setRotationMatrix3(rotationMatrix);
+    //   // Pass the rotation matrix to the Omnitone renderer
+    //   this.foaRenderer.setRotationMatrix3(rotationMatrix);
 
-      return;
-    }
+    //   return;
+    // }
   }
 
   setSourcePosition({ x, y, z }: SpatialPoint): void {}

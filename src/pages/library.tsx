@@ -50,8 +50,8 @@ const SUPPORTED_LIBRARIES = [
     library: 'resonance',
   },
   {
-    label: 'Omnitone',
-    library: 'omnitone',
+    label: 'Mach1',
+    library: 'mach1',
   },
   {
     label: 'JS Ambisonics',
