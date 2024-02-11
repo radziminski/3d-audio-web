@@ -252,8 +252,8 @@ export const AudioSettings = ({
   const audioSource = useSettingsStore((state) => state.audioSource);
   const elevation = useSettingsStore((state) => state.elevation);
   const azimuth = useSettingsStore((state) => state.azimuth);
-
-  const [isMachPlaying, setIsMachPlaying] = useState(false);
+  const isMachLoading = useSettingsStore((state) => state.isMachLoading);
+  const isPlaying = useSettingsStore((state) => state.isPlaying);
 
   const onElevationChange = useSettingsStore(
     ({ setElevation }) => setElevation
@@ -275,6 +275,16 @@ export const AudioSettings = ({
   useLayoutEffect(() => {
     const listener = (event: KeyboardEvent) => {
       if (event.code === 'Space') {
+        if (isMach) {
+          if (isPlaying) {
+            machPause?.();
+            return;
+          }
+
+          machPlay?.();
+          return;
+        }
+
         if (audioRef?.current?.paused) {
           audioRef?.current?.play();
           return;
@@ -290,16 +300,34 @@ export const AudioSettings = ({
   }, [audioRef, isInsideView]);
 
   const appMode = useSettingsStore(({ appMode }) => appMode);
+  const setIsPlaying = useSettingsStore(({ setIsPlaying }) => setIsPlaying);
   const setLastSample = useTestStore(({ setLastSample }) => setLastSample);
   const addUsedSample = useTestStore(({ addUsedSample }) => addUsedSample);
 
   const handlePlay = useCallback(() => {
+    setIsPlaying(true);
+
     if (appMode === 'test') {
-      console.log('setting source', audioSource);
       setLastSample(audioSource);
       addUsedSample(audioSource);
     }
-  }, [addUsedSample, appMode, audioSource, setLastSample]);
+  }, [addUsedSample, appMode, audioSource, setLastSample, setIsPlaying]);
+
+  const handlePause = useCallback(() => {
+    if (!isMach) setIsPlaying(false);
+  }, [setIsPlaying, isMach]);
+
+  const handleMachToggle = useCallback(() => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      machPause?.();
+      return;
+    }
+
+    handlePlay();
+
+    machPlay?.();
+  }, [handlePlay, isPlaying, machPause, machPlay, setIsPlaying]);
 
   useLayoutEffect(() => {
     if (
@@ -319,7 +347,6 @@ export const AudioSettings = ({
 
   useEffect(() => {
     if (!isMach) {
-      setIsMachPlaying(false);
       return;
     }
 
@@ -330,6 +357,8 @@ export const AudioSettings = ({
   const isElevationDisabled =
     appMode === 'test' &&
     ['azimuth', 'left-only', 'right-only', 'bypassed'].includes(guessType);
+
+  console.log(isPlaying);
 
   return (
     <div
@@ -379,6 +408,7 @@ export const AudioSettings = ({
           <div style={{ height: 54, width: 250 }}>
             <audio
               onPlay={handlePlay}
+              onPause={handlePause}
               controls
               src={audioSource}
               ref={audioRef}
@@ -390,20 +420,12 @@ export const AudioSettings = ({
             />
             {isMach && (
               <Button
-                onClick={() => {
-                  if (isMachPlaying) {
-                    machPause?.();
-                    setIsMachPlaying(false);
-                    return;
-                  }
-
-                  machPlay?.();
-                  setIsMachPlaying(true);
-                }}
+                onClick={handleMachToggle}
                 size='md'
                 style={{ width: '90%' }}
+                loading={isMachLoading}
               >
-                {isMachPlaying ? 'Pause' : 'Play'}
+                {isMachLoading ? 'Loading' : isPlaying ? 'Pause' : 'Play'}
               </Button>
             )}
           </div>

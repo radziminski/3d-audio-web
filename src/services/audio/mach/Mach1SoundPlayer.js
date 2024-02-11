@@ -120,7 +120,7 @@ var _setGains = new WeakMap();
 var _preload = new WeakMap();
 
 /*
- * Nach1 Spatial Web SoundPlayer Example
+ * Mach1 Spatial Web SoundPlayer Example
  * Description: Example of an audio player for Mach1Decode API and spatial audio playback
  */
 
@@ -152,7 +152,10 @@ var Mach1SoundPlayer = /*#__PURE__*/ (function () {
   /**
    * @param {Array|AudioBuffer} input array with sound files paths [url]
    */
-  function Mach1SoundPlayer(input) {
+  /**
+   * @param {() => void)} onLoad
+   */
+  function Mach1SoundPlayer(input, onLoad) {
     var _this = this;
 
     _classCallCheck(this, Mach1SoundPlayer);
@@ -348,6 +351,8 @@ var Mach1SoundPlayer = /*#__PURE__*/ (function () {
               .concat(number * 2 + 1, '} loaded')
           );
           console.timeEnd('load file '.concat(uri));
+
+          onLoad?.();
 
           _classPrivateFieldSet(
             _this,

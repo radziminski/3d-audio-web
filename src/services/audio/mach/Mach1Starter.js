@@ -42,8 +42,8 @@ export default function initializeMachService() {
   });
 
   /*
-      Initialize Mach1Encode Module
-      */
+    Initialize Mach1Encode Module
+    */
   Mach1EncodeModule().then(function (m1EncodeModule) {
     window.m1Encode = new m1EncodeModule.Mach1Encode();
   });
@@ -53,19 +53,17 @@ export default function initializeMachService() {
   var audioFiles;
 
   /*
-      Function for setting up loading for audio in path
-      currently using hardcoded example audio downloaded from
-      running `download-audiofiles.sh` or `download-audiofiles.bat`
-      */
-  function loadSound(sound) {
+    Function for setting up loading for audio in path
+    currently using hardcoded example audio downloaded from
+    running `download-audiofiles.sh` or `download-audiofiles.bat`
+    */
+  function loadSound(sound, onLoad) {
     if (window.params.inputKind == 0) {
       // Input: MONO
       audioFiles = [sound];
     } else if (window.params.inputKind == 1) {
       // Input: STERO
       audioFiles = [sound, sound];
-    } else if (window.params.inputKind == 2) {
-      audioFiles = ['audio/quad/guitar-m1horizon.ogg'];
     } else {
       audioFiles = [sound];
     }
@@ -73,7 +71,7 @@ export default function initializeMachService() {
     if (window.mach1SoundPlayer) {
       window.mach1SoundPlayer.remove();
     }
-    window.mach1SoundPlayer = new Mach1SoundPlayer(audioFiles);
+    window.mach1SoundPlayer = new Mach1SoundPlayer(audioFiles, onLoad);
   }
 
   var textlabels = [];
@@ -196,8 +194,8 @@ export default function initializeMachService() {
     clearInterval(updateInterval);
   };
 
-  const prepare = (sound) => {
-    loadSound(sound);
+  const prepare = (sound, onLoad) => {
+    loadSound(sound, onLoad);
   };
 
   const play = () => {

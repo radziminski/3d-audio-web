@@ -414,11 +414,12 @@ export class CompareAudioService extends CommonAudioService {
     this.setDirection(getRandomAzimuthElevation());
   }
 
-  public setSourceForMach(source: string) {
-    this.mach1Controls.prepare(source);
+  public setSourceForMach(source: string, onLoad: () => void) {
+    this.mach1Controls.prepare(source, onLoad);
   }
 
   public machPlay() {
+    console.log('play');
     this.mach1Controls?.play();
   }
 

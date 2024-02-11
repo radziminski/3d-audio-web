@@ -22,6 +22,8 @@ interface SettingsState {
   sourcePosition: SpatialPoint;
   audioSource: string;
   sceneType: SceneType;
+  isMachLoading: boolean;
+  isPlaying: boolean;
   reset: () => void;
   setAppMode: (mode: AppMode) => void;
   setAzimuth: (newAzimuth: number) => void;
@@ -33,6 +35,8 @@ interface SettingsState {
   setAudioSource: (newSource: string) => void;
   setSceneType: (newSceneType: SceneType) => void;
   setIsBypassed: (isBypassed: boolean) => void;
+  setIsMachLoading: (isLoading: boolean) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
 }
 
 export const INITIAL_STORE = {
@@ -45,6 +49,8 @@ export const INITIAL_STORE = {
   sourcePosition: { x: 0, y: 0, z: 1 },
   audioSource: '/test.mp3',
   sceneType: 'outside',
+  isMachLoading: false,
+  isPlaying: false,
 } as const;
 
 export const useSettingsStore = create<SettingsState>()(
@@ -113,6 +119,12 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setIsBypassed: (isBypassed) => {
         set({ isBypassed });
+      },
+      setIsMachLoading: (isLoading) => {
+        set({ isMachLoading: isLoading });
+      },
+      setIsPlaying: (isPlaying) => {
+        set({ isPlaying });
       },
     }),
     {

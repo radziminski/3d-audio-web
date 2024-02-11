@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useTestStore } from '~/store/settings/useTestStore';
@@ -7,8 +7,17 @@ export const useCompareAudioService = (
   selectedLibrary?: SupportedLibrary,
   defaultLibrary?: SupportedLibrary
 ) => {
-  const { gain, azimuth, elevation, isBypassed, appMode, audioSource } =
-    useSettingsStore();
+  const {
+    gain,
+    azimuth,
+    elevation,
+    isBypassed,
+    appMode,
+    isMachLoading,
+    audioSource,
+    isPlaying,
+    setIsMachLoading,
+  } = useSettingsStore();
   const { guessType } = useTestStore();
 
   const setGain = useSettingsStore((state) => state.setGain);
@@ -106,16 +115,45 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
+        setIsMachLoading(true);
+        audioService?.setSourceForMach(audioSource, () => {
+          setIsMachLoading(false);
+        });
+      }
+    );
+  }, [audioSource, setIsMachLoading]);
+
+  useEffect(() => {
+    import('~/services/audio/compare-audio-service').then(
+      ({ CompareAudioService }) => {
+        const audioService = CompareAudioService.getInstance();
+        const wasPlaying = isPlaying;
+
         if (selectedLibrary === 'mach1') {
-          audioService?.setSourceForMach(audioSource);
+          if (wasPlaying) {
+            if (!isMachLoading) {
+              setTimeout(() => {
+                // @ts-expect-error
+                window.controls?.play();
+              }, 100);
+            }
+          }
           // machPlay.current = audioService?.machPlay;
           // machPause.current = audioService?.machPause;
         } else {
           audioService?.machPause();
+
+          if (wasPlaying) {
+            setTimeout(() => {
+              audioRef.current?.play();
+            }, 100);
+
+            return;
+          }
         }
       }
     );
-  }, [audioSource, selectedLibrary]);
+  }, [audioSource, selectedLibrary, setIsMachLoading, isMachLoading]);
 
   // @ts-expect-error
   const machPause = window.controls?.pause;
