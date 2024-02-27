@@ -16,7 +16,9 @@ export const Providers = ({ children }: ProvidersProps) => {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Notifications position='top-right' />
-      <main className={poppins.className}>{children}</main>
+      <div className={poppins.className} style={{ width: '100%' }}>
+        {children}
+      </div>
     </MantineProvider>
   );
 };

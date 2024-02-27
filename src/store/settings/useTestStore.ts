@@ -35,6 +35,7 @@ export type Angles = {
 };
 
 interface TestStore {
+  currentGuess: Guess | null;
   guesses: readonly Guess[];
   stepsPerLibrary: number;
   experimentLibraries: readonly SupportedLibrary[];
@@ -53,6 +54,7 @@ interface TestStore {
   lastSample: string | undefined;
   usedSamples: string[];
   guessType: GuessType;
+  currentAngle: Angles | null;
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -75,8 +77,10 @@ interface TestStore {
   setLastSample(lastSample: string | undefined): void;
   addUsedSample(usedSample: string): void;
   setGuessType(guessType: GuessType): void;
+  setCurrentGuess(currentGuess: Guess | null): void;
   resetUsedSamples(): void;
   resetTestAngles: () => Angles[];
+  setCurrentAngle: (angle: Angles) => void;
 }
 
 export const INITIAL_STORE = {
@@ -108,6 +112,8 @@ export const INITIAL_STORE = {
   lastSample: undefined,
   usedSamples: [],
   guessType: 'normal' as GuessType,
+  currentGuess: null,
+  currentAngle: null,
 };
 
 export const useTestStore = create<TestStore>()(
@@ -225,6 +231,12 @@ export const useTestStore = create<TestStore>()(
       },
       resetUsedSamples: () => {
         set({ usedSamples: [] });
+      },
+      setCurrentGuess: (currentGuess) => {
+        set({ currentGuess });
+      },
+      setCurrentAngle: (angle) => {
+        set({ currentAngle: angle });
       },
     }),
     {

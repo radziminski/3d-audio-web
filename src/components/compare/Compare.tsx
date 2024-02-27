@@ -118,6 +118,8 @@ export const Compare = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  const setAudioSrc = useSettingsStore(({ setAudioSource }) => setAudioSource);
+
   const { classes } = useStyles();
   const router = useRouter();
   const setAzimuth = useSettingsStore((state) => state.setAzimuth);
@@ -166,7 +168,8 @@ export const Compare = () => {
     setAppMode('playground');
     setElevation(0);
     setAzimuth(0);
-  }, [setAppMode, setAzimuth, setElevation]);
+    setAudioSrc('/guitar.mp3');
+  }, [setAppMode, setAudioSrc, setAzimuth, setElevation]);
 
   let currentQualityValue = selectedLibrary
     ? libraryQuality[selectedLibrary]?.soundQuality ?? -1
@@ -192,6 +195,7 @@ export const Compare = () => {
         machPause={machPause}
         machPlay={machPlay}
         isMach={selectedLibrary === 'mach1'}
+        audioSources={['Full Song', 'Guitar', 'Female voice']}
       />
       <div className={classes.buttons}>
         {(

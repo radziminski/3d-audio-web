@@ -12,12 +12,23 @@ export const CombinedAudioScene = () => {
   );
 
   return (
-    <AudioScene
-      audioRef={audioRef}
-      title='Combined'
-      machPause={machPause}
-      machPlay={machPlay}
-      isMach={currentLibrary === 'mach1'}
-    />
+    <>
+      <AudioScene
+        audioRef={audioRef}
+        title='Combined'
+        machPause={machPause}
+        machPlay={machPlay}
+        isMach={currentLibrary === 'mach1'}
+        audioSources={[
+          'Bees and other insects',
+          'Wood & branches breaking',
+          'Bicycle bells',
+          'Female voice',
+          'Guitar',
+          'Male voice',
+          'Pink noise',
+        ]}
+      />
+    </>
   );
 };

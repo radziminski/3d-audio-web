@@ -21,6 +21,7 @@ export const useCompareAudioService = (
   const { guessType } = useTestStore();
 
   const setGain = useSettingsStore((state) => state.setGain);
+  const isReference = useSettingsStore((state) => state.isReference);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -61,6 +62,9 @@ export const useCompareAudioService = (
         const audioService = CompareAudioService.getInstance();
 
         audioService?.setDirection({ azimuth, elevation });
+
+        console.log('true angles (azimuth, elevation)', azimuth, elevation);
+        console.log('guessType', guessType);
       }
     );
   }, [azimuth, elevation]);
@@ -105,6 +109,22 @@ export const useCompareAudioService = (
       }
     );
   }, [selectedLibrary, isBypassed, guessType, appMode]);
+  useEffect(() => {
+    import('~/services/audio/compare-audio-service').then(
+      ({ CompareAudioService }) => {
+        const audioService = CompareAudioService.getInstance();
+
+        if (guessType === 'left-only' || guessType === 'right-only') {
+          if (isReference) {
+            audioService?.setPanner('center');
+            return;
+          }
+
+          audioService?.setPanner(guessType);
+        }
+      }
+    );
+  }, [selectedLibrary, guessType, isReference]);
 
   useEffect(() => {
     setGain(65);

@@ -53,9 +53,9 @@ const useStyles = createStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     gap: '64px',
-    '@media (max-width: 1200px)': {
+    '@media (max-width: 800px)': {
       flexDirection: 'column',
-      gap: 0,
+      gap: 16,
     },
   },
 }));
@@ -77,6 +77,7 @@ type StereoCheckProps = {
 
 export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
   const [step, setStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [directionsList, setDirectionList] = useState<Direction[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
 
@@ -159,7 +160,25 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
           src={'/guitar.mp3'}
           loop
           ref={audioRef}
+          style={{ display: 'none' }}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          key='audio-element-stereo-check'
         />
+        <Button
+          size='xl'
+          style={{ width: '200px' }}
+          onClick={() => {
+            if (audioRef.current?.paused) {
+              audioRef.current?.play();
+              return;
+            }
+
+            audioRef.current?.pause();
+          }}
+        >
+          {isPlaying ? 'Pause' : 'Start'}
+        </Button>
         <Slider
           onChange={handleGainChange}
           label='Adjust sound volume'

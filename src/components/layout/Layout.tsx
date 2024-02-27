@@ -18,6 +18,9 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
+    flexGrow: 1,
+    flexShrink: 0,
+    alignSelf: 'stretch',
   },
   withPadding: {
     padding: '64px 32px',
@@ -109,6 +112,7 @@ export const Layout = ({
             }
           : undefined
       }
+      data-test-id='layout'
     >
       {!isContextStarted && (
         <Button onClick={() => setIsContextStarted(true)}>

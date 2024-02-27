@@ -14,7 +14,10 @@ import {
   MAX_ELEVATION,
   MIN_ELEVATION,
 } from '~/services/audio/constants';
-import { AudioSourceSelect } from '../audio-source-select/AudioSourceSelect';
+import {
+  AudioSource,
+  AudioSourceSelect,
+} from '../audio-source-select/AudioSourceSelect';
 import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles((theme) => ({
@@ -48,7 +51,6 @@ const useStyles = createStyles((theme) => ({
       maxHeight: 260,
       maxWidth: '100%',
       padding: '16px',
-      paddingBottom: '76px',
     },
   },
   dialogNotFixed: {
@@ -76,7 +78,6 @@ const useStyles = createStyles((theme) => ({
       maxWidth: '95vw',
       overflow: 'hidden',
       padding: '16px',
-      paddingBottom: '76px',
     },
   },
   dialogNarrow: {
@@ -135,10 +136,14 @@ const useStyles = createStyles((theme) => ({
     justifyContent: 'center',
     position: 'relative',
     gap: '8px',
+    flexGrow: 1,
     ':last-child': {
       paddingBottom: '32px',
       '@media (max-width: 1500px)': {
         width: '230px',
+      },
+      '@media (max-width: 700px)': {
+        paddingBottom: 0,
       },
       '@media (max-width: 450px)': {
         width: '200px',
@@ -152,6 +157,7 @@ const useStyles = createStyles((theme) => ({
     justifyContent: 'center',
     position: 'relative',
     gap: '16px',
+    flexGrow: 1,
     '@media (max-width: 700px)': {
       gap: '0px',
       h2: {
@@ -209,6 +215,9 @@ const useStyles = createStyles((theme) => ({
     color: 'white',
     fontWeight: 600,
     width: '140px',
+    '@media (max-width: 700px)': {
+      bottom: '-18px',
+    },
   },
   elevationSlider: {
     position: 'absolute',
@@ -224,6 +233,12 @@ const useStyles = createStyles((theme) => ({
       height: '150px !important',
     },
   },
+  button: {
+    width: '100%',
+    '@media (max-width: 1500px)': {
+      width: '90%',
+    },
+  },
 }));
 
 type AudioSettingsProps = {
@@ -233,6 +248,7 @@ type AudioSettingsProps = {
   machPlay?: () => void;
   machPause?: () => void;
   isMach?: boolean;
+  audioSources?: AudioSource[];
 };
 
 export const AudioSettings = ({
@@ -242,6 +258,7 @@ export const AudioSettings = ({
   machPause,
   machPlay,
   isMach,
+  audioSources,
 }: AudioSettingsProps) => {
   const mode = useSettingsStore((state) => state.appMode);
   const isGuessingMode = mode === 'guess' || mode === 'test';
@@ -317,17 +334,40 @@ export const AudioSettings = ({
     if (!isMach) setIsPlaying(false);
   }, [setIsPlaying, isMach]);
 
-  const handleMachToggle = useCallback(() => {
-    if (isPlaying) {
-      setIsPlaying(false);
-      machPause?.();
+  const handlePlayToggle = useCallback(() => {
+    if (isMach) {
+      if (isPlaying) {
+        setIsPlaying(false);
+        machPause?.();
+        return;
+      }
+
+      handlePlay();
+
+      machPlay?.();
+
       return;
     }
 
-    handlePlay();
+    (window as any).audioRef = audioRef?.current;
 
-    machPlay?.();
-  }, [handlePlay, isPlaying, machPause, machPlay, setIsPlaying]);
+    if (audioRef?.current?.paused) {
+      handlePlay();
+      audioRef?.current?.play();
+      return;
+    }
+
+    audioRef?.current?.pause();
+  }, [
+    audioRef,
+    audioRef?.current,
+    handlePlay,
+    isMach,
+    isPlaying,
+    machPause,
+    machPlay,
+    setIsPlaying,
+  ]);
 
   useLayoutEffect(() => {
     if (
@@ -401,9 +441,9 @@ export const AudioSettings = ({
           }
         >
           <div className={classes.select}>
-            <AudioSourceSelect />
+            <AudioSourceSelect sources={audioSources} />
           </div>
-          <div style={{ height: 54, width: 250 }}>
+          <div style={{ height: 54, maxWidth: 250 }}>
             <audio
               onPlay={handlePlay}
               onPause={handlePause}
@@ -413,19 +453,18 @@ export const AudioSettings = ({
               loop
               className={classes.audio}
               style={{
-                display: isMach ? 'none' : 'block',
+                display: 'none',
               }}
+              key='audio-element-guess'
             />
-            {isMach && (
-              <Button
-                onClick={handleMachToggle}
-                size='md'
-                style={{ width: '90%' }}
-                loading={isMachLoading}
-              >
-                {isMachLoading ? 'Loading' : isPlaying ? 'Pause' : 'Play'}
-              </Button>
-            )}
+            <Button
+              onClick={handlePlayToggle}
+              size='md'
+              className={classes.button}
+              loading={isMachLoading}
+            >
+              {isMachLoading ? 'Loading' : isPlaying ? 'Pause' : 'Play'}
+            </Button>
           </div>
 
           {/* {!isInsideView && (
@@ -477,6 +516,7 @@ export const AudioSettings = ({
                   cursor: isElevationDisabled ? 'not-allowed' : 'pointer',
                 }}
                 disabled={isElevationDisabled}
+                step={isGuessingMode ? 45 : 1}
               />
               <div className={classes.elevation}>
                 Elevation:{' '}

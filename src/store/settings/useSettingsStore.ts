@@ -24,6 +24,7 @@ interface SettingsState {
   sceneType: SceneType;
   isMachLoading: boolean;
   isPlaying: boolean;
+  isReference: boolean;
   reset: () => void;
   setAppMode: (mode: AppMode) => void;
   setAzimuth: (newAzimuth: number) => void;
@@ -37,6 +38,7 @@ interface SettingsState {
   setIsBypassed: (isBypassed: boolean) => void;
   setIsMachLoading: (isLoading: boolean) => void;
   setIsPlaying: (isPlaying: boolean) => void;
+  setIsReference: (isReference: boolean) => void;
 }
 
 export const INITIAL_STORE = {
@@ -51,6 +53,7 @@ export const INITIAL_STORE = {
   sceneType: 'outside',
   isMachLoading: false,
   isPlaying: false,
+  isReference: false,
 } as const;
 
 export const useSettingsStore = create<SettingsState>()(
@@ -125,6 +128,9 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setIsPlaying: (isPlaying) => {
         set({ isPlaying });
+      },
+      setIsReference: (isReference) => {
+        set({ isReference });
       },
     }),
     {

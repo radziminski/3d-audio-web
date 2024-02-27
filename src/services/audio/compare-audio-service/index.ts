@@ -401,9 +401,14 @@ export class CompareAudioService extends CommonAudioService {
 
   setSourcePosition({ x, y, z }: SpatialPoint): void {}
 
-  setPanner(pan: 'left-only' | 'right-only') {
+  setPanner(pan: 'left-only' | 'right-only' | 'center') {
     if (pan === 'left-only') {
       this.stereoPannerNode.pan.value = -1;
+      return;
+    }
+
+    if (pan === 'center') {
+      this.stereoPannerNode.pan.value = 0;
       return;
     }
 

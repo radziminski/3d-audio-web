@@ -21,6 +21,8 @@ export const shuffleArray = <T>(arr: T[]) =>
 export const useTestMode = () => {
   const router = useRouter();
 
+  const setAudioSrc = useSettingsStore(({ setAudioSource }) => setAudioSource);
+
   // Settings Store
   const {
     setRandomAngles,
@@ -61,11 +63,14 @@ export const useTestMode = () => {
     guessType,
     setGuessType,
     resetTestAngles,
+    setCurrentGuess,
+    setCurrentAngle,
   } = useTestStore();
 
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
   const handleStartTest = useCallback(() => {
+    setAudioSrc('/guitar.mp3');
     setAppMode('test');
     setIsTestFinished(false);
     setCurrentStep(0);
@@ -84,6 +89,7 @@ export const useTestMode = () => {
     setAngles(testa[0].azimuth, testa[0].elevation);
     setIsBypassed(testa[0].isBypassed ?? false);
     setGuessType(testa[0].type ?? 'normal');
+    setCurrentAngle(testa[0]);
 
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
@@ -91,6 +97,7 @@ export const useTestMode = () => {
       router.push(`/guess`);
     }, 500);
   }, [
+    setAudioSrc,
     setAppMode,
     setIsTestFinished,
     setCurrentStep,
@@ -105,6 +112,7 @@ export const useTestMode = () => {
     setAngles,
     setIsBypassed,
     setGuessType,
+    setCurrentAngle,
     setCurrentLibrary,
     router,
   ]);
@@ -160,6 +168,8 @@ export const useTestMode = () => {
         setAngles(angles.azimuth, angles.elevation);
         setIsBypassed(angles.isBypassed ?? false);
         setGuessType(angles.type ?? 'normal');
+        setCurrentAngle(angles);
+        console.log('setting angles', angles);
       }
 
       clearCurrentGuess();
@@ -200,6 +210,7 @@ export const useTestMode = () => {
       resetTestAngles,
       resetUsedSamples,
       setAngles,
+      setCurrentAngle,
       setCurrentLibrary,
       setGuessStart,
       setGuessType,
