@@ -56,29 +56,34 @@ export const Scene = () => {
     ]
   );
 
+  const roteTimeoutRef = useRef();
+
   useLayoutEffect(() => {
-    if (arrowRef.current) {
-      const arrowObject = arrowRef.current;
-      const center = new Vector3(0, -100, 0);
+    console.log(sourcePosition);
+    setTimeout(() => {
+      if (arrowRef.current) {
+        const arrowObject = arrowRef.current;
+        const center = new Vector3(0, -100, 0);
 
-      arrowObject.lookAt(center);
+        arrowObject.lookAt(center);
 
-      const percentElev = sourcePosition[1] / 1.1;
+        const percentElev = sourcePosition[1] / 1.1;
 
-      const threshold = 0.85;
-      const smoother = 0.65;
-      const distanceLeft = Math.abs(percentElev) - threshold;
-      const dest = (1 - smoother) / (1 - threshold);
-      const multiplier =
-        distanceLeft > 0
-          ? ((Math.abs(percentElev) - threshold) * dest + smoother) *
-            ((distanceLeft / 0.059) * 0.4 + 1)
-          : smoother;
+        const threshold = 0.85;
+        const smoother = 0.65;
+        const distanceLeft = Math.abs(percentElev) - threshold;
+        const dest = (1 - smoother) / (1 - threshold);
+        const multiplier =
+          distanceLeft > 0
+            ? ((Math.abs(percentElev) - threshold) * dest + smoother) *
+              ((distanceLeft / 0.059) * 0.4 + 1)
+            : smoother;
 
-      const rotation = (percentElev * Math.PI * multiplier) / 2;
+        const rotation = (percentElev * Math.PI * multiplier) / 2;
 
-      arrowObject.rotateX(rotation);
-    }
+        arrowObject.rotateX(rotation);
+      }
+    }, 0);
   }, [sourcePosition, trigger]);
 
   useLayoutEffect(() => {

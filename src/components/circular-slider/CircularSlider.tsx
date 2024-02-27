@@ -14,9 +14,10 @@ const useStyles = createStyles(() => ({
 type Props = {
   onChange?: (value: number) => void;
   disabled?: boolean;
+  withData?: boolean;
 };
 
-export const CircularSlider = ({ onChange, disabled }: Props) => {
+export const CircularSlider = ({ onChange, disabled, withData }: Props) => {
   const [hide, setHide] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const mediaQuery = useMediaQuery('(max-width: 1500px)', false);
@@ -35,11 +36,21 @@ export const CircularSlider = ({ onChange, disabled }: Props) => {
     <section className={disabled ? classes.wrapper : undefined}>
       <ReactCircularSlider
         label='Azimuth'
-        dataIndex={1}
+        dataIndex={0}
         min={0}
         max={360}
         direction={1}
+        progressLineCap='flat'
+        data={
+          withData
+            ? [
+                0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195,
+                210, 225, 240, 255, 270, 285, 300, 315, 330, 345, 0,
+              ]
+            : undefined
+        }
         knobPosition='top'
+        appendToValue='°'
         valueFontSize={mediaQuery ? '1rem' : '4rem'}
         trackColor='#eeeeee'
         progressColorFrom={isDragging ? '#F0A367' : '#00bfbd'}

@@ -418,9 +418,12 @@ export const AudioSettings = ({
             <div className={classes.slider}>
               {!isGuessMade && (
                 <CircularSlider
+                  withData={isGuessingMode}
                   onChange={(value) => {
                     const prevValue = isGuessingMode ? guessedAzimuth : azimuth;
                     const newValue = value === 1 ? prevValue : value;
+
+                    console.log(newValue);
 
                     if (isGuessingMode) {
                       setGuessedAzimuth(newValue);
