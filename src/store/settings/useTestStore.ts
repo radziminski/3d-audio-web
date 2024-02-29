@@ -22,7 +22,7 @@ export type Guess = {
   guessEnd: number;
   isBypassed?: boolean;
   guessedIsBypassed?: boolean;
-  lastSample?: string;
+  lastSample?: string | undefined;
   usedSamples?: string[];
   type: GuessType;
 };
@@ -79,7 +79,7 @@ interface TestStore {
   setGuessType(guessType: GuessType): void;
   setCurrentGuess(currentGuess: Guess | null): void;
   resetUsedSamples(): void;
-  resetTestAngles: () => Angles[];
+  resetTestAngles: (isMach?: boolean) => Angles[];
   setCurrentAngle: (angle: Angles) => void;
 }
 
@@ -179,7 +179,7 @@ export const useTestStore = create<TestStore>()(
       setIsGuessMade: (isGuessMade: boolean) => {
         set({ isGuessMade });
       },
-      resetTestAngles: () => {
+      resetTestAngles: (isMach) => {
         const { stepsPerLibrary } = get();
 
         const angles: Angles[] = [];

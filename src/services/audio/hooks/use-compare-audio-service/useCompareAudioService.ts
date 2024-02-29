@@ -98,6 +98,15 @@ export const useCompareAudioService = (
         }
 
         if (guessType === 'left-only' || guessType === 'right-only') {
+          if (selectedLibrary === 'mach1') {
+            audioService?.setDirection({
+              azimuth: guessType === 'left-only' ? 270 : 90,
+              elevation: 0,
+            });
+
+            return;
+          }
+
           audioService?.connectAudioSource('stereo-panner');
           audioService?.setPanner(guessType);
           return;
@@ -115,6 +124,24 @@ export const useCompareAudioService = (
         const audioService = CompareAudioService.getInstance();
 
         if (guessType === 'left-only' || guessType === 'right-only') {
+          if (selectedLibrary === 'mach1') {
+            if (isReference) {
+              audioService?.setDirection({
+                azimuth: 0,
+                elevation: 0,
+              });
+
+              return;
+            }
+
+            audioService?.setDirection({
+              azimuth: guessType === 'left-only' ? 270 : 90,
+              elevation: 0,
+            });
+
+            return;
+          }
+
           if (isReference) {
             audioService?.setPanner('center');
             return;
