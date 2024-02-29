@@ -245,12 +245,12 @@ export default function TutorialPage() {
                 src={'/dashboard.png'}
                 alt='tutorial image'
                 width={820}
-                height={420}
+                height={470}
                 style={{
                   objectFit: 'contain',
                   objectPosition: 'center',
                   alignSelf: 'center',
-                  height: '50%',
+                  height: '470px',
                   width: '100%',
                   maxWidth: 820,
                 }}
@@ -276,17 +276,17 @@ export default function TutorialPage() {
                 src={currentStep.image}
                 alt='tutorial image'
                 width={820}
-                height={420}
+                height={470}
                 style={{
                   objectFit: 'contain',
                   objectPosition: 'center',
                   alignSelf: 'center',
                   width: '100%',
-                  height: '50%',
+                  height: '470px',
                   maxWidth: currentStep.image === '/direction.jpeg' ? 500 : 820,
                 }}
                 priority
-                quality={90}
+                quality={70}
               />
               {currentStep.paragraphs.map((paragraph, i) => (
                 <p key={paragraph.title} className={classes.paragraph}>
