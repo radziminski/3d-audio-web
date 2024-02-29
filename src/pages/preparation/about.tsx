@@ -55,10 +55,10 @@ export default function About() {
           <h1 className={classes.title}>Firstly: What is 3D Sound?</h1>
           <p className={classes.paragraph}>
             Unlike the conventional stereo sound, which is what we&apos;re used
-            to in our daily life when listening to music, 3D sound offers a
-            completely different experience. In stereo sound, you perceive the
-            audio as if it&apos;s playing <strong>inside your head</strong>,
-            sometimes leaning towards your left or right eat.
+            to when listening to music, 3D sound offers a completely different
+            experience. In stereo sound, you perceive the audio as if it&apos;s
+            playing <strong>inside your head</strong>, sometimes leaning towards
+            your left or right eat.
           </p>
           <p className={classes.paragraph}>
             3D sound, however, creates an illusion that the sound is coming from
@@ -69,8 +69,8 @@ export default function About() {
           </p>
           <p className={classes.paragraph}>
             To truly understand the difference, I recommend watching a short
-            video below. It starts with normal stereo sound, that should seel
-            like it&apos; playing inside your head. Later, it transforms into a
+            video below. It starts with normal stereo sound, that should feel
+            like it&apos;s playing inside your head. Later, it transforms into a
             360-degree 3D sound experience, where you can notice how different
             parts of the song seem to move around you, coming from different
             directions. This demonstration should give you a real sense of what

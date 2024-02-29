@@ -126,12 +126,12 @@ export default function StereoCheckPage() {
             <strong>headphones setup</strong>.
             <br />
             To start, <strong>put your headphones on </strong>and make sure that
-            you have <strong>right</strong>. and <strong>left</strong> headphone
+            you have <strong>right</strong> and <strong>left</strong> headphone
             in/on the correct ear.
           </p>
 
           <p className={classes.paragraph}>
-            By hitting <strong>&quot;play&quot;</strong> on the underneath
+            By hitting <strong>&quot;Start&quot;</strong> on the underneath
             audio, you will hear a guitar playing in only one ear. Please select
             the &quot;LEFT&quot; or &quot;RIGHT&quot; button, depending on which
             ear you hear the guitar playing. After each guess, the guitar might

@@ -114,7 +114,7 @@ export default function Home() {
             <div>
               <span>3. Evaluate sound quality:</span> Firstly, you will be asked
               to play around with each selected technology and evaluate its
-              quality and effectiveness.
+              quality and spatial effectiveness.
             </div>
             <div>
               <span>4. Discover Sound Directions:</span>{' '}
@@ -123,6 +123,9 @@ export default function Home() {
                 coming from. Is it above, below, behind, or maybe right in front
                 of you?
               </u>
+            </div>
+            <div>
+              <span>4. The whole test is fully anonymous.</span>{' '}
             </div>
           </p>
           <Button

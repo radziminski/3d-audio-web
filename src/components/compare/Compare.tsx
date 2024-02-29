@@ -224,11 +224,11 @@ export const Compare = () => {
         <div>
           <h3 className={classes.sliderTitle}>Overall Sound Quality</h3>
           <p className={classes.paragraph}>
-            This slider lets you rate how pleasant the sound is when played by
-            the current library.
+            Please rate how pleasant the sound is when played by the current
+            library:
           </p>
           <div className={classes.sliderContainer}>
-            <h4 className={classes.sliderLabel}>Sounds Terrible</h4>
+            <h4 className={classes.sliderLabel}>Sounds awful</h4>
             <div className={classes.slider}>
               <Slider
                 defaultValue={-1}
@@ -246,13 +246,13 @@ export const Compare = () => {
                 labelAlwaysOn
               />
             </div>
-            <h4 className={classes.sliderLabel}>Sounds Amazing</h4>
+            <h4 className={classes.sliderLabel}>Sounds amazing</h4>
           </div>
         </div>
         <div>
           <h3 className={classes.sliderTitle}>3D Realism</h3>
           <p className={classes.paragraph}>
-            Here you can evaluate how realistic and spatial the sound feels.
+            Please evaluate how realistic and spatial the sound feels:
           </p>
           <div className={classes.sliderContainer}>
             <h4 className={classes.sliderLabel}>

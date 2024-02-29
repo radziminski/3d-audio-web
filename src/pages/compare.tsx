@@ -69,32 +69,33 @@ export default function ComparePage() {
           <p className={classes.paragraph}>
             Welcome to the first interactive part of this test! Here, you have
             the unique opportunity to switch between{' '}
-            <strong>various 3D sound technologies.</strong>
+            <strong>
+              various technologies simulating 3D sound in your headphones.
+            </strong>
           </p>
           <p className={classes.paragraph}>
-            By clicking on one of the blue buttons below, you can select a given
-            technology that will be used to make the sound seem like it iss
-            coming from a given direction around you. After experimenting with
-            it, please rate your experience on two aspects:{' '}
-            <strong>overall sound quality</strong> and the{' '}
+            By clicking on one of the blue &quot;Technology ...&quot; button
+            below, you can select a given technology that will be used to make
+            the sound seem like it iss coming from a given direction around you.
+            After experimenting with it, please rate your experience on two
+            aspects: <strong>overall sound quality</strong> and the{' '}
             <strong>degree of 3D realism</strong>. Your ratings, on a scale from
             0 to 10, will help us understand your experiences with each
             technology.
             <br />
-            <i>
+            <i style={{ marginTop: '8px' }}>
               Note: Value <strong>-1</strong> on the slider means that a given
               aspects has not been rated yet. Please choose score of both
               aspects for all 4 technologies to continue.
             </i>
           </p>
           <p className={classes.paragraph}>
-            Using two knobs below, you can adjust the{' '}
-            <strong>horizontal (azimuth knob)</strong>
-            and <strong>vertical (elevation slider) </strong> direction of the
+            By using two knobs below, you can adjust the{' '}
+            <strong>horizontal (azimuth knob)</strong> and{' '}
+            <strong>vertical (elevation slider) </strong> direction of the
             sound. You can pick different sounds from the list next to the
-            sliders. Use the audio controls to play, pause, or skip through the
-            chosen track. The gain (volume) slider allows you to adjust how loud
-            the sound is.,
+            sliders. Use large play button to start/pause the track. The gain
+            (volume) slider allows you to adjust how loud the sound is.,
           </p>
         </div>
         <Compare />
