@@ -286,25 +286,33 @@ export default function TestResultPage() {
                     {guess.guessedIsBypassed ? 'yes' : 'no'}
                   </div>
                   <div className={classes.cell}>
-                    {roundToDecimal(guess.trueAzimuth)}
+                    {['azimuth', 'elevation'].includes(guess.type)
+                      ? roundToDecimal(guess.trueAzimuth)
+                      : '-'}
                   </div>
                   <div className={classes.cell}>
                     {roundToDecimal(guess.guessedAzimuth)}
                   </div>
                   <div className={classes.cell}>
-                    {getAzimuthError(guess.trueAzimuth, guess.guessedAzimuth)}
+                    {guess.type === 'azimuth'
+                      ? getAzimuthError(guess.trueAzimuth, guess.guessedAzimuth)
+                      : '-'}
                   </div>
                   <div className={classes.cell}>
-                    {roundToDecimal(guess.trueElevation)}
+                    {['azimuth', 'elevation'].includes(guess.type)
+                      ? roundToDecimal(guess.trueElevation)
+                      : '-'}
                   </div>
                   <div className={classes.cell}>
                     {roundToDecimal(guess.guessedElevation)}
                   </div>
                   <div className={classes.cell}>
-                    {getElevationError(
-                      guess.trueElevation,
-                      guess.guessedElevation
-                    )}
+                    {guess.type === 'elevation'
+                      ? getElevationError(
+                          guess.trueElevation,
+                          guess.guessedElevation
+                        )
+                      : '-'}
                   </div>
                   <div className={classes.cell}>
                     {getTimeDifference(guess.guessStart, guess.guessEnd)} s

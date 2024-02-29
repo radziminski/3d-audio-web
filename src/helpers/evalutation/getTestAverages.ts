@@ -14,17 +14,17 @@ export const getTestAverages = (
   );
 
   const azimuthErrors = libraryGuesses
+    .filter((guess) => guess.type === 'azimuth')
     .map(({ trueAzimuth, guessedAzimuth, trueElevation }) =>
-      Math.abs(trueElevation) > 80
-        ? null
-        : getAzimuthError(trueAzimuth, guessedAzimuth)
+      getAzimuthError(trueAzimuth, guessedAzimuth)
     )
     .filter(Boolean) as number[];
 
-  const elevationErrors = libraryGuesses.map(
-    ({ trueElevation, guessedElevation }) =>
+  const elevationErrors = libraryGuesses
+    .filter((guess) => guess.type === 'elevation')
+    .map(({ trueElevation, guessedElevation }) =>
       getElevationError(trueElevation, guessedElevation)
-  );
+    );
 
   const averageAzimuthError = roundToDecimal(
     azimuthErrors.reduce((acc, curr) => acc + curr, 0) / azimuthErrors.length
