@@ -68,7 +68,7 @@ export const SceneSettings = ({ isInsideView = false }: SceneSettingsProps) => {
     },
 
     {
-      label: 'Alt view',
+      label: 'Combined view',
       sceneType: 'alt',
     },
   ].filter((button) => button.sceneType !== sceneType);

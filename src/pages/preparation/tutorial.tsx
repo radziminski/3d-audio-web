@@ -26,82 +26,125 @@ const TUTORIAL_STEPS = [
     image: '/direction.jpeg',
   } as const,
   {
-    title: '2: The Scene and Your Avatar',
+    title: '2: Understanding the Sound Space',
     paragraphs: [
       {
-        title: 'Your virtual sound space:',
+        title: 'Exploring the virtual environment:',
         points: [
-          `In the center of the screen, you'll see a figure sitting down. This is your avatar in the sound space.`,
-          `An arrow surrounds your avatar - it's supposed to point into the <strong>direction</strong> of the sound you're hearing.`,
-          `You can rotate and zoom the scene with your mouse (just drag the screen) to get a better view.`,
+          `There are 3 available scenes to help you identify the direction of incoming sounds: <strong>"Outside view"</strong>, <strong>"Inside view"</strong>, and <strong>"Combined view"</strong>.`,
+          `In each view, your task is to determine the direction from which the sound is coming, focusing on its azimuth (horizontal angle) or elevation (vertical angle). The process for making your guess varies depending on the view selected.`,
+          `During the test, you can choose whichever view is suiting you best. You can also freely switch between views at any time.`,
+          `You can switch between views using buttons in left bottom corner of the screen.`,
         ],
       },
       {
         title: 'Your Task:',
         points: [
-          `For each sound, adjust the arrow to point to the direction where you believe the sound is coming from.`,
+          `For each sound, use selected view to choose the direction where you believe the sound is coming from.`,
           `To make your task easier, you'll be asked to <strong>guess only the azimuth (horizontal angle)</strong> or <strong>elevation (vertical angle)</strong> of the sound - never both.`,
           `After you make a guess, the direction changes, and you should repeat guessing direction of the new sound.`,
-          'To simplify the process, while you can aim for any direction around you, your guesses for azimuth will be rounded to the nearest multiple of 15° (0°, 15°, 30°, ..., 345°) and 45° for elevation(-90°, -45°, 0°, 45°, 90°).',
+          'To simplify the process, your guesses for azimuth will be limited to the multiple of 15° (0°, 15°, 30°, ..., 345°) and 45° for elevation(-90°, -45°, 0°, 45°, 90°).',
         ],
       },
     ],
-    image: '/step1.gif',
+    image: '/views.gif',
   } as const,
   {
-    title: '3: Controlling the arrow',
+    title: '3: Outside View',
     paragraphs: [
       {
-        title: 'Adjusting the sound direction:',
+        title: 'Navigating the outside view:',
         points: [
-          `Use the round slider in the bottom right to change the arrow's azimuth (the horizontal direction of the sound).`,
-          `The vertical slider next to it adjusts the elevation (the vertical direction).`,
-          `In the first step you've used the azimuth and elevation sliders to change sound direction.  Now, <strong>you should use it, to point the arrow in the direction you think the sound is coming from.</strong>`,
+          `In the outside view, a person is sitting in the center of the screen, with an arrow floating around them. The arrow should indicates the direction of the incoming sound.`,
+          `You are asked to adjust the arrow's position by using the controls located in the bottom right corner of the screen. These controls allow you to change the azimuth or elevation to point the arrow in the direction you believe the sound is coming from.`,
           `In each step <strong>one of the sliders will be disabled</strong> (you won't be able to change it). If the vertical slider is disabled, you should only guess the azimuth of the sound (the horizontal direction) and vice-versa.`,
+          `The outside view is the default view. You will see it right after starting the test.`,
         ],
       },
+    ],
+    image: '/outside.gif',
+  } as const,
+  {
+    title: '4: Inside View',
+    paragraphs: [
+      {
+        title: 'Experiencing the inside view:',
+        points: [
+          `The inside view offers a first-person perspective, where you're asked to rotate the camera to align with the direction you think the sound is originating from.`,
+          `This immersive view allows you to directly control the camera's orientation to better estimate the sound's azimuth or elevation.`,
+        ],
+      },
+    ],
+    image: '/inside.gif',
+  } as const,
+  {
+    title: '5: Combined View',
+    paragraphs: [
+      {
+        title: 'Understanding the combined view:',
+        points: [
+          `The combined view features a corpus in the center, representing the listener, surrounded by a sphere with small points indicating possible sound origins.`,
+          `Your task is to select a small sphere that represents the direction you believe the sound is coming from. This view allows for zooming in, transitioning smoothly from a third-person to a first-person perspective, providing a unique method to guess the sound's direction.`,
+        ],
+      },
+    ],
+    image: '/combined.gif',
+  } as const,
+  {
+    title: '6: Sound Controls',
+    paragraphs: [
       {
         title: 'Choosing and controlling sound:',
         points: [
-          `Pick different sounds from the list next to the sliders.`,
-          `Use the audio controls to play, pause, or skip through the chosen track.`,
+          `In the bottom right corner you will find controls for the sound.`,
+          `Use select at the top to choose different sound tracks.`,
+          `Play/Pause played sound using large blue "Play" button`,
           `The gain (volume) slider allows you to adjust how loud the sound is.`,
         ],
       },
+      {
+        title: 'Direction reference',
+        points: [
+          `At any point, you can <strong>press and hold the "Hold for reference" button</strong> 
+          to temporarily reset the currently played sound to azimuth: 0&deg;, elevation: 0&deg; position 
+          (sound originating from directly in front of you).`,
+          `The sound will stay at frontal position as long as you are holding (pressing) the button. It will reset to the original direction once you release it.`,
+          `Using this reference might be very helpful to better understand the direction of the sound you are currently hearing.`,
+        ],
+      },
     ],
-    image: '/step2.gif',
+    image: '/controls.gif',
   } as const,
   {
-    title: '4: Current step information',
+    title: '7: Current step information',
     paragraphs: [
       {
         title: 'Tracking your progress:',
         points: [
           `The top left corner of the screen keeps you informed about:`,
           `Your current step in the test.`,
-          `The number of steps for each sound technology.`,
-          `The sound technology you're currently testing (shown blurred).`,
-          `Your last guessed azimuth and elevation.`,
+          `The sound technology you're currently testing (blurred by default).`,
+          `Your current guess for azimuth and elevation.`,
         ],
       },
     ],
-    image: '/dashboard-info.png',
+    image: '/step-info.png',
   } as const,
   {
-    title: '5: Making your guess',
+    title: '8: Making your guess',
     paragraphs: [
       {
         title: 'Ready to commit?',
         points: [
-          `Once you've positioned the arrow, click "Make a guess!" at the bottom center.`,
+          `Once you've positioned the arrow, and you are ready to save the guess, click large "Make a guess!" button.`,
           `This saves your response and takes you to the next step (new sound direction).`,
         ],
       },
     ],
-    image: '/step4.gif',
+    image: '/guess.gif',
   } as const,
   {
-    title: "6: It's a trap!",
+    title: "9: It's a trap!",
     paragraphs: [
       {
         title: 'Be ready for traps!',
@@ -112,21 +155,7 @@ const TUTORIAL_STEPS = [
         ],
       },
     ],
-    image: '/step5.gif',
-  } as const,
-  {
-    title: '7: Changing to first-person view',
-    paragraphs: [
-      {
-        title: 'See through different eyes:',
-        points: [
-          `The button in the bottom left lets you switch from third-person view to first-person view`,
-          `In first person view, you become the avatar, with the scene rotating as you move the mouse to guess the sound's direction.`,
-          `In the first-person view, you rotate the scene itself to where you feel the sound is coming from. Choose whichever view helps you guess better!`,
-        ],
-      },
-    ],
-    image: '/step7.gif',
+    image: '/trap.gif',
   } as const,
 ];
 
@@ -254,9 +283,10 @@ export default function TutorialPage() {
                   alignSelf: 'center',
                   width: '100%',
                   height: '50%',
-                  maxWidth: 820,
+                  maxWidth: currentStep.image === '/direction.jpeg' ? 500 : 820,
                 }}
                 priority
+                quality={90}
               />
               {currentStep.paragraphs.map((paragraph, i) => (
                 <p key={paragraph.title} className={classes.paragraph}>
