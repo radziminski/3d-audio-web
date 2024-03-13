@@ -93,8 +93,8 @@ export const TEST_ANGLES = [
   } as const,
 ];
 
-export const AZIMUTH_ANGLES = [45, 90, 135, 180, 225, 270, 315] as const;
-export const ELEVATION_ANGLES = [-90, -45, 45, 90] as const;
+export const AZIMUTH_ANGLES = [45, 90, 135, 180, 225, 270, 315];
+export const ELEVATION_ANGLES = [-90, -45, 45, 90];
 
 export const SAMPLE_TYPES = [
   '/sample-pinknoise.mp3',
@@ -112,7 +112,7 @@ export const getAzimuthTestCases = () =>
   AZIMUTH_ANGLES.map((azimuth) =>
     SAMPLE_TYPES.map((sample) => ({
       azimuth,
-      elevation: 0 as const,
+      elevation: 0,
       sample,
       guessType: 'azimuth' as const,
     }))
@@ -121,7 +121,7 @@ export const getAzimuthTestCases = () =>
 export const getElevationTestCases = () =>
   ELEVATION_ANGLES.map((elevation) =>
     SAMPLE_TYPES.map((sample) => ({
-      azimuth: Math.random() > 0.5 ? (90 as const) : (270 as const),
+      azimuth: Math.random() > 0.5 ? 90 : 270,
       elevation,
       sample,
       guessType: 'elevation' as const,

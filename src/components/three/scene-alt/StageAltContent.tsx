@@ -13,8 +13,9 @@ import { useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Euler, type Mesh } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { Angles } from '~/hooks/use-test-mode/constants';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
-import { Angles, useTestStore } from '~/store/settings/useTestStore';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const DIVISIONS_AZIMUTH = 24;
 const DIVISIONS_ELEVATION = 4;
@@ -73,7 +74,7 @@ const TargetSphere = ({
   active?: boolean;
   highlight?: boolean;
   isHoverDisabled?: boolean;
-  angles: Angles;
+  angles: Pick<Angles, 'azimuth' | 'elevation'>;
 }): JSX.Element => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -174,8 +175,8 @@ export const StageContent = ({
   selection,
   setSelection,
 }: {
-  selection: Angles | null;
-  setSelection: (selection: Angles) => void;
+  selection: Pick<Angles, 'azimuth' | 'elevation'> | null;
+  setSelection: (selection: Pick<Angles, 'azimuth' | 'elevation'>) => void;
 }): JSX.Element => {
   const mode = useSettingsStore((state) => state.appMode);
   const isPlaygroundMode = mode === 'playground';
