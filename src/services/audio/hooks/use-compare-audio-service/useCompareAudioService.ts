@@ -9,13 +9,12 @@ export const useCompareAudioService = (
 ) => {
   const {
     gain,
-    azimuth,
-    elevation,
-    isBypassed,
     appMode,
     isMachLoading,
     audioSource,
     isPlaying,
+    azimuth,
+    elevation,
     setAudioSource,
     setIsMachLoading,
   } = useSettingsStore();
@@ -71,13 +70,38 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
-        audioService?.setDirection({ azimuth, elevation });
+        if (appMode === 'playground') return;
 
-        console.log('true angles (azimuth, elevation)', azimuth, elevation);
-        console.log('guessType', guessType);
+        audioService?.setDirection({
+          azimuth: currentAngle?.azimuth,
+          elevation: currentAngle?.elevation,
+        });
+
+        console.log(
+          'true angles (azimuth, elevation)',
+          currentAngle?.azimuth,
+          currentAngle?.elevation
+        );
       }
     );
-  }, [azimuth, elevation]);
+  }, [currentAngle, appMode]);
+
+  useEffect(() => {
+    import('~/services/audio/compare-audio-service').then(
+      ({ CompareAudioService }) => {
+        const audioService = CompareAudioService.getInstance();
+
+        if (appMode !== 'playground') return;
+
+        audioService?.setDirection({
+          azimuth,
+          elevation,
+        });
+
+        console.log('true angles (azimuth, elevation)', azimuth, elevation);
+      }
+    );
+  }, [azimuth, elevation, appMode]);
 
   useEffect(() => {
     import('~/services/audio/compare-audio-service').then(
@@ -106,7 +130,7 @@ export const useCompareAudioService = (
         return;
       }
     );
-  }, [selectedLibrary, isBypassed, guessType, appMode]);
+  }, [selectedLibrary, guessType, appMode]);
 
   useEffect(() => {
     setGain(65);

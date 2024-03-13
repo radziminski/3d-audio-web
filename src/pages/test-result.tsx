@@ -295,7 +295,7 @@ export default function TestResultPage() {
                     }
                   </div>
                   <div className={classes.cell}>
-                    {['azimuth'].includes(guess.type)
+                    {['azimuth', 'elevation'].includes(guess.type)
                       ? roundToDecimal(guess.trueAzimuth)
                       : '-'}
                   </div>

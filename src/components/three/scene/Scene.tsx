@@ -59,7 +59,6 @@ export const Scene = () => {
   const roteTimeoutRef = useRef();
 
   useLayoutEffect(() => {
-    console.log(sourcePosition);
     setTimeout(() => {
       if (arrowRef.current) {
         const arrowObject = arrowRef.current;

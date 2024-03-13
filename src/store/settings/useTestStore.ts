@@ -177,6 +177,9 @@ export const useTestStore = create<TestStore>()(
       },
       resetTestAngles: () => {
         const testAngles = getTestCases();
+
+        console.log(testAngles);
+
         set({ testAngles });
 
         return testAngles;
