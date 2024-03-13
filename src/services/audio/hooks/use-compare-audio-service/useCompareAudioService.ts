@@ -16,17 +16,27 @@ export const useCompareAudioService = (
     isMachLoading,
     audioSource,
     isPlaying,
+    setAudioSource,
     setIsMachLoading,
   } = useSettingsStore();
-  const { guessType } = useTestStore();
+  const { guessType, currentAngle } = useTestStore();
 
   const setGain = useSettingsStore((state) => state.setGain);
-  const isReference = useSettingsStore((state) => state.isReference);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // const machPlay = useRef<() => void>();
   // const machPause = useRef<() => void>();
+
+  useEffect(() => {
+    if (
+      appMode !== 'playground' &&
+      currentAngle &&
+      currentAngle.sample !== audioSource
+    ) {
+      setAudioSource(currentAngle.sample);
+    }
+  }, [appMode, audioSource, currentAngle, setAudioSource]);
 
   useEffect(() => {
     import('~/services/audio/compare-audio-service').then(
@@ -91,67 +101,12 @@ export const useCompareAudioService = (
       ({ CompareAudioService }) => {
         const audioService = CompareAudioService.getInstance();
 
-        if (isBypassed || guessType === 'bypassed') {
-          audioService?.connectAudioSource(null);
-
-          return;
-        }
-
-        if (guessType === 'left-only' || guessType === 'right-only') {
-          if (selectedLibrary === 'mach1') {
-            audioService?.setDirection({
-              azimuth: guessType === 'left-only' ? 270 : 90,
-              elevation: 0,
-            });
-
-            return;
-          }
-
-          audioService?.connectAudioSource('stereo-panner');
-          audioService?.setPanner(guessType);
-          return;
-        }
-
         audioService?.connectAudioSource(selectedLibrary ?? null);
 
         return;
       }
     );
   }, [selectedLibrary, isBypassed, guessType, appMode]);
-  useEffect(() => {
-    import('~/services/audio/compare-audio-service').then(
-      ({ CompareAudioService }) => {
-        const audioService = CompareAudioService.getInstance();
-
-        if (guessType === 'left-only' || guessType === 'right-only') {
-          if (selectedLibrary === 'mach1') {
-            if (isReference) {
-              audioService?.setDirection({
-                azimuth: 0,
-                elevation: 0,
-              });
-
-              return;
-            }
-
-            audioService?.setDirection({
-              azimuth: guessType === 'left-only' ? 270 : 90,
-              elevation: 0,
-            });
-
-            return;
-          }
-
-          if (isReference) {
-            audioService?.setPanner('center');
-            return;
-          }
-
-          audioService?.setPanner(guessType);
-        }
-      }
-    );
-  }, [selectedLibrary, guessType, isReference]);
 
   useEffect(() => {
     setGain(65);

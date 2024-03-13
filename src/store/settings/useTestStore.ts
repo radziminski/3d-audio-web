@@ -1,8 +1,11 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SupportedLibrary } from '~/hooks/use-redirect-to-library/useRedirectToLibrary';
-import { TEST_ANGLES } from '~/hooks/use-test-mode/constants';
-import { shuffleArray } from '~/hooks/use-test-mode/useTestMode';
+import {
+  Angles,
+  TEST_CASES_LENGTH,
+  getTestCases,
+} from '~/hooks/use-test-mode/constants';
 
 export type GuessType =
   | 'normal'
@@ -22,16 +25,9 @@ export type Guess = {
   guessEnd: number;
   isBypassed?: boolean;
   guessedIsBypassed?: boolean;
-  lastSample?: string | undefined;
-  usedSamples?: string[];
+  sample?: string | undefined;
   type: GuessType;
-};
-
-export type Angles = {
-  azimuth: number;
-  elevation: number;
-  isBypassed?: boolean;
-  type?: GuessType;
+  view: string;
 };
 
 interface TestStore {
@@ -79,13 +75,13 @@ interface TestStore {
   setGuessType(guessType: GuessType): void;
   setCurrentGuess(currentGuess: Guess | null): void;
   resetUsedSamples(): void;
-  resetTestAngles: (isMach?: boolean) => Angles[];
+  resetTestAngles: () => Angles[];
   setCurrentAngle: (angle: Angles) => void;
 }
 
 export const INITIAL_STORE = {
   guesses: [] as readonly Guess[],
-  stepsPerLibrary: TEST_ANGLES.length,
+  stepsPerLibrary: TEST_CASES_LENGTH,
   experimentLibraries: [
     'js-ambisonics',
     'web-api',
@@ -106,7 +102,7 @@ export const INITIAL_STORE = {
   testStart: 0,
   testEnd: 0,
   currentGuessStart: 0,
-  testAngles: TEST_ANGLES as Angles[],
+  testAngles: getTestCases(),
   isStereoCorrect: false,
   isGuessMade: false,
   lastSample: undefined,
@@ -179,42 +175,11 @@ export const useTestStore = create<TestStore>()(
       setIsGuessMade: (isGuessMade: boolean) => {
         set({ isGuessMade });
       },
-      resetTestAngles: (isMach) => {
-        const { stepsPerLibrary } = get();
+      resetTestAngles: () => {
+        const testAngles = getTestCases();
+        set({ testAngles });
 
-        const angles: Angles[] = [];
-
-        const firstSet = shuffleArray(TEST_ANGLES);
-        const secondSet = shuffleArray(TEST_ANGLES);
-        const thirdSet = shuffleArray(TEST_ANGLES);
-        const fourthSet = shuffleArray(TEST_ANGLES);
-
-        for (let i = 0; i < stepsPerLibrary; i++) {
-          if (firstSet.length > 0) {
-            angles.push(firstSet.pop()!);
-
-            continue;
-          }
-
-          if (secondSet.length > 0) {
-            angles.push(secondSet.pop()!);
-
-            continue;
-          }
-
-          if (thirdSet.length > 0) {
-            angles.push(thirdSet.pop()!);
-
-            continue;
-          }
-
-          if (fourthSet.length > 0) {
-            angles.push(fourthSet.pop()!);
-          }
-        }
-        set({ testAngles: angles });
-
-        return angles;
+        return testAngles;
       },
       setLastSample: (lastSample) => {
         set({ lastSample });

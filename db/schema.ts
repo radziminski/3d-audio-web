@@ -23,7 +23,8 @@ export const guessesTable = pgTable('guesses', {
   guessedIsBypassed: boolean('guessedIsBypassed').default(false),
   type: text('guessType').default('normal'), // or bypassed or left-only or right-only
   library: text('library').notNull(),
-  lastSample: text('lastSample'),
+  sample: text('sample'),
+  view: text('view'),
   usedSamples: json('usedSamples').$type<string[]>(),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
   updatedAt: timestamp('updatedAt').defaultNow().notNull(),

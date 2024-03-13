@@ -19,6 +19,7 @@ import {
   AudioSourceSelect,
 } from '../audio-source-select/AudioSourceSelect';
 import { useTestStore } from '~/store/settings/useTestStore';
+import { ReferenceButton } from '../reference-button/ReferenceButton';
 
 const useStyles = createStyles((theme) => ({
   dialog: {
@@ -167,6 +168,7 @@ const useStyles = createStyles((theme) => ({
   },
   select: {
     marginBottom: '16px',
+    height: 60,
   },
   sliderTitle: {
     fontSize: '16px',
@@ -235,9 +237,6 @@ const useStyles = createStyles((theme) => ({
   },
   button: {
     width: '100%',
-    '@media (max-width: 1500px)': {
-      width: '90%',
-    },
   },
 }));
 
@@ -444,9 +443,13 @@ export const AudioSettings = ({
           }
         >
           <div className={classes.select}>
-            <AudioSourceSelect sources={audioSources} />
+            {isGuessingMode ? (
+              <ReferenceButton />
+            ) : (
+              <AudioSourceSelect sources={audioSources} />
+            )}
           </div>
-          <div style={{ height: 54, maxWidth: 250 }}>
+          <div style={{ height: 54 }}>
             <audio
               onPlay={handlePlay}
               onPause={handlePause}

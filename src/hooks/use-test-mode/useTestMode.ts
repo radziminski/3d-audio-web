@@ -12,12 +12,6 @@ export const SUPPORTED_LIBRARIES = [
   'mach1',
 ];
 
-export const shuffleArray = <T>(arr: T[]) =>
-  arr
-    .map((value) => [Math.random(), value] as const)
-    .sort(([a], [b]) => a - b)
-    .map((entry) => entry[1]);
-
 export const useTestMode = () => {
   const router = useRouter();
 
@@ -25,13 +19,11 @@ export const useTestMode = () => {
 
   // Settings Store
   const {
-    setRandomAngles,
     setAppMode,
     setAngles,
-    setIsBypassed,
     azimuth: trueAzimuth,
     elevation: trueElevation,
-    isBypassed: trueIsBypassed,
+    sceneType,
   } = useSettingsStore();
 
   // Test Store
@@ -54,6 +46,7 @@ export const useTestMode = () => {
     currentLibrary,
     currentStep,
     stepsPerLibrary,
+    currentAngle,
     libraryOrder,
     experimentLibraries,
     setCurrentGuessStart: setGuessStart,
@@ -87,8 +80,7 @@ export const useTestMode = () => {
 
     const testa = resetTestAngles();
     setAngles(testa[0].azimuth, testa[0].elevation);
-    setIsBypassed(testa[0].isBypassed ?? false);
-    setGuessType(testa[0].type ?? 'normal');
+    setGuessType(testa[0].guessType ?? 'normal');
     setCurrentAngle(testa[0]);
 
     const newLibrary = randomLibraryOrder[0];
@@ -110,7 +102,6 @@ export const useTestMode = () => {
     setGuessStart,
     resetTestAngles,
     setAngles,
-    setIsBypassed,
     setGuessType,
     setCurrentAngle,
     setCurrentLibrary,
@@ -138,14 +129,12 @@ export const useTestMode = () => {
         trueElevation,
         guessedAzimuth: parsedGuess.azimuth,
         guessedElevation: parsedGuess.elevation,
-        guessedIsBypassed: asBypassed,
-        isBypassed: trueIsBypassed,
         library: currentLibrary,
         guessStart: currentGuessStart,
         guessEnd: now,
-        lastSample,
-        usedSamples,
+        sample: currentAngle?.sample,
         type: guessType || 'normal',
+        view: sceneType,
       });
 
       resetUsedSamples();
@@ -154,8 +143,6 @@ export const useTestMode = () => {
       setGuessStart(now);
 
       incrementStep();
-
-      // setRandomAngles();
 
       let currentStepInLib = currentStep + 1;
       while (currentStepInLib > stepsPerLibrary) {
@@ -166,8 +153,7 @@ export const useTestMode = () => {
 
       if (angles) {
         setAngles(angles.azimuth, angles.elevation);
-        setIsBypassed(angles.isBypassed ?? false);
-        setGuessType(angles.type ?? 'normal');
+        setGuessType(angles.guessType ?? 'normal');
         setCurrentAngle(angles);
         console.log('setting angles', angles);
       }
@@ -186,14 +172,14 @@ export const useTestMode = () => {
         const [newAngles] = resetTestAngles();
 
         setAngles(newAngles.azimuth, newAngles.elevation);
-        setIsBypassed(newAngles.isBypassed ?? false);
-        setGuessType(newAngles.type ?? 'normal');
+        setGuessType(newAngles.guessType ?? 'normal');
 
         const newLibrary = libraryOrder[currentLibraryIndex + 1];
         setCurrentLibrary(newLibrary);
       }
     },
     [
+      sceneType,
       addGuess,
       clearCurrentGuess,
       currentGuessStart,
@@ -205,7 +191,6 @@ export const useTestMode = () => {
       guessedElevation,
       handleFinishTest,
       incrementStep,
-      lastSample,
       libraryOrder,
       resetTestAngles,
       resetUsedSamples,
@@ -214,14 +199,12 @@ export const useTestMode = () => {
       setCurrentLibrary,
       setGuessStart,
       setGuessType,
-      setIsBypassed,
       setLastSample,
       stepsPerLibrary,
       testAngles,
       trueAzimuth,
       trueElevation,
-      trueIsBypassed,
-      usedSamples,
+      currentAngle,
     ]
   );
 

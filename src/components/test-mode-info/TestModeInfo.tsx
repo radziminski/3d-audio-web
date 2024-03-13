@@ -95,6 +95,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+export const librariesNameMap = {
+  '/sample-pinknoise.mp3': 'Pink noise',
+  '/sample-speech.mp3': 'Speech',
+  '/sample-environmental.mp3': 'Environment',
+};
+
 export const TestModeInfo = () => {
   const { classes } = useStyles();
 
@@ -137,6 +143,7 @@ export const TestModeInfo = () => {
   const currentLibrary = useTestStore((state) => state.currentLibrary);
   const libraryOrder = useTestStore((state) => state.libraryOrder);
   const currentStep = useTestStore((state) => state.currentStep);
+  const angle = useTestStore((state) => state.currentAngle);
 
   const totalSteps = libraryOrder.length * stepsPerLibrary;
 
@@ -147,9 +154,9 @@ export const TestModeInfo = () => {
       isBlurred: false,
     },
     {
-      left: 'Running library',
-      right: currentLibrary,
-      isBlurred: true,
+      left: 'Played sample',
+      right: librariesNameMap[angle?.sample ?? '/sample-environmental.mp3'],
+      isBlurred: false,
     },
     {
       left: 'Azimuth guess',
@@ -189,9 +196,6 @@ export const TestModeInfo = () => {
             Make a guess!
           </Button>
         </div>
-        <Button onClick={onMakeBypassedGuess} size='xs'>
-          Mark as not 3D sound (trap)
-        </Button>
       </div>
     </>
   );

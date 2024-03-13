@@ -5,7 +5,6 @@ import { Guess, useTestStore } from '~/store/settings/useTestStore';
 import { roundToDecimal } from '../helpers/math/roundToDecimal';
 import { getAzimuthError } from '~/helpers/evalutation/getAzimuthError';
 import { getElevationError } from '~/helpers/evalutation/getElevationError';
-import { useRouter } from 'next/router';
 import { getTimeDifference } from '~/helpers/evalutation/getTimeDifference';
 import { getTestAverages } from '~/helpers/evalutation/getTestAverages';
 import { useUserId } from '~/hooks/use-user-id/useUserId';
@@ -71,6 +70,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+const librariesNameMap = {
+  '/sample-pinknoise.mp3': 'Pink noise',
+  '/sample-speech.mp3': 'Speech',
+  '/sample-environmental.mp3': 'Environment',
+};
+
 // Step number, library, true az, true el, guessed az, guessed el, az error, el error,
 
 const LIBRARY_RESULTS_COLUMN_LABELS = [
@@ -83,8 +88,8 @@ const LIBRARY_RESULTS_COLUMN_LABELS = [
 const FULL_RESULTS_COLUMN_LABELS = [
   'Step',
   'Library',
-  'Type',
-  'Guessed trap',
+  'View',
+  'Sample',
   'True Azimuth',
   'Guessed Azimuth',
   'Azimuth Error',
@@ -147,7 +152,6 @@ async function submitGuesses(
 
 export default function TestResultPage() {
   const areGuessesSubmitted = useRef(false);
-  const router = useRouter();
   const isClientRender = useClientRender();
   const [isSubmitError, setIsSubmitError] = useState(false);
 
@@ -281,17 +285,24 @@ export default function TestResultPage() {
                 <div key={`guess-${index}`} className={classes.fullResultsRow}>
                   <div className={classes.cell}>{index + 1}</div>
                   <div className={classes.cell}>{guess.library}</div>
-                  <div className={classes.cell}>{guess.type}</div>
+                  <div className={classes.cell}>{guess.view}</div>
                   <div className={classes.cell}>
-                    {guess.guessedIsBypassed ? 'yes' : 'no'}
+                    {
+                      librariesNameMap[
+                        (guess.sample as keyof typeof librariesNameMap) ??
+                          '/sample-pinknoise.mp3'
+                      ]
+                    }
                   </div>
                   <div className={classes.cell}>
-                    {['azimuth', 'elevation'].includes(guess.type)
+                    {['azimuth'].includes(guess.type)
                       ? roundToDecimal(guess.trueAzimuth)
                       : '-'}
                   </div>
                   <div className={classes.cell}>
-                    {roundToDecimal(guess.guessedAzimuth)}
+                    {guess.type === 'azimuth'
+                      ? roundToDecimal(guess.guessedAzimuth)
+                      : '-'}
                   </div>
                   <div className={classes.cell}>
                     {guess.type === 'azimuth'
@@ -299,12 +310,14 @@ export default function TestResultPage() {
                       : '-'}
                   </div>
                   <div className={classes.cell}>
-                    {['azimuth', 'elevation'].includes(guess.type)
+                    {['elevation'].includes(guess.type)
                       ? roundToDecimal(guess.trueElevation)
                       : '-'}
                   </div>
                   <div className={classes.cell}>
-                    {roundToDecimal(guess.guessedElevation)}
+                    {guess.type === 'elevation'
+                      ? roundToDecimal(guess.guessedElevation)
+                      : '-'}
                   </div>
                   <div className={classes.cell}>
                     {guess.type === 'elevation'
