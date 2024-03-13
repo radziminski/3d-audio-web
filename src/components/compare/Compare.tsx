@@ -283,7 +283,7 @@ export const Compare = () => {
       </div>
       <div className={classes.continue}>
         {canContinue ? (
-          <Button size='lg' onClick={onSubmit}>
+          <Button size='lg' onClick={onSubmit} loading={isLoading}>
             {isLoading ? 'Loading...' : <>Continue &rarr;</>}
           </Button>
         ) : (

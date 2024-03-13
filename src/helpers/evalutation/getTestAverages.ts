@@ -15,10 +15,9 @@ export const getTestAverages = (
 
   const azimuthErrors = libraryGuesses
     .filter((guess) => guess.type === 'azimuth')
-    .map(({ trueAzimuth, guessedAzimuth, trueElevation }) =>
+    .map(({ trueAzimuth, guessedAzimuth }) =>
       getAzimuthError(trueAzimuth, guessedAzimuth)
-    )
-    .filter(Boolean) as number[];
+    );
 
   const elevationErrors = libraryGuesses
     .filter((guess) => guess.type === 'elevation')
