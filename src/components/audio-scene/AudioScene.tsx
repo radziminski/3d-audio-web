@@ -98,7 +98,21 @@ export const AudioScene = ({
           ) : null}
         </div>
         <Layout noPadding>
-          <Suspense fallback={<h5>Loading...</h5>}>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <h4 style={{ margin: 0 }}>Loading...</h4>
+                <h5 style={{ margin: 0 }}>(This might take up to 1 minute)</h5>
+              </div>
+            }
+          >
             {sceneType === 'outside' && <Scene />}
             {sceneType === 'inside' && <SceneInside />}
             {sceneType === 'alt' && <SceneAlt />}
