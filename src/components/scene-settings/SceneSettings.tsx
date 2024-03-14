@@ -23,7 +23,7 @@ const useStyles = createStyles((theme) => ({
       padding: 0,
     },
     '@media (max-width: 700px)': {
-      top: '130px',
+      top: '160px',
       left: '24px',
       right: 'auto',
     },

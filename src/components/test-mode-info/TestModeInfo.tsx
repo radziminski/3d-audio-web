@@ -85,7 +85,7 @@ const useStyles = createStyles((theme) => ({
     },
     '@media (max-width: 700px)': {
       right: '24px',
-      top: '130px',
+      top: '160px',
       gap: '8px',
     },
   },
@@ -140,17 +140,18 @@ export const TestModeInfo = () => {
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
   const elevationGuess = useTestStore((state) => state.elevationGuess);
   const stepsPerLibrary = useTestStore((state) => state.stepsPerLibrary);
-  const currentLibrary = useTestStore((state) => state.currentLibrary);
   const libraryOrder = useTestStore((state) => state.libraryOrder);
   const currentStep = useTestStore((state) => state.currentStep);
   const angle = useTestStore((state) => state.currentAngle);
 
-  const totalSteps = libraryOrder.length * stepsPerLibrary;
+  const virtualStep =
+    Math.floor(currentStep / (stepsPerLibrary + 0.01)) * 2 +
+    (angle?.guessType === 'elevation' ? 1 : 0);
 
   const entries = [
     {
       left: 'Current step',
-      right: `${currentStep + 1}/${totalSteps}`,
+      right: `${virtualStep + 1}/${libraryOrder.length * 2}`,
       isBlurred: false,
     },
     {

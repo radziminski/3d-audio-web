@@ -110,7 +110,7 @@ const useStyles = createStyles((theme) => ({
       maxHeight: 220,
       maxWidth: '100%',
       padding: '16px',
-      paddingBottom: '76px',
+      paddingBottom: '50px',
     },
   },
   settings: {
@@ -234,6 +234,7 @@ const useStyles = createStyles((theme) => ({
     '@media (max-width: 700px)': {
       height: '150px !important',
     },
+    transform: 'translateX(-10px)',
   },
   button: {
     width: '100%',
@@ -505,7 +506,7 @@ export const AudioSettings = ({
               }}
             >
               <input
-                {...{ type: 'range', orient: 'vertical' }}
+                {...{ type: 'range' }}
                 min={MIN_ELEVATION}
                 max={MAX_ELEVATION}
                 defaultValue={DEFAULT_ELEVATION}
@@ -520,6 +521,7 @@ export const AudioSettings = ({
                 className={classes.elevationInput}
                 style={{
                   cursor: isElevationDisabled ? 'not-allowed' : 'pointer',
+                  writingMode: 'vertical-lr',
                 }}
                 disabled={isElevationDisabled}
                 step={isGuessingMode ? 45 : 1}

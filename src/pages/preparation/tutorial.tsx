@@ -33,8 +33,7 @@ const TUTORIAL_STEPS = [
         points: [
           `There are 3 available scenes to help you identify the direction of incoming sounds: <strong>"Outside view"</strong>, <strong>"Inside view"</strong>, and <strong>"Combined view"</strong>.`,
           `In each view, your task is to determine the direction from which the sound is coming, focusing on its azimuth (horizontal angle) or elevation (vertical angle). The process for making your guess varies depending on the view selected.`,
-          `During the test, you can choose whichever view is suiting you best. You can also freely switch between views at any time.`,
-          `You can switch between views using buttons in left bottom corner of the screen.`,
+          `During the test, you can choose whichever view is suiting you best. You can also freely switch between views at any time using buttons in left bottom corner of the screen.`,
         ],
       },
       {
@@ -97,9 +96,8 @@ const TUTORIAL_STEPS = [
         title: 'Choosing and controlling sound:',
         points: [
           `In the bottom right corner you will find controls for the sound.`,
-          `Use select at the top to choose different sound tracks.`,
           `Play/Pause played sound using large blue "Play" button`,
-          `The gain (volume) slider allows you to adjust how loud the sound is.`,
+          `The volume slider allows you to adjust how loud the sound is.`,
         ],
       },
       {
@@ -123,12 +121,12 @@ const TUTORIAL_STEPS = [
         points: [
           `The top left corner of the screen keeps you informed about:`,
           `Your current step in the test.`,
-          `The sound technology you're currently testing (blurred by default).`,
+          `Currently played sample.`,
           `Your current guess for azimuth and elevation.`,
         ],
       },
     ],
-    image: '/step-info.png',
+    image: '/test-info.png',
   } as const,
   {
     title: '8: Making your guess',
@@ -136,26 +134,12 @@ const TUTORIAL_STEPS = [
       {
         title: 'Ready to commit?',
         points: [
-          `Once you've positioned the arrow, and you are ready to save the guess, click large "Make a guess!" button.`,
+          `Once you've selected the sound direction and you are ready to save the guess, click large "Make a guess!" button.`,
           `This saves your response and takes you to the next step (new sound direction).`,
         ],
       },
     ],
-    image: '/guess.gif',
-  } as const,
-  {
-    title: "9: It's a trap!",
-    paragraphs: [
-      {
-        title: 'Be ready for traps!',
-        points: [
-          `As you navigate through the sounds in the application, it's important to be aware that occasionally, <strong>you may hear a sound that has not been processed by any 3D sound library</strong>. It will sound like any other sound you would hear on your headphones outside of this test. This is a deliberate "trap" where the sound does not originate from any particular direction in space and is not modified to create a 3D audio effect.`,
-          `🚨 When you come across such a sound, it's crucial <u><b>not</b> to click the "Make a Guess!" button</u>. Instead,  <strong>click "Mark as not 3D sound (trap)" </strong> button right underneath it. `,
-          `Moreover, sometimes the sound will play in only one headphone. When that happens, simply choose the azimuth of 90 degrees for right-only sounds, and 270 degrees for left-only sounds.`,
-        ],
-      },
-    ],
-    image: '/trap.gif',
+    image: '/guess.png',
   } as const,
 ];
 
@@ -253,6 +237,7 @@ export default function TutorialPage() {
                   height: '470px',
                   width: '100%',
                   maxWidth: 820,
+                  backgroundColor: 'rgba(255, 255,255, 0.2)',
                 }}
                 priority
               />
@@ -262,9 +247,9 @@ export default function TutorialPage() {
                 </strong>
                 Get ready to learn how to navigate through the testing platform.
                 This simple step-by-step guide will show you how to guess the
-                direction of sounds in a virtual environment. It wll walk you
-                through the basics of controlling guessed sound direction, and
-                much more. Let&apos;s start this auditory adventure!
+                direction of sounds in this virtual environment. It wll walk you
+                through the basics of environment controls. Let&apos;s start
+                this auditory adventure!
               </p>
             </>
           )}
@@ -286,7 +271,7 @@ export default function TutorialPage() {
                   maxWidth: currentStep.image === '/direction.jpeg' ? 500 : 820,
                 }}
                 priority
-                quality={70}
+                quality={75}
               />
               {currentStep.paragraphs.map((paragraph, i) => (
                 <p key={paragraph.title} className={classes.paragraph}>

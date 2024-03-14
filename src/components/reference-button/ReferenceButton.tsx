@@ -9,6 +9,9 @@ const useClasses = createStyles((theme) => ({
     height: '48px',
     width: '100%',
     marginTop: '8px',
+    '&:active': {
+      backgroundColor: '#16a34a !important',
+    },
   },
   content: {
     display: 'flex',

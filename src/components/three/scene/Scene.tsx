@@ -59,7 +59,7 @@ export const Scene = () => {
   const roteTimeoutRef = useRef();
 
   useLayoutEffect(() => {
-    setTimeout(() => {
+    const adjustRotation = () => {
       if (arrowRef.current) {
         const arrowObject = arrowRef.current;
         const center = new Vector3(0, -100, 0);
@@ -82,7 +82,9 @@ export const Scene = () => {
 
         arrowObject.rotateX(rotation);
       }
-    }, 0);
+    };
+    setTimeout(adjustRotation, 0);
+    setTimeout(adjustRotation, 100);
   }, [sourcePosition, trigger]);
 
   useLayoutEffect(() => {
