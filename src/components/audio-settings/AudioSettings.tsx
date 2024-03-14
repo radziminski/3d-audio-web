@@ -20,6 +20,7 @@ import {
 } from '../audio-source-select/AudioSourceSelect';
 import { useTestStore } from '~/store/settings/useTestStore';
 import { ReferenceButton } from '../reference-button/ReferenceButton';
+import { useMediaQuery } from '@mantine/hooks';
 
 const useStyles = createStyles((theme) => ({
   dialog: {
@@ -119,7 +120,7 @@ const useStyles = createStyles((theme) => ({
     gap: '80px',
     '@media (max-width: 700px)': {
       justifyContent: 'center',
-      gap: '60px',
+      gap: '20px',
     },
   },
   settingsNotFixed: {
@@ -228,9 +229,16 @@ const useStyles = createStyles((theme) => ({
     '@media (max-width: 1500px)': {
       left: '-35px',
     },
+    '@media (max-width: 700px)': {
+      left: '-100px',
+    },
+    '@media (max-width: 400px)': {
+      left: '-80px',
+    },
   },
   elevationInput: {
     height: '210px !important',
+    writingMode: 'vertical-lr',
     '@media (max-width: 700px)': {
       height: '150px !important',
     },
@@ -260,6 +268,8 @@ export const AudioSettings = ({
   isMach,
   audioSources,
 }: AudioSettingsProps) => {
+  const isMobile = useMediaQuery('(max-width: 700px)', false);
+
   const mode = useSettingsStore((state) => state.appMode);
   const isGuessingMode = mode === 'guess' || mode === 'test';
 
@@ -286,6 +296,12 @@ export const AudioSettings = ({
   const guessedElevation = useTestStore((state) => state.elevationGuess);
   const isGuessMade = useTestStore((state) => state.isGuessMade);
   const currentStep = useTestStore((state) => state.currentStep);
+  const currentAngles = useTestStore((state) => state.currentAngle);
+
+  const shouldHideAzimuth =
+    currentAngles?.guessType === 'elevation' && isMobile;
+  const shouldHideElevation =
+    currentAngles?.guessType === 'azimuth' && isMobile;
 
   const guessType = useTestStore((state) => state.guessType);
 
@@ -416,7 +432,7 @@ export const AudioSettings = ({
         {!isInsideView && (
           <div className={classes.settingsColumn}>
             <div className={classes.slider}>
-              {!isGuessMade && (
+              {!isGuessMade && !shouldHideAzimuth && (
                 <CircularSlider
                   withData={isGuessingMode}
                   onChange={(value) => {
@@ -494,7 +510,7 @@ export const AudioSettings = ({
             defaultValue={75}
             value={gain}
           />
-          {!isInsideView && (
+          {!isInsideView && !shouldHideElevation && (
             <div
               className={classes.elevationSlider}
               onDoubleClick={() => {
@@ -521,7 +537,6 @@ export const AudioSettings = ({
                 className={classes.elevationInput}
                 style={{
                   cursor: isElevationDisabled ? 'not-allowed' : 'pointer',
-                  writingMode: 'vertical-lr',
                 }}
                 disabled={isElevationDisabled}
                 step={isGuessingMode ? 45 : 1}

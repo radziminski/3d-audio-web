@@ -59,7 +59,7 @@ export const CircularSlider = ({ onChange, disabled, withData }: Props) => {
         knobColor={isDragging ? '#F0A367' : '#00bfbd'}
         isDragging={(value: boolean) => setIsDragging(value)}
         onChange={(value: number) => onChange?.(Number(value))}
-        width={mediaQuery ? (mediaQuerySmall ? 120 : 160) : 200}
+        width={mediaQuery ? (mediaQuerySmall ? 140 : 160) : 200}
       />
     </section>
   );
