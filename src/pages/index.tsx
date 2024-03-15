@@ -1,6 +1,6 @@
 import { Providers } from '~/components/providers/Providers';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useSettingsStore,
   useTestIdStore,
@@ -49,6 +49,8 @@ export default function Home() {
   const { setTestId } = useTestIdStore();
 
   const resetQuality = useQualityStore((state) => state.reset);
+
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     resetQuality();
@@ -131,9 +133,13 @@ export default function Home() {
           <Button
             size='md'
             onClick={() => {
+              if (isRedirecting) return;
+
               setTestId(nanoid());
               router.push('/preparation');
+              setIsRedirecting(true);
             }}
+            loading={isRedirecting}
           >
             Let&apos;s begin!
           </Button>
