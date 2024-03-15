@@ -58,7 +58,7 @@ export default function About() {
             to when listening to music, 3D sound offers a completely different
             experience. In stereo sound, you perceive the audio as if it&apos;s
             playing <strong>inside your head</strong>, sometimes leaning towards
-            your left or right eat.
+            your left or right ear.
           </p>
           <p className={classes.paragraph}>
             3D sound, however, creates an illusion that the sound is coming from

@@ -76,7 +76,7 @@ export default function ComparePage() {
           <p className={classes.paragraph}>
             By clicking on one of the blue &quot;Technology ...&quot; button
             below, you can select a given technology that will be used to make
-            the sound seem like it iss coming from a given direction around you.
+            the sound seem like it is coming from a given direction around you.
             After experimenting with it, please rate your experience on two
             aspects: <strong>overall sound quality</strong> and the{' '}
             <strong>degree of 3D realism</strong>. Your ratings, on a scale from
@@ -95,7 +95,7 @@ export default function ComparePage() {
             <strong>vertical (elevation slider) </strong> direction of the
             sound. You can pick different sounds from the list next to the
             sliders. Use large play button to start/pause the track. The gain
-            (volume) slider allows you to adjust how loud the sound is.,
+            (volume) slider allows you to adjust how loud the sound is.
           </p>
         </div>
         <Compare />

@@ -104,6 +104,7 @@ const useStyles = createStyles(() => ({
   disabled: {
     opacity: 0.6,
     cursor: 'not-allowed',
+    pointerEvents: 'none',
   },
   continue: {
     position: 'fixed',

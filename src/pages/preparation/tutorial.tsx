@@ -96,7 +96,7 @@ const TUTORIAL_STEPS = [
         title: 'Choosing and controlling sound:',
         points: [
           `In the bottom right corner you will find controls for the sound.`,
-          `Play/Pause played sound using large blue "Play" button`,
+          `Play/Pause played sound using large blue "Play" button.`,
           `The volume slider allows you to adjust how loud the sound is.`,
         ],
       },
@@ -117,9 +117,8 @@ const TUTORIAL_STEPS = [
     title: '7: Current step information',
     paragraphs: [
       {
-        title: 'Tracking your progress:',
+        title: 'The top left corner of the screen keeps you informed about:',
         points: [
-          `The top left corner of the screen keeps you informed about:`,
           `Your current step in the test.`,
           `Currently played sample.`,
           `Your current guess for azimuth and elevation.`,
@@ -206,6 +205,10 @@ export default function TutorialPage() {
     setAppMode('test');
   }, [resetStore, reset, setAppMode]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [tutorialStep]);
+
   const currentStep = TUTORIAL_STEPS[tutorialStep];
 
   if (!isClientRender)
@@ -247,8 +250,8 @@ export default function TutorialPage() {
                 </strong>
                 Get ready to learn how to navigate through the testing platform.
                 This simple step-by-step guide will show you how to guess the
-                direction of sounds in this virtual environment. It wll walk you
-                through the basics of environment controls. Let&apos;s start
+                direction of sounds in this virtual environment. It will walk
+                you through the basics of environment controls. Let&apos;s start
                 this auditory adventure!
               </p>
             </>
