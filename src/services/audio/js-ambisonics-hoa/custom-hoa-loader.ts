@@ -44,8 +44,6 @@ export default class HOAloader {
           endChannel,
           2
         )}ch.${fileExt}`;
-
-      console.log(this.urls[i]);
     }
 
     function pad(num: number, size: number): string {
@@ -71,7 +69,6 @@ export default class HOAloader {
           if (this.loadCount === this.nChGroups) {
             this.loaded = true;
             this.concatBuffers();
-            console.log('HOAloader: all buffers loaded and concatenated');
             this.onLoad(this.concatBuffer as AudioBuffer);
           }
         },

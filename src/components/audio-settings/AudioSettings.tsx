@@ -393,7 +393,6 @@ export const AudioSettings = ({
       !audioRef.current.ended &&
       audioRef.current.currentTime > 0
     ) {
-      console.log('setting source', audioSource);
       setLastSample(audioSource);
       addUsedSample(audioSource);
     }
@@ -438,8 +437,6 @@ export const AudioSettings = ({
                   onChange={(value) => {
                     const prevValue = isGuessingMode ? guessedAzimuth : azimuth;
                     const newValue = value === 1 ? prevValue : value;
-
-                    console.log(newValue);
 
                     if (isGuessingMode) {
                       setGuessedAzimuth(newValue);

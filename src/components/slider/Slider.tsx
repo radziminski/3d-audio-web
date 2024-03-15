@@ -25,7 +25,6 @@ export const Slider = ({ label, ...props }: SliderProps) => {
     <div
       className={classes.slider}
       onDoubleClick={() => {
-        console.log(props.defaultValue);
         if (props.defaultValue) {
           props.onChange?.(props.defaultValue);
         }

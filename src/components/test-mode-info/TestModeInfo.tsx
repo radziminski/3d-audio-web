@@ -145,7 +145,7 @@ export const TestModeInfo = () => {
   const angle = useTestStore((state) => state.currentAngle);
 
   const virtualStep =
-    Math.floor(currentStep / (stepsPerLibrary + 0.01)) * 2 +
+    Math.floor((currentStep + 1) / (stepsPerLibrary + 0.01)) * 2 +
     (angle?.guessType === 'elevation' ? 1 : 0);
 
   const entries = [

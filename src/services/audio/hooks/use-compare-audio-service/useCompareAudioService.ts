@@ -82,7 +82,11 @@ export const useCompareAudioService = (
           elevation,
         });
 
-        console.log('true angles (azimuth, elevation)', azimuth, elevation);
+        console.log(
+          'set direction to (azimuth, elevation)',
+          azimuth,
+          elevation
+        );
       }
     );
   }, [azimuth, elevation]);

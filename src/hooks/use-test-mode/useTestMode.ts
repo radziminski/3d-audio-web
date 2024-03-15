@@ -159,7 +159,7 @@ export const useTestMode = () => {
 
         const [newAngles] = resetTestAngles();
 
-        console.log('new angle', newAngles);
+        console.log('setting angles', newAngles);
 
         setAngles(newAngles.azimuth, newAngles.elevation);
         setCurrentAngle(newAngles);
