@@ -159,7 +159,10 @@ export const useTestMode = () => {
 
         const [newAngles] = resetTestAngles();
 
+        console.log('new angle', newAngles);
+
         setAngles(newAngles.azimuth, newAngles.elevation);
+        setCurrentAngle(newAngles);
         setGuessType(newAngles.guessType ?? 'normal');
 
         const newLibrary = libraryOrder[currentLibraryIndex + 1];
