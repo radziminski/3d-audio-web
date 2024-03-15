@@ -9,11 +9,13 @@ export const useWebAudioApiService = (enable?: boolean) => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    if (!WebAudioApiService.checkIsInitialized()) {
-      router.push('/library-redirect?library=web-api');
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (!WebAudioApiService.checkIsInitialized()) {
+  //     router.push('/library-redirect?library=web-api');
+  //   }
+  // }, [router]);
+
+  useEffect(() => {});
 
   useLayoutEffect(() => {
     if (enable && audioRef.current && WebAudioApiService.checkIsInitialized()) {

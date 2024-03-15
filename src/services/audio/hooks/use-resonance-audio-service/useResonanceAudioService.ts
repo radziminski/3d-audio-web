@@ -8,15 +8,15 @@ export const useResonanceAudioService = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    import('~/services/audio/resonance-audio').then(
-      ({ ResonanceAudioService }) => {
-        if (!ResonanceAudioService.checkIsInitialized()) {
-          router.push('/library-redirect?library=resonance');
-        }
-      }
-    );
-  }, [router]);
+  // useEffect(() => {
+  //   import('~/services/audio/resonance-audio').then(
+  //     ({ ResonanceAudioService }) => {
+  //       if (!ResonanceAudioService.checkIsInitialized()) {
+  //         router.push('/library-redirect?library=resonance');
+  //       }
+  //     }
+  //   );
+  // }, [router]);
 
   useLayoutEffect(() => {
     import('~/services/audio/resonance-audio').then(

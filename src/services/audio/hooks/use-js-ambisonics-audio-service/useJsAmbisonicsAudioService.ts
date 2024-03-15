@@ -8,15 +8,15 @@ export const useJsAmbisonicsAudioService = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    import('~/services/audio/js-ambisonics').then(
-      ({ JsAmbisonicsAudioService }) => {
-        if (!JsAmbisonicsAudioService.checkIsInitialized()) {
-          router.push('/library-redirect?library=js-ambisonics');
-        }
-      }
-    );
-  }, [router]);
+  // useEffect(() => {
+  //   import('~/services/audio/js-ambisonics').then(
+  //     ({ JsAmbisonicsAudioService }) => {
+  //       if (!JsAmbisonicsAudioService.checkIsInitialized()) {
+  //         router.push('/library-redirect?library=js-ambisonics');
+  //       }
+  //     }
+  //   );
+  // }, [router]);
 
   useLayoutEffect(() => {
     import('~/services/audio/js-ambisonics').then(
