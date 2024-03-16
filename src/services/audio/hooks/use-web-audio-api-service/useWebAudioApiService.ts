@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
+import { SOURCES_COUNT } from '~/components/eval/eval.constants';
 import { WebAudioApiService } from '~/services/audio/web-audio-api';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
@@ -15,19 +16,29 @@ export const useWebAudioApiService = (enable?: boolean) => {
   //   }
   // }, [router]);
 
-  useEffect(() => {});
-
   useLayoutEffect(() => {
-    if (enable && audioRef.current && WebAudioApiService.checkIsInitialized()) {
+    if (enable && WebAudioApiService.checkIsInitialized()) {
       const audioService = WebAudioApiService.getInstance();
 
-      if (audioService?.isAudioElementLinked()) {
-        return;
-      }
-
-      audioService?.linkAudioElement(audioRef.current);
+      audioService
+        ?.createAndConnectSources(SOURCES_COUNT, '/guitar.mp3')
+        .then(() => {
+          audioService?.playAllSources();
+        });
     }
-  }, [enable]);
+  });
+
+  // useLayoutEffect(() => {
+  //   if (enable && audioRef.current && WebAudioApiService.checkIsInitialized()) {
+  //     const audioService = WebAudioApiService.getInstance();
+
+  //     if (audioService?.isAudioElementLinked()) {
+  //       return;
+  //     }
+
+  //     audioService?.linkAudioElement(audioRef.current);
+  //   }
+  // }, [enable]);
 
   useEffect(() => {
     const audioService = WebAudioApiService.getInstance();

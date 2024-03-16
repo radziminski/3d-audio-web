@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { Mach1Eval } from '~/components/eval/mach1/Mach1Eval';
 import { Layout } from '~/components/layout/Layout';
 import { Providers } from '~/components/providers/Providers';
 
-const Mach1 = () => {
+const MachEvalContent = ({ children }: PropsWithChildren) => {
   const [isInit, setIsInit] = useState(false);
 
   useEffect(() => {
@@ -16,10 +16,16 @@ const Mach1 = () => {
 
   if (!isInit) return null;
 
+  return <>{children}</>;
+};
+
+const Mach1 = () => {
   return (
     <Providers>
       <Layout>
-        <Mach1Eval />
+        <MachEvalContent>
+          <Mach1Eval />
+        </MachEvalContent>
       </Layout>
     </Providers>
   );

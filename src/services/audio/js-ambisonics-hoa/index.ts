@@ -13,6 +13,11 @@ export class JsAmbisonicsHoaAudioService extends CommonAudioService {
   private loader: any;
   private decoder: any;
 
+  private encoders: any[] = [];
+  private limiters: any[] = [];
+  private loaders: any;
+  private decoders: any[] = [];
+
   private constructor() {
     super();
 
@@ -83,5 +88,47 @@ export class JsAmbisonicsHoaAudioService extends CommonAudioService {
 
   public randomizeSourcePosition() {
     this.setDirection(getRandomAzimuthElevation());
+  }
+
+  public async createAndConnectSources(
+    n: number,
+    filePath: string
+  ): Promise<void> {
+    await this.createBuffers(n, filePath);
+
+    for (const buffer of this.audioBuffers) {
+      const encoder = new monoEncoder(this.audioContext, 3) as any;
+      // define HOA order limiter (to show the effect of order)
+      const limiter = new orderLimiter(this.audioContext, 3, 3) as any;
+      // binaural HOA decoder
+      const decoder = new binDecoder(this.audioContext, 3) as any;
+
+      // connect nodes
+      encoder.out.connect(limiter.in);
+      limiter.out.connect(decoder.in);
+      decoder.out.connect(this.gainNode);
+
+      encoder.azim = Math.round(Math.random() * 360);
+      encoder.elev = Math.round(Math.random() * 180 - 90);
+      encoder.updateGains();
+
+      this.encoders.push(encoder);
+      this.limiters.push(limiter);
+      this.decoders.push(decoder);
+
+      buffer.connect(encoder.in);
+    }
+
+    this.loaders = new HOAloader(
+      this.audioContext,
+      3,
+      // 'IRs/ambisonic2binaural_filters/HOA3_BRIRs-medium.wav',
+      // 'IRs/ambisonic2binaural_filters/HOA3_IRC_1008_virtual.wav',
+      'IRs/ambisonic2binaural_filters/aalto2016_N3.wav',
+      (audioBuffer: AudioBuffer) =>
+        this.decoders.forEach((decoder) => decoder.updateFilters(audioBuffer))
+    );
+
+    this.loaders.load();
   }
 }

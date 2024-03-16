@@ -1,5 +1,7 @@
+import { Button } from '@mantine/core';
 import { useEffect, useLayoutEffect } from 'react';
 import { useJsAmbisonicsHoaAudioService } from '~/services/audio/hooks/use-js-ambisonics-hoa-audio-service/useJsAmbisonicsHoaAudioService';
+import { CommonEvalContent } from '../CommonEvalContent';
 
 export const JsAmbisonicsEval = () => {
   const { audioRef } = useJsAmbisonicsHoaAudioService();
@@ -33,7 +35,7 @@ export const JsAmbisonicsEval = () => {
 
   return (
     <>
-      <h1>Evaluation in progress</h1>
+      <CommonEvalContent />
       <audio src='/guitar.mp3' ref={audioRef} loop />
     </>
   );

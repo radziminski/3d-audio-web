@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useMach1AudioService } from '~/services/audio/hooks/use-mach1-audio-service/useMach1AudioService';
 import { Mach1AudioService } from '~/services/audio/mach';
+import { CommonEvalContent } from '../CommonEvalContent';
 
 export const Mach1Eval = () => {
   const { audioRef } = useMach1AudioService();
@@ -30,7 +31,7 @@ export const Mach1Eval = () => {
 
   return (
     <>
-      <h1>Evaluation in progress</h1>
+      <CommonEvalContent />
     </>
   );
 };

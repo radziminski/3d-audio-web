@@ -2,6 +2,7 @@ import { SpatialPoint } from '~/helpers/3D/types';
 import { ResonanceAudio, Source } from 'resonance-audio';
 import { roomDimensions, roomMaterials } from './constants';
 import { CommonAudioService } from '../common-audio-service';
+import { getUniSphereCoordinates } from '~/helpers/3D/getUnitSphereCoordinates';
 
 export class ResonanceAudioService extends CommonAudioService {
   private static instance: ResonanceAudioService;
@@ -9,6 +10,9 @@ export class ResonanceAudioService extends CommonAudioService {
 
   private resonanceAudioScene: ResonanceAudio;
   private resonanceAudioSource: Source;
+
+  private resonanceAudioScenes: ResonanceAudio[] = [];
+  private resonanceAudioSources: Source[] = [];
 
   private roomDimensions = roomDimensions;
   private roomMaterials = roomMaterials;
@@ -61,5 +65,45 @@ export class ResonanceAudioService extends CommonAudioService {
 
   public setSourcePosition({ x, y, z }: SpatialPoint) {
     this.resonanceAudioSource.setPosition(x, y, z);
+  }
+
+  public async createAndConnectSources(
+    n: number,
+    filePath: string
+  ): Promise<void> {
+    await this.createBuffers(n, filePath);
+
+    for (const buffer of this.audioBuffers) {
+      const resonanceAudioScene = new ResonanceAudio(this.audioContext);
+      resonanceAudioScene.setRoomProperties(
+        this.roomDimensions,
+        this.roomMaterials
+      );
+
+      // connect nodes
+      resonanceAudioScene.output.connect(this.gainNode);
+
+      const resonanceAudioSource = this.resonanceAudioScene.createSource();
+
+      const randomAzimuth = Math.round(Math.random() * 360);
+      const randomElevation = Math.round(Math.random() * 180 - 90);
+
+      const randomSourcePosition = getUniSphereCoordinates(
+        randomAzimuth,
+        randomElevation
+      );
+
+      resonanceAudioSource.setPosition(
+        randomSourcePosition.x,
+        randomSourcePosition.y,
+        randomSourcePosition.z
+      );
+
+      // Connect each source to its panner and then to the gain node
+      buffer.connect(resonanceAudioSource.input);
+
+      this.resonanceAudioScenes.push(resonanceAudioScene);
+      this.resonanceAudioSources.push(resonanceAudioSource);
+    }
   }
 }

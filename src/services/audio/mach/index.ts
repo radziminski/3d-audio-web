@@ -8,7 +8,7 @@ export class Mach1AudioService extends CommonAudioService {
   private static instance: Mach1AudioService;
   private static isInitialized = false;
 
-  private mach1Controls: any;
+  private mach1Controls: any[] = [];
 
   private constructor() {
     super();
@@ -16,7 +16,7 @@ export class Mach1AudioService extends CommonAudioService {
     this.gainNode.connect(this.audioContext.destination);
 
     // MACH 1
-    this.mach1Controls = initializeMachService();
+    this.mach1Controls.push(initializeMachService(0));
 
     Mach1AudioService.isInitialized = true;
   }
@@ -42,8 +42,8 @@ export class Mach1AudioService extends CommonAudioService {
   public connectAudioSource() {}
 
   public setDirection({ azimuth, elevation }: SpatialDirection): void {
-    this.mach1Controls.setAzimuth(azimuth);
-    this.mach1Controls.setElevation(elevation);
+    this.mach1Controls[0].setAzimuth(azimuth);
+    this.mach1Controls[0].setElevation(elevation);
 
     return;
   }
@@ -55,20 +55,37 @@ export class Mach1AudioService extends CommonAudioService {
   }
 
   public setSourceForMach(source: string, onLoad: () => void) {
-    this.mach1Controls.prepare(source, onLoad);
+    this.mach1Controls[0].prepare(source, onLoad);
   }
 
   public machPlay() {
     console.log('play');
-    this.mach1Controls?.play();
+    this.mach1Controls[0]?.play();
   }
 
   public machPause() {
-    this.mach1Controls?.pause();
+    this.mach1Controls[0]?.pause();
   }
 
   public setOutputGain(gain: number): void {
     this.gainNode.gain.value = gain;
-    this.mach1Controls.setGain(gain);
+    this.mach1Controls[0].setGain(gain);
+  }
+
+  public async createAndConnectSources(n: number): Promise<void> {
+    for (let i = 1; i <= n; i++) {
+      this.mach1Controls.push(initializeMachService(i));
+
+      // this.mach1Controls[i].setAzimuth(Math.round(Math.random() * 360));
+      // this.mach1Controls[i].setElevation(Math.round(Math.random() * 180 - 90));
+
+      this.mach1Controls[i].setGain(10);
+
+      this.mach1Controls[i].prepare(`/guitar.mp3`, () => {
+        setTimeout(() => {
+          this.mach1Controls[i].play();
+        }, i * 100);
+      });
+    }
   }
 }

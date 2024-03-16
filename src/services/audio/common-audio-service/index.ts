@@ -12,6 +12,8 @@ export abstract class CommonAudioService {
   protected elevation = DEFAULT_ELEVATION; // -90 - 90
   protected azimuth = DEFAULT_AZIMUTH; // 0 - 360
 
+  protected audioBuffers: AudioBufferSourceNode[] = [];
+
   protected constructor() {
     this.audioContext = new AudioContext();
     this.gainNode = this.audioContext.createGain();
@@ -60,5 +62,37 @@ export abstract class CommonAudioService {
 
   public randomizeSourcePosition() {
     this.setDirection(getRandomAzimuthElevation());
+  }
+
+  public async loadAudioFile(filePath: string): Promise<AudioBuffer> {
+    const response = await fetch(filePath);
+    const arrayBuffer = await response.arrayBuffer();
+    return this.audioContext.decodeAudioData(arrayBuffer);
+  }
+
+  public async createBuffers(n: number, filePath: string): Promise<void> {
+    const audioBuffer = await this.loadAudioFile(filePath);
+
+    for (let i = 0; i < n; i++) {
+      const source = this.audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.loop = true;
+
+      this.audioBuffers.push(source);
+    }
+  }
+
+  public playAllSources(): void {
+    this.audioBuffers.forEach((source, index) => {
+      if (source.buffer) {
+        console.log('playing');
+        // Check if the buffer is loaded
+        setTimeout(() => {
+          try {
+            source.start(0);
+          } catch {}
+        }, index * 100);
+      }
+    });
   }
 }

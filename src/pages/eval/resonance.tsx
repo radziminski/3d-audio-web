@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { ResonanceEval } from '~/components/eval/resonance/ResonanceEval';
 import { Layout } from '~/components/layout/Layout';
 import { Providers } from '~/components/providers/Providers';
 
-const Resonance = () => {
+const ResonanceContent = ({ children }: { children: ReactNode }) => {
   const [isInit, setIsInit] = useState(false);
 
   useEffect(() => {
@@ -18,10 +18,16 @@ const Resonance = () => {
 
   if (!isInit) return null;
 
+  return <>{children}</>;
+};
+
+const Resonance = () => {
   return (
     <Providers>
       <Layout>
-        <ResonanceEval />
+        <ResonanceContent>
+          <ResonanceEval />
+        </ResonanceContent>
       </Layout>
     </Providers>
   );

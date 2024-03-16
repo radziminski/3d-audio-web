@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
+import { SOURCES_COUNT } from '~/components/eval/eval.constants';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
 export const useJsAmbisonicsHoaAudioService = () => {
@@ -8,34 +9,50 @@ export const useJsAmbisonicsHoaAudioService = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    import('~/services/audio/js-ambisonics-hoa').then(
-      ({ JsAmbisonicsHoaAudioService }) => {
-        if (!JsAmbisonicsHoaAudioService.checkIsInitialized()) {
-          router.push('/library-redirect?library=js-ambisonics');
-        }
-      }
-    );
-  }, [router]);
+  // useEffect(() => {
+  //   import('~/services/audio/js-ambisonics-hoa').then(
+  //     ({ JsAmbisonicsHoaAudioService }) => {
+  //       if (!JsAmbisonicsHoaAudioService.checkIsInitialized()) {
+  //         router.push('/library-redirect?library=js-ambisonics');
+  //       }
+  //     }
+  //   );
+  // }, [router]);
 
   useLayoutEffect(() => {
     import('~/services/audio/js-ambisonics-hoa').then(
       ({ JsAmbisonicsHoaAudioService }) => {
-        if (
-          audioRef.current &&
-          JsAmbisonicsHoaAudioService.checkIsInitialized()
-        ) {
+        if (JsAmbisonicsHoaAudioService.checkIsInitialized()) {
           const audioService = JsAmbisonicsHoaAudioService.getInstance();
 
-          if (audioService?.isAudioElementLinked()) {
-            return;
-          }
-
-          audioService?.linkAudioElement(audioRef.current);
+          audioService
+            ?.createAndConnectSources(SOURCES_COUNT, '/guitar.mp3')
+            .then(() => {
+              audioService?.playAllSources();
+            });
         }
       }
     );
-  }, []);
+  });
+
+  // useLayoutEffect(() => {
+  //   import('~/services/audio/js-ambisonics-hoa').then(
+  //     ({ JsAmbisonicsHoaAudioService }) => {
+  //       if (
+  //         audioRef.current &&
+  //         JsAmbisonicsHoaAudioService.checkIsInitialized()
+  //       ) {
+  //         const audioService = JsAmbisonicsHoaAudioService.getInstance();
+
+  //         if (audioService?.isAudioElementLinked()) {
+  //           return;
+  //         }
+
+  //         audioService?.linkAudioElement(audioRef.current);
+  //       }
+  //     }
+  //   );
+  // }, []);
 
   useEffect(() => {
     import('~/services/audio/js-ambisonics-hoa').then(

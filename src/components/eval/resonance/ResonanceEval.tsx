@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { getUniSphereCoordinates } from '~/helpers/3D/getUnitSphereCoordinates';
 import { useResonanceAudioService } from '~/services/audio/hooks/use-resonance-audio-service/useResonanceAudioService';
+import { CommonEvalContent } from '../CommonEvalContent';
 
 export const ResonanceEval = () => {
   const { audioRef } = useResonanceAudioService();
@@ -36,7 +37,7 @@ export const ResonanceEval = () => {
 
   return (
     <>
-      <h1>Evaluation in progress</h1>
+      <CommonEvalContent />
       <audio src='/guitar.mp3' ref={audioRef} loop />
     </>
   );

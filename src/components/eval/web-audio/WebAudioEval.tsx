@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { getUniSphereCoordinates } from '~/helpers/3D/getUnitSphereCoordinates';
 import { useWebAudioApiService } from '~/services/audio/hooks/use-web-audio-api-service/useWebAudioApiService';
 import { WebAudioApiService } from '~/services/audio/web-audio-api';
+import { CommonEvalContent } from '../CommonEvalContent';
 
 export const WebAudioEval = () => {
   const { audioRef } = useWebAudioApiService(true);
@@ -33,7 +34,7 @@ export const WebAudioEval = () => {
 
   return (
     <>
-      <h1>Evaluation in progress</h1>
+      <CommonEvalContent />
       <audio src='/guitar.mp3' ref={audioRef} loop />
     </>
   );
