@@ -107,4 +107,20 @@ export class WebAudioApiService extends CommonAudioService {
       this.pannerNodes.push(panner);
     }
   }
+
+  public randomizeAngles() {
+    for (const panner of this.pannerNodes) {
+      const randomAzimuth = Math.random() * 360;
+      const randomElevation = Math.random() * 180 - 90;
+
+      const randomSourcePosition = getUniSphereCoordinates(
+        randomAzimuth,
+        randomElevation
+      );
+
+      panner.positionX.value = randomSourcePosition.x;
+      panner.positionY.value = randomSourcePosition.y;
+      panner.positionZ.value = randomSourcePosition.z;
+    }
+  }
 }

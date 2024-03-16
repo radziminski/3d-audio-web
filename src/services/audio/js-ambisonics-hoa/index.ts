@@ -131,4 +131,12 @@ export class JsAmbisonicsHoaAudioService extends CommonAudioService {
 
     this.loaders.load();
   }
+
+  public randomizeAngles() {
+    this.encoders.forEach((encoder) => {
+      encoder.azim = Math.round(Math.random() * 360);
+      encoder.elev = Math.round(Math.random() * 180 - 90);
+      encoder.updateGains();
+    });
+  }
 }

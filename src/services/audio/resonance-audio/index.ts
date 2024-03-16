@@ -106,4 +106,22 @@ export class ResonanceAudioService extends CommonAudioService {
       this.resonanceAudioSources.push(resonanceAudioSource);
     }
   }
+
+  public randomizeAngles() {
+    for (let i = 0; i < this.resonanceAudioSources.length; i++) {
+      const randomAzimuth = Math.round(Math.random() * 360);
+      const randomElevation = Math.round(Math.random() * 180 - 90);
+
+      const randomSourcePosition = getUniSphereCoordinates(
+        randomAzimuth,
+        randomElevation
+      );
+
+      this.resonanceAudioSources[i].setPosition(
+        randomSourcePosition.x,
+        randomSourcePosition.y,
+        randomSourcePosition.z
+      );
+    }
+  }
 }

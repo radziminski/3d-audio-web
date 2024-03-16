@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { SOURCES_COUNT } from '~/components/eval/eval.constants';
+import {
+  CHANGE_INTERVAL,
+  SOURCES_COUNT,
+} from '~/components/eval/eval.constants';
 import { WebAudioApiService } from '~/services/audio/web-audio-api';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
@@ -24,6 +27,10 @@ export const useWebAudioApiService = (enable?: boolean) => {
         ?.createAndConnectSources(SOURCES_COUNT, '/guitar.mp3')
         .then(() => {
           audioService?.playAllSources();
+
+          setInterval(() => {
+            audioService?.randomizeAngles();
+          }, CHANGE_INTERVAL);
         });
     }
   });

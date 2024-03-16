@@ -88,4 +88,11 @@ export class Mach1AudioService extends CommonAudioService {
       });
     }
   }
+
+  public randomizeAngles() {
+    for (let i = 0; i < this.mach1Controls.length; i++) {
+      this.mach1Controls[i].setAzimuth(Math.round(Math.random() * 360));
+      this.mach1Controls[i].setElevation(Math.round(Math.random() * 180 - 90));
+    }
+  }
 }

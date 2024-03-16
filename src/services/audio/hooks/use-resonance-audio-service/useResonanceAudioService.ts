@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { SOURCES_COUNT } from '~/components/eval/eval.constants';
+import {
+  CHANGE_INTERVAL,
+  SOURCES_COUNT,
+} from '~/components/eval/eval.constants';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 
 export const useResonanceAudioService = () => {
@@ -30,6 +33,10 @@ export const useResonanceAudioService = () => {
             ?.createAndConnectSources(SOURCES_COUNT, '/guitar.mp3')
             .then(() => {
               audioService?.playAllSources();
+
+              setInterval(() => {
+                audioService?.randomizeAngles();
+              }, CHANGE_INTERVAL);
             });
         }
       }
