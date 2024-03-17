@@ -33,6 +33,14 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
+  webServer: {
+    command: 'yarn build && yarn start',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: false,
+    stdout: 'ignore',
+    stderr: 'pipe',
+  },
+
   /* Configure projects for major browsers */
   projects: [
     {
