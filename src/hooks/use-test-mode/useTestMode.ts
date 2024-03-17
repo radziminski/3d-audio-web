@@ -53,7 +53,7 @@ export const useTestMode = () => {
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
   const handleStartTest = useCallback(() => {
-    setAudioSrc('/guitar.mp3');
+    setAudioSrc('/guitarx.mp3');
     setAppMode('test');
     setIsTestFinished(false);
     setCurrentStep(0);

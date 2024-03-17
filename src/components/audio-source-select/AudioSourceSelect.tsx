@@ -9,7 +9,7 @@ const useStyles = createStyles((theme) => ({
 
 const ALL_AUDIO_SOURCES = [
   { value: '/sine.ogg', label: 'Sine' },
-  { value: '/guitar.mp3', label: 'Guitar' },
+  { value: '/guitarx.mp3', label: 'Guitar' },
   { value: '/pink-noise.mp3', label: 'Pink noise' },
   { value: '/bicycle-bells.mp3', label: 'Bicycle bells' },
   { value: '/bees.mp3', label: 'Bees and other insects' },

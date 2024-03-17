@@ -30,7 +30,7 @@ export const useResonanceAudioService = () => {
           const audioService = ResonanceAudioService.getInstance();
 
           audioService
-            ?.createAndConnectSources(SOURCES_COUNT, '/guitar.mp3')
+            ?.createAndConnectSources(SOURCES_COUNT, '/guitarx.mp3')
             .then(() => {
               audioService?.playAllSources();
 

@@ -81,7 +81,7 @@ export class Mach1AudioService extends CommonAudioService {
 
       this.mach1Controls[i].setGain(10);
 
-      this.mach1Controls[i].prepare(`/guitar.mp3`, () => {
+      this.mach1Controls[i].prepare(`/guitarx.mp3`, () => {
         setTimeout(() => {
           this.mach1Controls[i].play();
         }, i * 100);

@@ -168,7 +168,7 @@ export const Compare = () => {
     setAppMode('playground');
     setElevation(0);
     setAzimuth(0);
-    setAudioSrc('/guitar.mp3');
+    setAudioSrc('/guitarx.mp3');
   }, [setAppMode, setAudioSrc, setAzimuth, setElevation]);
 
   let currentQualityValue = selectedLibrary

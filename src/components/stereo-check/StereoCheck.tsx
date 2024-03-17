@@ -157,7 +157,7 @@ export const StereoCheck = ({ onSuccess, onError }: StereoCheckProps) => {
         <audio
           className={classes.audio}
           controls
-          src={'/guitar.mp3'}
+          src={'/guitarx.mp3'}
           loop
           ref={audioRef}
           style={{ display: 'none' }}
