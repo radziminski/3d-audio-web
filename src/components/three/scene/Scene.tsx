@@ -36,7 +36,7 @@ export const Scene = () => {
   const isElevationGuess = currentAngle?.guessType === 'elevation';
 
   const guessSourcePosition = getUniSphereCoordinates(
-    isElevationGuess ? currentAngle.azimuth : 360 - azimuthGuess,
+    isElevationGuess ? 360 - currentAngle.azimuth : 360 - azimuthGuess,
     elevationGuess
   );
 
