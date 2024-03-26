@@ -91,6 +91,7 @@ const TargetSphere = ({
   const { x: mouseX, y: mouseY } = useMouse();
 
   const guessType = useTestStore((state) => state.guessType);
+  const currentAngle = useTestStore((state) => state.currentAngle);
   const appMode = useSettingsStore((state) => state.appMode);
   const isElevationOnly = guessType === 'elevation';
   const isAzimuthOnly = [
@@ -103,7 +104,9 @@ const TargetSphere = ({
   const isEnabled =
     appMode === 'playground' ||
     (isAzimuthOnly && elevation === 0) ||
-    (isElevationOnly && azimuth === 0) ||
+    (isElevationOnly && azimuth === currentAngle?.azimuth) ||
+    elevation === 90 ||
+    elevation === -90 ||
     (!isElevationOnly && !isAzimuthOnly);
 
   return (
@@ -178,9 +181,6 @@ export const StageContent = ({
   selection: Pick<Angles, 'azimuth' | 'elevation'> | null;
   setSelection: (selection: Pick<Angles, 'azimuth' | 'elevation'>) => void;
 }): JSX.Element => {
-  const mode = useSettingsStore((state) => state.appMode);
-  const isPlaygroundMode = mode === 'playground';
-
   const azimuthAngles = Array.from(
     { length: DIVISIONS_AZIMUTH },
     (_, i) => i * (360 / DIVISIONS_AZIMUTH)
@@ -228,6 +228,19 @@ export const StageContent = ({
         elevationAngles.map((elevation) => {
           if ((elevation === -90 || elevation === 90) && azimuth !== 0)
             return null; // remove duplicate points on top and bottom
+
+          let active =
+            selection?.azimuth === azimuth &&
+            selection?.elevation === elevation;
+
+          if (elevation === 90 && selection?.elevation === 90) {
+            active = true;
+          }
+
+          if (elevation === -90 && selection?.elevation === -90) {
+            active = true;
+          }
+
           return (
             <TargetSphere
               key={`azimuth:${azimuth}-elevation:${elevation}`}
@@ -235,10 +248,7 @@ export const StageContent = ({
               onClick={() => {
                 setSelection({ azimuth: azimuth, elevation: elevation });
               }}
-              active={
-                selection?.azimuth === azimuth &&
-                selection?.elevation === elevation
-              }
+              active={active}
               isHoverDisabled={false}
               angles={{ azimuth: azimuth, elevation: elevation }}
             />

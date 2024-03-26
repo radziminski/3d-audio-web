@@ -31,8 +31,12 @@ export const Scene = () => {
 
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
   const elevationGuess = useTestStore((state) => state.elevationGuess);
+  const currentAngle = useTestStore((state) => state.currentAngle);
+
+  const isElevationGuess = currentAngle?.guessType === 'elevation';
+
   const guessSourcePosition = getUniSphereCoordinates(
-    360 - azimuthGuess,
+    isElevationGuess ? currentAngle.azimuth : 360 - azimuthGuess,
     elevationGuess
   );
 

@@ -6,9 +6,20 @@ import { CameraRotation } from '../camera-rotation/CameraRotation';
 import { useRef } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DoubleSide } from 'three';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 export const SceneInside = () => {
   const orbitControlsRef = useRef<typeof OrbitControls>(null);
+
+  const angles = useTestStore((state) => state.currentAngle);
+
+  const isElevationGuess = angles?.guessType === 'elevation';
+  const baseAzimuth = isElevationGuess ? angles.azimuth : 0;
+  const frontText = isElevationGuess
+    ? angles.azimuth === 90
+      ? 'Right'
+      : 'Left'
+    : 'Front';
 
   return (
     <Canvas>
@@ -31,7 +42,7 @@ export const SceneInside = () => {
         fontSize={0.4}
         rotation={[0, 0, 0]}
       >
-        Front
+        {frontText}
       </Text>
       <Text
         position={[0, -0.3, -4.8]}
@@ -39,7 +50,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[0, 0, 0]}
       >
-        azimuth: 0°{'\n'}
+        azimuth: {baseAzimuth}°{'\n'}
         elevation: 0°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[0, -0.15, -4.9]}>
@@ -131,7 +142,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[1.57, 0, 0]}
       >
-        azimuth: 0°{'\n'}
+        azimuth: {baseAzimuth}°{'\n'}
         elevation: 90°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[0, 4.9, -0.15]}>
@@ -144,7 +155,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[1.57 / 2, 0, 0]}
       >
-        azimuth: 0°{'\n'}
+        azimuth: {baseAzimuth}°{'\n'}
         elevation: 45°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[0, 3.5, -3.5]}>
@@ -167,7 +178,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[-1.57, 0, 0]}
       >
-        azimuth: 0°{'\n'}
+        azimuth: {baseAzimuth}°{'\n'}
         elevation: -90°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[0, -4.9, 0.15]}>
@@ -180,7 +191,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[-1.57 / 2, 0, 0]}
       >
-        azimuth: 0°{'\n'}
+        azimuth: {baseAzimuth}°{'\n'}
         elevation: -45°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[0, -3.5, -3.5]}>
@@ -193,7 +204,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[1.57 / 2, 0, 0]}
       >
-        azimuth: 0°{'\n'}
+        azimuth: {baseAzimuth}°{'\n'}
         elevation: 45°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[0, 3.5, -3.5]}>
@@ -206,7 +217,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[0, 1.57 / 2, 0]}
       >
-        azimuth: 305°{'\n'}
+        azimuth: {isElevationGuess ? 45 : 305}°{'\n'}
         elevation: 0°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[-3.5, -0.12, -3.5]}>
@@ -219,7 +230,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[0, -1.57 / 2, 0]}
       >
-        azimuth: 45°{'\n'}
+        azimuth: {isElevationGuess ? 135 : 45}°{'\n'}
         elevation: 0°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[3.5, -0.12, -3.5]}>

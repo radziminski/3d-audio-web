@@ -8,6 +8,10 @@ import { roundToNearest } from '~/helpers/math/roundToNearest';
 export const Stage = (): JSX.Element => {
   const azimuthGuess = useTestStore((state) => state.azimuthGuess);
   const elevationGuess = useTestStore((state) => state.elevationGuess);
+  const currentAngle = useTestStore((state) => state.currentAngle);
+
+  const isElevationGuess = currentAngle?.guessType === 'elevation';
+
   const setGuessedDirections = useTestStore(
     (state) => state.setGuessedDirections
   );
@@ -21,7 +25,11 @@ export const Stage = (): JSX.Element => {
     ({ setElevation }) => setElevation
   );
 
-  const selectedAzimuth = isGuessingMode ? azimuthGuess : azimuth;
+  const selectedAzimuth = isGuessingMode
+    ? isElevationGuess
+      ? currentAngle.azimuth
+      : azimuthGuess
+    : azimuth;
   const selectedElevation = isGuessingMode ? elevationGuess : elevation;
 
   return (
