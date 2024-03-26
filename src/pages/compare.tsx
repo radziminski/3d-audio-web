@@ -91,11 +91,14 @@ export default function ComparePage() {
           </p>
           <p className={classes.paragraph}>
             By using two knobs below, you can adjust the{' '}
-            <strong>horizontal (azimuth knob)</strong> and{' '}
-            <strong>vertical (elevation slider) </strong> direction of the
-            sound. You can pick different sounds from the list next to the
-            sliders. Use large play button to start/pause the track. The gain
-            (volume) slider allows you to adjust how loud the sound is.
+            <strong>horizontal (azimuth circular knob)</strong> and{' '}
+            <strong>vertical (elevation vertical slider) </strong> direction of
+            the sound. The elevation (vertical slider) can be adjusted only
+            after the azimuth (circular knob) is between 45°-135° or 235°-315°,
+            since it&apos;s easiest to notice elevation changes at these angles.
+            You can pick different sounds from the list next to the sliders. Use
+            large play button to start/pause the track. The gain (volume) slider
+            allows you to adjust how loud the sound is.
           </p>
         </div>
         <Compare />
