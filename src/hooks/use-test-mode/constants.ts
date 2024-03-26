@@ -94,7 +94,7 @@ export const TEST_ANGLES = [
 ];
 
 export const AZIMUTH_ANGLES = [45, 90, 135, 180, 225, 270, 315];
-export const ELEVATION_ANGLES = [-90, -45, 45, 90];
+export const ELEVATION_ANGLES = [-88, -45, 45, 88];
 
 export const SAMPLE_TYPES = [
   '/sample-pinknoise.mp3',
