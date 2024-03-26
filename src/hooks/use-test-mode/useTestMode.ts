@@ -112,9 +112,16 @@ export const useTestMode = () => {
 
       const parsedGuess = roundToNearest(guessedAzimuth, guessedElevation);
 
+      let trueElevation = currentAngle?.elevation ?? 0;
+      if (trueElevation === 88) {
+        trueElevation = 90;
+      } else if (trueElevation === -88) {
+        trueElevation = -90;
+      }
+
       const guess = {
         trueAzimuth: currentAngle?.azimuth ?? 0,
-        trueElevation: currentAngle?.elevation ?? 0,
+        trueElevation,
         guessedAzimuth: parsedGuess.azimuth,
         guessedElevation: parsedGuess.elevation,
         library: currentLibrary,
