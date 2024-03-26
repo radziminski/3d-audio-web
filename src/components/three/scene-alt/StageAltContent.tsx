@@ -288,7 +288,7 @@ export const StageContent = ({
       ))}
       {azimuthAngles.map(
         (azimuth) =>
-          azimuth % 30 === 0 && (
+          azimuth % 45 === 0 && (
             <Text
               key={`text${azimuth}`}
               position={[
