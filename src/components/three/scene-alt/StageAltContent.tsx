@@ -105,8 +105,8 @@ const TargetSphere = ({
     appMode === 'playground' ||
     (isAzimuthOnly && elevation === 0) ||
     (isElevationOnly && azimuth === currentAngle?.azimuth) ||
-    elevation === 90 ||
-    elevation === -90 ||
+    (isElevationOnly && elevation === 90) ||
+    (isElevationOnly && elevation === -90) ||
     (!isElevationOnly && !isAzimuthOnly);
 
   return (
