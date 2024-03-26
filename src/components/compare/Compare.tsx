@@ -122,7 +122,8 @@ export const Compare = () => {
   const setAudioSrc = useSettingsStore(({ setAudioSource }) => setAudioSource);
 
   const { classes } = useStyles();
-  const router = useRouter();
+  const azimuth = useSettingsStore((state) => state.azimuth);
+  const elevation = useSettingsStore((state) => state.elevation);
   const setAzimuth = useSettingsStore((state) => state.setAzimuth);
   const setElevation = useSettingsStore((state) => state.setElevation);
   const setAppMode = useSettingsStore((state) => state.setAppMode);
@@ -188,6 +189,13 @@ export const Compare = () => {
       quality.soundSpatialQuality !== undefined
   );
 
+  const isNoLibrary = selectedLibrary === undefined;
+
+  const isElevationEnabled =
+    (azimuth >= 45 && azimuth <= 135) || (azimuth >= 235 && azimuth <= 315);
+
+  const isAzimuthEnabled = elevation !== 90 && elevation !== -90;
+
   return (
     <div className={classes.container}>
       <AudioSettings
@@ -197,6 +205,8 @@ export const Compare = () => {
         machPlay={machPlay}
         isMach={selectedLibrary === 'mach1'}
         audioSources={['Full Song', 'Guitar', 'Female voice']}
+        disableAzimuth={isNoLibrary || !isAzimuthEnabled}
+        disableElevation={isNoLibrary || !isElevationEnabled}
       />
       <div className={classes.buttons}>
         {(

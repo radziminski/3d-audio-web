@@ -257,6 +257,8 @@ type AudioSettingsProps = {
   machPause?: () => void;
   isMach?: boolean;
   audioSources?: AudioSource[];
+  disableAzimuth?: boolean;
+  disableElevation?: boolean;
 };
 
 export const AudioSettings = ({
@@ -267,6 +269,8 @@ export const AudioSettings = ({
   machPlay,
   isMach,
   audioSources,
+  disableAzimuth,
+  disableElevation,
 }: AudioSettingsProps) => {
   const isMobile = useMediaQuery('(max-width: 700px)', false);
 
@@ -408,10 +412,12 @@ export const AudioSettings = ({
     audioRef?.current?.pause();
   }, [isMach, audioRef]);
 
-  const isAzimuthDisabled = appMode === 'test' && guessType === 'elevation';
+  const isAzimuthDisabled =
+    (appMode === 'test' && guessType === 'elevation') || disableAzimuth;
   const isElevationDisabled =
-    appMode === 'test' &&
-    ['azimuth', 'left-only', 'right-only', 'bypassed'].includes(guessType);
+    (appMode === 'test' &&
+      ['azimuth', 'left-only', 'right-only', 'bypassed'].includes(guessType)) ||
+    disableElevation;
 
   return (
     <div
