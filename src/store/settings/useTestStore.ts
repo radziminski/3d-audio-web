@@ -51,6 +51,7 @@ interface TestStore {
   usedSamples: string[];
   guessType: GuessType;
   currentAngle: Angles | null;
+  progress: number;
   reset: () => void;
   setTestStart: (number: number) => void;
   setTestEnd: (number: number) => void;
@@ -77,6 +78,7 @@ interface TestStore {
   resetUsedSamples(): void;
   resetTestAngles: () => Angles[];
   setCurrentAngle: (angle: Angles) => void;
+  setProgress: (progress: number) => void;
 }
 
 export const INITIAL_STORE = {
@@ -110,6 +112,7 @@ export const INITIAL_STORE = {
   guessType: 'normal' as GuessType,
   currentGuess: null,
   currentAngle: null,
+  progress: 10,
 };
 
 export const useTestStore = create<TestStore>()(
@@ -205,6 +208,9 @@ export const useTestStore = create<TestStore>()(
       },
       setCurrentAngle: (angle) => {
         set({ currentAngle: angle });
+      },
+      setProgress: (progress) => {
+        set({ progress });
       },
     }),
     {

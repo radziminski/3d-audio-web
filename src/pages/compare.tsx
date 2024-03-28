@@ -1,9 +1,10 @@
 import { Button, createStyles } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Compare } from '~/components/compare/Compare';
 import { Layout } from '~/components/layout/Layout';
 import { Providers } from '~/components/providers/Providers';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles(() => ({
   container: {
@@ -49,6 +50,12 @@ export default function ComparePage() {
   const { classes } = useStyles();
 
   const isClientRender = useClientRender();
+
+  const { setProgress } = useTestStore();
+
+  useEffect(() => {
+    setProgress(30);
+  }, [setProgress]);
 
   if (!isClientRender)
     return (

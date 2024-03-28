@@ -211,6 +211,12 @@ export default function TutorialPage() {
 
   const currentStep = TUTORIAL_STEPS[tutorialStep];
 
+  const { setProgress } = useTestStore();
+
+  useEffect(() => {
+    setProgress(33 + tutorialStep);
+  }, [setProgress, tutorialStep]);
+
   if (!isClientRender)
     return (
       <>

@@ -303,9 +303,11 @@ export const AudioSettings = ({
   const currentAngles = useTestStore((state) => state.currentAngle);
 
   const shouldHideAzimuth =
-    currentAngles?.guessType === 'elevation' && isMobile;
+    currentAngles?.guessType === 'elevation' && isMobile && isGuessingMode;
   const shouldHideElevation =
-    currentAngles?.guessType === 'azimuth' && isMobile;
+    currentAngles?.guessType === 'azimuth' && isMobile && isGuessingMode;
+
+  console.log('isGuessMade', isGuessMade);
 
   const guessType = useTestStore((state) => state.guessType);
 

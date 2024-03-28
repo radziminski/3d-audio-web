@@ -10,6 +10,7 @@ import { Button, createStyles } from '@mantine/core';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 import { nanoid } from 'nanoid';
 import { useQualityStore } from '~/store/settings/useQualityStore';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles(() => ({
   container: {
@@ -49,16 +50,24 @@ export default function Home() {
   const { setTestId } = useTestIdStore();
 
   const resetQuality = useQualityStore((state) => state.reset);
+  const resetTest = useTestStore((state) => state.reset);
 
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     resetQuality();
     resetStore();
+    resetTest();
     router.prefetch('/preparation/stereo-check');
     router.prefetch('/preparation/tutorial');
     router.prefetch('/compare');
-  }, [resetStore, router, resetQuality]);
+  }, [resetStore, router, resetQuality, resetTest]);
+
+  const { setProgress } = useTestStore();
+
+  useEffect(() => {
+    setProgress(10);
+  }, [setProgress]);
 
   if (!isClientRender)
     return (

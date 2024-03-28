@@ -4,6 +4,8 @@ import { Layout } from '~/components/layout/Layout';
 import { Button, createStyles } from '@mantine/core';
 import { useClientRender } from '~/hooks/use-client-render/useClientRender';
 import { nanoid } from 'nanoid';
+import { useTestStore } from '~/store/settings/useTestStore';
+import { useEffect } from 'react';
 
 const useStyles = createStyles(() => ({
   container: {
@@ -38,6 +40,12 @@ export default function About() {
   const isClientRender = useClientRender();
 
   const { classes } = useStyles();
+
+  const { setProgress } = useTestStore();
+
+  useEffect(() => {
+    setProgress(20);
+  }, [setProgress]);
 
   if (!isClientRender)
     return (

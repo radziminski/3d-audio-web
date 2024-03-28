@@ -1,9 +1,10 @@
 import { Button, createStyles } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout } from '~/components/layout/Layout';
 import { Providers } from '~/components/providers/Providers';
 import { StereoCheck } from '~/components/stereo-check/StereoCheck';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles(() => ({
   wrapper: {
@@ -57,6 +58,12 @@ export default function StereoCheckPage() {
   const { classes } = useStyles();
 
   const router = useRouter();
+
+  const setProgress = useTestStore((state) => state.setProgress);
+
+  useEffect(() => {
+    setProgress(15);
+  }, [setProgress]);
 
   if (isError) {
     return (

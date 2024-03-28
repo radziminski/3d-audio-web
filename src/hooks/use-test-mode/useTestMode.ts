@@ -52,6 +52,8 @@ export const useTestMode = () => {
 
   const currentLibraryIndex = libraryOrder.indexOf(currentLibrary);
 
+  const setProgress = useTestStore((state) => state.setProgress);
+
   const handleStartTest = useCallback(() => {
     setAudioSrc('/guitar.mp3');
     setAppMode('test');
@@ -75,6 +77,7 @@ export const useTestMode = () => {
     const newLibrary = randomLibraryOrder[0];
     setCurrentLibrary(newLibrary);
     setTimeout(() => {
+      setProgress(40);
       router.push(`/guess`);
     }, 500);
   }, [
@@ -93,6 +96,7 @@ export const useTestMode = () => {
     setGuessType,
     setCurrentAngle,
     setCurrentLibrary,
+    setProgress,
     router,
   ]);
 
@@ -104,6 +108,22 @@ export const useTestMode = () => {
 
   const handleFinishStep = useCallback(
     (asBypassed?: boolean) => {
+      const step = currentStep / (libraryOrder.length * stepsPerLibrary);
+
+      if (step < 1 / 4) {
+        setProgress(
+          40 +
+            80 * ((currentStep + 1) / (libraryOrder.length * stepsPerLibrary))
+        );
+      } else {
+        setProgress(
+          60 +
+            40 *
+              ((currentStep + 1 - stepsPerLibrary) /
+                ((libraryOrder.length - 1) * stepsPerLibrary))
+        );
+      }
+
       if (currentStep >= libraryOrder.length * stepsPerLibrary) {
         return;
       }
@@ -134,8 +154,6 @@ export const useTestMode = () => {
 
       addGuess(guess);
 
-      console.log('added guess', guess);
-
       setGuessStart(now);
 
       incrementStep();
@@ -150,7 +168,6 @@ export const useTestMode = () => {
       if (angles) {
         setGuessType(angles.guessType ?? 'normal');
         setCurrentAngle(angles);
-        console.log('setting angles', angles);
       }
 
       clearCurrentGuess();
@@ -166,8 +183,6 @@ export const useTestMode = () => {
 
         const [newAngles] = resetTestAngles();
 
-        console.log('setting angles', newAngles);
-
         setAngles(newAngles.azimuth, newAngles.elevation);
         setCurrentAngle(newAngles);
         setGuessType(newAngles.guessType ?? 'normal');
@@ -177,28 +192,31 @@ export const useTestMode = () => {
       }
     },
     [
-      sceneType,
-      addGuess,
-      clearCurrentGuess,
-      currentGuessStart,
-      currentLibrary,
-      currentLibraryIndex,
       currentStep,
-      guessType,
+      stepsPerLibrary,
+      setProgress,
+      libraryOrder,
       guessedAzimuth,
       guessedElevation,
-      handleFinishTest,
+      currentAngle?.elevation,
+      currentAngle?.azimuth,
+      currentAngle?.sample,
+      currentLibrary,
+      currentGuessStart,
+      guessType,
+      sceneType,
+      addGuess,
+      setGuessStart,
       incrementStep,
-      libraryOrder,
+      testAngles,
+      clearCurrentGuess,
+      currentLibraryIndex,
+      setGuessType,
+      setCurrentAngle,
       resetTestAngles,
       setAngles,
-      setCurrentAngle,
       setCurrentLibrary,
-      setGuessStart,
-      setGuessType,
-      stepsPerLibrary,
-      testAngles,
-      currentAngle,
+      handleFinishTest,
     ]
   );
 

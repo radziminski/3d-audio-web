@@ -8,6 +8,7 @@ import {
 } from '../../store/settings/useSettingsStore';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
+import { useTestStore } from '~/store/settings/useTestStore';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -21,12 +22,29 @@ const useStyles = createStyles((theme) => ({
     flexGrow: 1,
     flexShrink: 0,
     alignSelf: 'stretch',
+    paddingTop: '8px',
   },
   withPadding: {
     padding: '64px 32px',
     '@media (max-width: 700px)': {
       padding: '64px 16px',
     },
+  },
+  progress: {
+    position: 'fixed',
+    height: 8,
+    left: 0,
+    right: 0,
+    background: '#fff',
+    top: 0,
+  },
+  progressFill: {
+    position: 'fixed',
+    height: 8,
+    left: 0,
+    background: '#16a34a',
+    top: 0,
+    transition: 'all 0.2s',
   },
 }));
 
@@ -51,6 +69,8 @@ export const Layout = ({
 
   const { classes } = useStyles();
   const { pathname } = useRouter();
+
+  const progress = useTestStore((state) => state.progress);
 
   useEffect(() => {
     if (
@@ -120,6 +140,11 @@ export const Layout = ({
         </Button>
       )}
       {isContextStarted && children}
+      <div className={classes.progress} />
+      <div
+        className={classes.progressFill}
+        style={{ width: `calc(${progress} * 1vw)` }}
+      />
     </Center>
   );
 };
