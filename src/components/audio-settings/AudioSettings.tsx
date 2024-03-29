@@ -129,7 +129,6 @@ const useStyles = createStyles((theme) => ({
     gap: '80px',
     '@media (max-width: 700px)': {
       justifyContent: 'center',
-      gap: '60px',
     },
   },
   settingsColumn: {
@@ -307,8 +306,6 @@ export const AudioSettings = ({
   const shouldHideElevation =
     currentAngles?.guessType === 'azimuth' && isMobile && isGuessingMode;
 
-  console.log('isGuessMade', isGuessMade);
-
   const guessType = useTestStore((state) => state.guessType);
 
   useLayoutEffect(() => {
@@ -421,6 +418,8 @@ export const AudioSettings = ({
       ['azimuth', 'left-only', 'right-only', 'bypassed'].includes(guessType)) ||
     disableElevation;
 
+  console.log('isGuessingMode', isGuessingMode);
+
   return (
     <div
       className={
@@ -524,6 +523,10 @@ export const AudioSettings = ({
                   : onElevationChange;
 
                 fn(DEFAULT_ELEVATION);
+              }}
+              style={{
+                left: isGuessingMode || !isMobile ? undefined : '-28px',
+                color: 'red',
               }}
             >
               <input
