@@ -96,18 +96,17 @@ export default function Home() {
             <strong>What&apos;s this all about?</strong> This test is a fun and
             interactive way to explore how 3D audio works in web applications.
             It will help me evaluate different 3D Sound technologies for my
-            masters thesis. Think of it as an audio adventure where you get to
-            experience sound in a completely new way.
+            masters thesis.
           </p>
           <p className={classes.paragraph}>
             <strong>Before you begin:</strong>
             <div>
-              <span>1. Headphones Needed:</span> To dive into this immersive
+              <span>1. Headphones needed:</span> To dive into this immersive
               experience, you&apos;ll need to wear headphones. It&apos;s
               essential for the 3D effect to work!
             </div>
             <div>
-              <span>2. Wear Them Right:</span> Please make sure your headphones
+              <span>2. Wear them right:</span> Please make sure your headphones
               are on correctly - right earpiece on your right ear, left on your
               left. It makes a big difference!
             </div>
@@ -115,20 +114,16 @@ export default function Home() {
           <p className={classes.paragraph}>
             <strong>What to expect:</strong>
             <div>
-              <span>1. Duration</span> The test will take around 15-20 minutes
+              <span>1. Duration</span> The test will take around 20-25 minutes
               of your time.
             </div>
             <div>
-              <span>2. Choose sounds:</span> You&apos;ll get to pick from
-              various audio tracks, each offering a unique 3D sound experience.
-            </div>
-            <div>
-              <span>3. Evaluate sound quality:</span> Firstly, you will be asked
+              <span>2. Evaluate sound quality:</span> Firstly, you will be asked
               to play around with each selected technology and evaluate its
               quality and spatial effectiveness.
             </div>
             <div>
-              <span>4. Discover Sound Directions:</span>{' '}
+              <span>3. Discover sound directions:</span>{' '}
               <u>
                 Later, your task will be to identify where the sound seems to be
                 coming from. Is it above, below, behind, or maybe right in front
