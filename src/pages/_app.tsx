@@ -4,6 +4,7 @@ import { useUserId } from '~/hooks/use-user-id/useUserId';
 import '../assets/global.css';
 import { useSettingsStore } from '~/store/settings/useSettingsStore';
 import { useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App({ Component, pageProps }: AppProps) {
   useUserId();
@@ -22,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Component {...pageProps} />
+      <Analytics />
     </>
   );
 }
