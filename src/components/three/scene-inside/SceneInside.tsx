@@ -21,6 +21,9 @@ export const SceneInside = () => {
       : 'Left'
     : 'Front';
 
+  const isRight = frontText === 'Right';
+  const elevationGuessBase = isRight ? 0 : 180;
+
   return (
     <Canvas>
       <Environment
@@ -217,7 +220,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[0, 1.57 / 2, 0]}
       >
-        azimuth: {isElevationGuess ? 45 : 305}°{'\n'}
+        azimuth: {isElevationGuess ? 45 + elevationGuessBase : 305}°{'\n'}
         elevation: 0°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[-3.5, -0.12, -3.5]}>
@@ -230,7 +233,7 @@ export const SceneInside = () => {
         fontSize={0.1}
         rotation={[0, -1.57 / 2, 0]}
       >
-        azimuth: {isElevationGuess ? 135 : 45}°{'\n'}
+        azimuth: {isElevationGuess ? 135 + elevationGuessBase : 45}°{'\n'}
         elevation: 0°
       </Text>
       <Sphere args={[0.04, 32, 32]} position={[3.5, -0.12, -3.5]}>
