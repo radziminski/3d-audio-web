@@ -42,7 +42,7 @@ const TUTORIAL_STEPS = [
           `For each sound, use selected view to choose the direction where you believe the sound is coming from.`,
           `To make your task easier, you'll be asked to <strong>guess only the azimuth (horizontal angle)</strong> or <strong>elevation (vertical angle)</strong> of the sound - never both.`,
           `After you make a guess, the direction changes, and you should repeat guessing direction of the new sound.`,
-          'To simplify the process, your guesses for azimuth will be limited to the multiple of 15° (0°, 15°, 30°, ..., 345°) and 45° for elevation(-90°, -45°, 0°, 45°, 90°).',
+          'To simplify the process, your guesses for azimuth will be limited to the multiple of 15° (0°, 15°, 30°, ..., 345°) and 45° for elevation (-90°, -45°, 0°, 45°, 90°).',
         ],
       },
     ],
@@ -54,7 +54,7 @@ const TUTORIAL_STEPS = [
       {
         title: 'Navigating the outside view:',
         points: [
-          `In the outside view, a person is sitting in the center of the screen, with an arrow floating around them. The arrow should indicates the direction of the incoming sound.`,
+          `In the outside view, a person is sitting in the center of the screen, with an arrow floating around them. The arrow should indicate the direction of the incoming sound.`,
           `You are asked to adjust the arrow's position by using the controls located in the bottom right corner of the screen. These controls allow you to change the azimuth or elevation to point the arrow in the direction you believe the sound is coming from.`,
           `In each step <strong>one of the sliders will be disabled</strong> (you won't be able to change it). If the vertical slider is disabled, you should only guess the azimuth of the sound (the horizontal direction) and vice-versa.`,
           `The outside view is the default view. You will see it right after starting the test.`,
@@ -256,9 +256,8 @@ export default function TutorialPage() {
                 </strong>
                 Get ready to learn how to navigate through the testing platform.
                 This simple step-by-step guide will show you how to guess the
-                direction of sounds in this virtual environment. It will walk
-                you through the basics of environment controls. Let&apos;s start
-                this auditory adventure!
+                direction of sounds in this environment. Let&apos;s start this
+                auditory adventure!
               </p>
             </>
           )}

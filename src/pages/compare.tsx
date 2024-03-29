@@ -81,7 +81,7 @@ export default function ComparePage() {
             </strong>
           </p>
           <p className={classes.paragraph}>
-            By clicking on one of the blue &quot;Technology ...&quot; button
+            By clicking on one of the blue &quot;Technology ...&quot; buttons
             below, you can select a given technology that will be used to make
             the sound seem like it is coming from a given direction around you.
             After experimenting with it, please rate your experience on two
