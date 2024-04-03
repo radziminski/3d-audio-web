@@ -64,7 +64,15 @@ const submitGuessesHandler = async (
 
   const guesses = req.body as RequestPayload;
 
-  await db.insert(guessesTable).values(guesses);
+  const parsedGuesses = guesses.map(
+    (guess) =>
+      ({
+        ...guess,
+        duration: guess.duration ? Math.round(guess.duration) : 0,
+      } as const)
+  );
+
+  await db.insert(guessesTable).values(parsedGuesses);
 
   const data: ResponseDto = {
     message: 'Guesses submit successfully ✅',
