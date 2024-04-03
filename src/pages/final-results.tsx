@@ -85,19 +85,6 @@ const LIBRARY_QUALITY_COLUMN_LABELS = [
   'Step Time',
 ];
 
-const FULL_RESULTS_COLUMN_LABELS = [
-  'Step',
-  'Library',
-  'View',
-  'Sample',
-  'True Azimuth',
-  'Guessed Azimuth',
-  'Azimuth Error',
-  'True Elevation',
-  'Guessed Elevation',
-  'Elevation Error',
-];
-
 export default function TestResultPage({
   guesses,
   guessesQuality,
@@ -109,7 +96,49 @@ export default function TestResultPage({
   const users = new Set(guesses.map((guess) => guess.userId));
   const tests = new Set(guesses.map((guess) => guess.testId));
 
-  console.log(users);
+  const validTests = [...tests].filter((test) => {
+    const testGuesses = guesses.filter((guess) => guess.testId === test);
+
+    let zeroGuessCount = 0;
+    let wrongDirectionsCount = 0;
+
+    for (const guess of testGuesses) {
+      if (zeroGuessCount > 3 || wrongDirectionsCount > 2) {
+        return false;
+      }
+
+      if (
+        (guess.trueAzimuth === 270 &&
+          guess.type === 'azimuth' &&
+          guess.guessedAzimuth >= 0 &&
+          guess.guessedAzimuth <= 180) ||
+        (guess.trueAzimuth === 90 &&
+          guess.type === 'azimuth' &&
+          guess.guessedAzimuth >= 180 &&
+          guess.guessedAzimuth <= 360)
+      ) {
+        wrongDirectionsCount++;
+      }
+
+      if (guess.guessedAzimuth !== 0 || guess.type !== 'azimuth') {
+        zeroGuessCount = 0;
+        continue;
+      }
+
+      zeroGuessCount++;
+    }
+
+    return true;
+  });
+
+  const invalidTests = [...tests].filter((test) => !validTests.includes(test));
+
+  const filteredGuesses = guesses.filter((guess) =>
+    validTests.includes(guess.testId)
+  );
+  const filteredGuessesQuality = guessesQuality.filter((guess) =>
+    validTests.includes(guess.testId)
+  );
 
   return (
     <Providers>
@@ -121,9 +150,13 @@ export default function TestResultPage({
             </h2>
 
             <div>Submissions: {tests.size}</div>
+            <div>Valid submissions: {validTests.length}</div>
+            <div>Invalid submissions: {invalidTests.length}</div>
             <div>Unique users: {users.size}</div>
 
-            <h3 style={{ margin: 0, marginTop: '16px' }}>Combined results</h3>
+            <h3 style={{ margin: 0, marginTop: '16px' }}>
+              Combined (valid) results
+            </h3>
 
             <div className={classes.libraryResultGrid}>
               <div className={classes.libraryResultRow}>
@@ -137,7 +170,7 @@ export default function TestResultPage({
                 (library) => library !== 'omnitone'
               ).map((library, index) => {
                 const { quality, spatialness } = getQualityAverages(
-                  guessesQuality,
+                  filteredGuessesQuality,
                   library as SupportedLibrary
                 );
 
@@ -173,7 +206,7 @@ export default function TestResultPage({
                   averageElevationError,
                   averageStepTime,
                 } = getTestAverages(
-                  [...(guesses as any)],
+                  [...(filteredGuesses as any)],
                   library as SupportedLibrary
                 );
 
@@ -195,7 +228,9 @@ export default function TestResultPage({
               })}
             </div>
 
-            {[...tests].map((test) => {
+            <h3>Valid results</h3>
+
+            {[...validTests, ...invalidTests].map((test) => {
               const localGuesses = guesses.filter(
                 (guess) => guess.testId === test
               ) as any;
@@ -203,10 +238,14 @@ export default function TestResultPage({
                 (guess) => guess.testId === test
               ) as any;
 
+              const isInvalid = invalidTests.includes(test);
+
               return (
                 <>
                   <Link href={`/testid-results?testId=${test}`}>
-                    <h3>TestId: {test}</h3>
+                    <h3>
+                      {isInvalid ? '[INVALID] ' : ''}TestId: {test}
+                    </h3>
                   </Link>
                   <h5 style={{ margin: 0, textAlign: 'center' }}>
                     UserId: {localQuality[0].userId}
