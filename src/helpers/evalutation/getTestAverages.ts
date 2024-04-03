@@ -35,11 +35,13 @@ export const getTestAverages = (
   );
 
   const averageStepTime = roundToDecimal(
-    libraryGuesses.reduce(
-      (acc, { guessStart, guessEnd }) =>
-        getTimeDifference(guessStart, guessEnd) + acc,
-      0
-    ) / libraryGuesses.length
+    libraryGuesses.reduce((acc, { guessStart, guessEnd }) => {
+      const timeDiff = getTimeDifference(guessStart, guessEnd);
+
+      if (Number.isNaN(timeDiff)) return acc;
+
+      return timeDiff + acc;
+    }, 0) / libraryGuesses.length
   );
 
   return { averageAzimuthError, averageElevationError, averageStepTime };

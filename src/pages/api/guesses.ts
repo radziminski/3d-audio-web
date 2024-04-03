@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../../db';
 import { Guess, guessesTable } from '../../../db/schema';
-import { and, eq, or } from 'drizzle-orm';
+import { and, eq, gt, gte, or } from 'drizzle-orm';
+import { TEST_START } from '~/constants';
 
 type ResponseDto = Guess[];
 
@@ -53,7 +54,7 @@ export const retrieveGuesses = async (req: NextApiRequest) => {
   }
 
   const guesses = await db.query.guessesTable.findMany({
-    where: and(...conditions),
+    where: and(...conditions, gte(guessesTable.createdAt, TEST_START)),
   });
 
   return guesses;

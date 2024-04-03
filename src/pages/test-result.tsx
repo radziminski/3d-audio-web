@@ -109,17 +109,26 @@ async function submitGuesses(
 
   try {
     const guessesDto: NewGuess[] = guesses.map(
-      ({ guessStart, guessEnd, ...guess }) => ({
-        ...guess,
-        trueAzimuth: Math.round(guess.trueAzimuth),
-        trueElevation: Math.round(guess.trueElevation),
-        guessedAzimuth: Math.round(guess.guessedAzimuth),
-        guessedElevation: Math.round(guess.guessedElevation),
-        userId,
-        testId,
-        versionSha: VERSION_SHA ?? 'unknown',
-        os,
-      })
+      ({ guessStart, guessEnd, ...guess }) => {
+        let duration = 0;
+
+        try {
+          duration = getTimeDifference(guessStart, guessEnd);
+        } catch {}
+
+        return {
+          ...guess,
+          trueAzimuth: Math.round(guess.trueAzimuth),
+          trueElevation: Math.round(guess.trueElevation),
+          guessedAzimuth: Math.round(guess.guessedAzimuth),
+          guessedElevation: Math.round(guess.guessedElevation),
+          userId,
+          testId,
+          versionSha: VERSION_SHA ?? 'unknown',
+          os,
+          duration,
+        };
+      }
     );
 
     const response = await fetch(apiUrl, {
