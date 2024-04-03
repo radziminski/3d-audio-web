@@ -103,7 +103,7 @@ export default function TestResultPage({
     let wrongDirectionsCount = 0;
 
     for (const guess of testGuesses) {
-      if (zeroGuessCount > 3 || wrongDirectionsCount > 2) {
+      if (zeroGuessCount > 4 || wrongDirectionsCount > 4) {
         return false;
       }
 
