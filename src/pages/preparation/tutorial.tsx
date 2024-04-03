@@ -34,6 +34,7 @@ const TUTORIAL_STEPS = [
           `There are 3 available scenes to help you identify the direction of incoming sounds: <strong>"Outside view"</strong>, <strong>"Inside view"</strong>, and <strong>"Combined view"</strong>.`,
           `In each view, your task is to determine the direction from which the sound is coming, focusing on its azimuth (horizontal angle) or elevation (vertical angle). The process for making your guess varies depending on the view selected.`,
           `During the test, you can choose whichever view is suiting you best. You can also freely switch between views at any time using buttons in left bottom corner of the screen.`,
+          `It's enough to mark the direction guess in <strong>only one</strong> of the views to proceed.`,
         ],
       },
       {
