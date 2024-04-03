@@ -360,15 +360,12 @@ export default function TestResultPage({
 const HOST = process.env.NEXT_PUBLIC_HOST ?? 'https://3d-audio-web.vercel.app';
 
 export const getServerSideProps = async () => {
-  const guesses = await fetch('http://localhost:3000/api/guesses', {
+  const guesses = await fetch(`${HOST}/api/guesses`, {
     headers: { 'Content-Type': 'application/json' },
   });
-  const guessesQuality = await fetch(
-    'http://localhost:3000/api/guesses-quality',
-    {
-      headers: { 'Content-Type': 'application/json' },
-    }
-  );
+  const guessesQuality = await fetch(`${HOST}/api/guesses-quality`, {
+    headers: { 'Content-Type': 'application/json' },
+  });
 
   const guessesData = await guesses.json();
   const guessesQualityData = await guessesQuality.json();
