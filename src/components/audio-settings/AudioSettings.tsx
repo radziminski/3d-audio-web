@@ -22,6 +22,9 @@ import { useTestStore } from '~/store/settings/useTestStore';
 import { ReferenceButton } from '../reference-button/ReferenceButton';
 import { useMediaQuery } from '@mantine/hooks';
 
+const isSafari = () =>
+  typeof window !== 'undefined' && !!(window as any).safari;
+
 const useStyles = createStyles((theme) => ({
   dialog: {
     background:
@@ -238,6 +241,7 @@ const useStyles = createStyles((theme) => ({
   elevationInput: {
     height: '210px !important',
     writingMode: 'vertical-lr',
+    direction: 'rtl',
     '@media (max-width: 700px)': {
       height: '150px !important',
     },
@@ -548,6 +552,11 @@ export const AudioSettings = ({
                 }}
                 disabled={isElevationDisabled}
                 step={isGuessingMode ? 45 : 1}
+                {...(isSafari()
+                  ? {
+                      orient: 'vertical',
+                    }
+                  : {})}
               />
               <div className={classes.elevation}>
                 Elevation:{' '}
