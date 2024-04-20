@@ -5,7 +5,7 @@ import {
   guessesTable,
   qualityGuessesTable,
 } from '../../../db/schema';
-import { and, eq, gte, or } from 'drizzle-orm';
+import { and, asc, eq, gte, or } from 'drizzle-orm';
 import { TEST_START } from '~/constants';
 
 type ResponseDto = QualityGuess[];
@@ -49,6 +49,7 @@ export const retrieveQualityGuesses = async (req: NextApiRequest) => {
 
   const guesses = await db.query.qualityGuessesTable.findMany({
     where: and(...conditions, gte(qualityGuessesTable.createdAt, TEST_START)),
+    orderBy: asc(guessesTable.updatedAt),
   });
 
   return guesses;
