@@ -128,7 +128,17 @@ export default function TestResultPage({
       zeroGuessCount++;
     }
 
-    return true;
+    const zeroGuesses = testGuesses.reduce(
+      (acc, guess) =>
+        acc +
+        ((guess.trueElevation === 0 && guess.guessedAzimuth === 0) ||
+        (guess.guessedElevation === 0 && guess.trueElevation !== 0)
+          ? 1
+          : 0),
+      0
+    );
+
+    return zeroGuesses < 40 && test !== 'zj9eXltpshObZ_b3yG0nh';
   });
 
   const invalidTests = [...tests].filter((test) => !validTests.includes(test));
