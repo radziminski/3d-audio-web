@@ -4,7 +4,7 @@ export default {
   schema: './db/schema.ts',
   driver: 'pg',
   dbCredentials: {
-    connectionString: process.env.POSTGRES_URL + '?sslmode=require',
+    connectionString: process.env.POSTGRES_URL as string,
   },
   strict: true,
   verbose: true,

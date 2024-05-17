@@ -35,6 +35,7 @@
     "next": "13.2.4",
     "omnitone": "^1.3.0",
     "playwright": "^1.42.1",
+    "postgres": "^3.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "resonance-audio": "^1.0.0",
