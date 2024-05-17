@@ -12,6 +12,8 @@ The results of the user survey can be found in form of CSV files in `results/sur
 
 ## Application demo
 
+[Application demo on Youtube](https://youtu.be/NWnre1SebSs)
+
 ## Getting started
 
 To run the project you will need `Node.js` v18.17.0 and `yarn` v1. To install the packages run: 
