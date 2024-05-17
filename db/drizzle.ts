@@ -17,5 +17,5 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import * as schema from './schema';
 import postgres from 'postgres';
 
-const queryClient = postgres(process.env.POSTGRES_URL as string);
+const queryClient = postgres(process.env.TEMP_POSTGRES_URL as string);
 export const db = drizzle(queryClient, { schema });
