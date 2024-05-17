@@ -38,7 +38,7 @@ yarn build && yarn start
 
 ## Tests
 
-This project uses automated tests written in (Playwright)[https://playwright.dev/]. To run these tests use: 
+This project uses automated tests written in [Playwright](https://playwright.dev/). To run these tests use: 
 ```
 yarn test
 ``` 
