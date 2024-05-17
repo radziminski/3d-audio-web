@@ -159,9 +159,9 @@ export default function TestResultPage({
               Test Result - Summary
             </h2>
 
-            <div>Submissions: {tests.size}</div>
+            <div>Submissions: {tests.size + DISCARDED_TEST_IDS.length}</div>
             <div>Valid submissions: {validTests.length}</div>
-            <div>Invalid submissions: {invalidTests.length}</div>
+            <div>Invalid submissions: {DISCARDED_TEST_IDS.length}</div>
             <div>Unique users: {users.size}</div>
 
             <h3 style={{ margin: 0, marginTop: '16px' }}>
