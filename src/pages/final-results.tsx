@@ -341,64 +341,6 @@ export default function TestResultPage({
                 </>
               );
             })}
-
-            {/* <div className={classes.fullResultsGrid}>
-              <div className={classes.fullResultsRow}>
-                {FULL_RESULTS_COLUMN_LABELS.map((label) => (
-                  <div key={label} className={classes.cellLabel}>
-                    {label}
-                  </div>
-                ))}
-              </div>
-              {guesses.map((guess, index) => (
-                <div key={`guess-${index}`} className={classes.fullResultsRow}>
-                  <div className={classes.cell}>{index + 1}</div>
-                  <div className={classes.cell}>{guess.library}</div>
-                  <div className={classes.cell}>{guess.view}</div>
-                  <div className={classes.cell}>
-                    {
-                      librariesNameMap[
-                        (guess.sample as keyof typeof librariesNameMap) ??
-                          '/sample-pinknoise.mp3'
-                      ]
-                    }
-                  </div>
-                  <div className={classes.cell}>
-                    {['azimuth', 'elevation'].includes(guess.type ?? '')
-                      ? roundToDecimal(guess.trueAzimuth)
-                      : '-'}
-                  </div>
-                  <div className={classes.cell}>
-                    {guess.type === 'azimuth'
-                      ? roundToDecimal(guess.guessedAzimuth)
-                      : '-'}
-                  </div>
-                  <div className={classes.cell}>
-                    {guess.type === 'azimuth'
-                      ? getAzimuthError(guess.trueAzimuth, guess.guessedAzimuth)
-                      : '-'}
-                  </div>
-                  <div className={classes.cell}>
-                    {['elevation'].includes(guess.type ?? ' ')
-                      ? roundToDecimal(guess.trueElevation)
-                      : '-'}
-                  </div>
-                  <div className={classes.cell}>
-                    {guess.type === 'elevation'
-                      ? roundToDecimal(guess.guessedElevation)
-                      : '-'}
-                  </div>
-                  <div className={classes.cell}>
-                    {guess.type === 'elevation'
-                      ? getElevationError(
-                          guess.trueElevation,
-                          guess.guessedElevation
-                        )
-                      : '-'}
-                  </div>
-                </div>
-              ))}
-            </div> */}
           </div>
         </Layout>
       )}
@@ -407,6 +349,24 @@ export default function TestResultPage({
 }
 
 const HOST = process.env.NEXT_PUBLIC_HOST ?? 'https://3d-audio-web.vercel.app';
+
+/**
+ * To ensure the validity of the results, 7 submissions were discarded based on specific criteria:
+ * - 6 submissions were excluded because they contained more than twenty guesses for azimuth or elevation equal to 0 degrees.
+ * This pattern suggests that these respondents might have been submitting guesses blindly without carefully selecting the
+ * sound direction, or did not use headphones while performing the survey, making their responses irrelevant to this analysis.
+ * - 1 submission was discarded due to the presence of more than one Left-Right error, indicating that the participant likely
+ * had their headphones set up inversely
+ */
+const DISCARDED_TEST_IDS = [
+  'RydoIN05LBdUwl4ERuRlf',
+  'Li89L5nOV7tsNvoDmK1KG',
+  'ua36ajPzc5urEzWB5R09g',
+  '7vEpj5iMN30JxD2LVYZQA',
+  'gaQJxRysoD5aYe3_SduG-',
+  'zj9eXltpshObZ_b3yG0nh',
+  'l9I4TBR2dsGOe-BJVE7zm',
+];
 
 export const getServerSideProps = async () => {
   const guesses = await fetch(`${HOST}/api/guesses`, {
@@ -419,13 +379,21 @@ export const getServerSideProps = async () => {
   const guessesData = await guesses.json();
   const guessesQualityData = await guessesQuality.json();
 
+  const filteredGuessData = (
+    guessesData as (Guess & {
+      guessStart: number;
+      guessEnd: number;
+    })[]
+  ).filter((guess) => !DISCARDED_TEST_IDS.includes(guess.testId));
+
+  const filteredGuessQualityData = (
+    guessesQualityData as QualityGuess[]
+  ).filter((guess) => !DISCARDED_TEST_IDS.includes(guess.testId));
+
   return {
     props: {
-      guesses: guessesData as (Guess & {
-        guessStart: number;
-        guessEnd: number;
-      })[],
-      guessesQuality: guessesQualityData as QualityGuess[],
+      guesses: filteredGuessData,
+      guessesQuality: filteredGuessQualityData,
     },
   };
 };

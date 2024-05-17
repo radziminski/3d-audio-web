@@ -14,13 +14,13 @@ export const getTestAverages = (
   );
 
   const azimuthErrors = libraryGuesses
-    .filter((guess) => guess.type === 'azimuth')
+    .filter((guess) => guess.trueElevation === 0)
     .map(({ trueAzimuth, guessedAzimuth }) =>
       getAzimuthError(trueAzimuth, guessedAzimuth)
     );
 
   const elevationErrors = libraryGuesses
-    .filter((guess) => guess.type === 'elevation')
+    .filter((guess) => guess.trueElevation !== 0)
     .map(({ trueElevation, guessedElevation }) =>
       getElevationError(trueElevation, guessedElevation)
     );
