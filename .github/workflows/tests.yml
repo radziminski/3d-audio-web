@@ -17,7 +17,11 @@ jobs:
         run: npm install -g yarn
       - name: Install dependencies
         run: yarn
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
+      # The automated tests were initially in the pipeline, however since this is a public repository,
+      # I didn't want to include DB secretes in the pipeline (with Github repository secrets everything probably
+      # would be safe, but I didn't want to take any risks just in case ).
+      # Therefore, the tests were only run locally before every push to the remote.
+      # - name: Install Playwright Browsers
+      #   run: npx playwright install --with-deps
+      # - name: Run Playwright tests
+      #   run: yarn playwright test

@@ -493,6 +493,7 @@ export const AudioSettings = ({
               size='md'
               className={classes.button}
               loading={isMachLoading}
+              data-test-id='play-button'
             >
               {isMachLoading ? 'Loading' : isPlaying ? 'Pause' : 'Play'}
             </Button>
